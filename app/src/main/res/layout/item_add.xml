@@ -21,16 +21,31 @@
         android:layout_alignParentEnd="true" />
 
     <!-- title -->
+
     <TextView
         android:id="@+id/layout_list_name"
-        android:layout_width="351dp"
-        android:layout_height="64dp"
+        android:layout_width="241dp"
+        android:layout_height="60dp"
         android:layout_alignBaseline="@+id/layout_list_delete"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="1dp"
+        android:layout_marginEnd="9dp"
         android:layout_toStartOf="@+id/layout_list_delete"
+        android:gravity="center|start"
+        android:paddingStart="50dp"
+        android:paddingEnd="10dp"
         android:textColor="@android:color/darker_gray"
-        android:textSize="28sp"
-        android:paddingStart="5dp"/>
+        android:textSize="26sp" />
+
+    <TextView
+        android:id="@+id/mark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="13dp"
+        android:background="@drawable/rounded_textview"
+        android:gravity="center"
+        android:text="@string/none"
+        android:textColor="@android:color/white"
+        android:textSize="30sp" />
 
 </RelativeLayout>
