@@ -1,10 +1,11 @@
 package com.example.ontime;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.MenuItem;
 
-import com.example.ontime.ui.dashboard.DashboardFragment;
+import com.example.ontime.ui.dashboard.AddItemsFragment;
 import com.example.ontime.ui.home.AddFragment;
 import com.example.ontime.ui.notifications.RemoveFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity{
                             selectedFragment = new AddFragment();
                             break;
                         case R.id.navigation_remove:
-                            selectedFragment = new DashboardFragment();
+                            selectedFragment = new AddItemsFragment();
                             break;
                         case R.id.navigation_notifications:
                             selectedFragment = new RemoveFragment();

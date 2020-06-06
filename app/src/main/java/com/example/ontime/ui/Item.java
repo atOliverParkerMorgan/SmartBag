@@ -9,6 +9,11 @@ public class Item {
         return name;
     }
     public String getNameInitials(){
-        return "N";
+        StringBuilder intials = new StringBuilder();
+        intials.append(Character.toUpperCase(name.charAt(0)));
+        for (int i = 1; i < name.length() - 1; i++)
+            if (name.charAt(i) == ' ')
+                intials.append(Character.toUpperCase(name.charAt(i + 1)));
+        return intials.toString();
     }
 }

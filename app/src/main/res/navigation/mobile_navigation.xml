@@ -12,11 +12,11 @@
 
     <fragment
         android:id="@+id/navigation_remove"
-        android:name="com.example.ontime.ui.dashboard.DashboardFragment"
+        android:name="com.example.ontime.ui.dashboard.AddItemsFragment"
         tools:layout="@layout/fragment_remove" />
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.ontime.ui.notifications.RemoveFragment"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_add_subject" />
 </navigation>

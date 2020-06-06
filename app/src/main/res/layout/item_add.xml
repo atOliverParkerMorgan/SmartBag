@@ -16,7 +16,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="1dp"
         android:layout_marginBottom="1dp"
-        android:contentDescription="@string/icon"
+        android:contentDescription="@string/delete_icon_description"
         app:srcCompat="@drawable/ic_to_delete"
         android:layout_alignParentEnd="true" />
 
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="13dp"
-        android:background="@drawable/rounded_textview"
+        android:background="@drawable/rounded_textview_add"
         android:gravity="center"
         android:text="@string/none"
         android:textColor="@android:color/white"

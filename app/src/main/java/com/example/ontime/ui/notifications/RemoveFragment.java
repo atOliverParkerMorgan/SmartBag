@@ -41,10 +41,10 @@ public class RemoveFragment extends Fragment {
                  new Item("Deep Orange")};
          List<Item> itemsDataItemsToRemove = new ArrayList<>(Arrays.asList(defaultItemsDataItemsToRemove));
          // 3. create an adapter
-         MyListAdapter mAdapterItemsToRemove = new MyListAdapter(itemsDataItemsToRemove);
+         MyListAdapter mAdapterItemsToRemove = new MyListAdapter(itemsDataItemsToRemove, (byte) 0);
          // 4. set adapter
          recyclerViewItemsToRemove.setAdapter(mAdapterItemsToRemove);
-         // 5. set item animator to DefaultAnimator
+         // 5. set itemAdd animator to DefaultAnimator
          recyclerViewItemsToRemove.setItemAnimator(new DefaultItemAnimator());
 
         return view;
