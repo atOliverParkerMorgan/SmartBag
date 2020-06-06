@@ -5,8 +5,8 @@ import android.os.IBinder;
 import android.view.MenuItem;
 
 import com.example.ontime.ui.dashboard.DashboardFragment;
-import com.example.ontime.ui.home.HomeFragment;
-import com.example.ontime.ui.notifications.NotificationsFragment;
+import com.example.ontime.ui.home.AddFragment;
+import com.example.ontime.ui.notifications.RemoveFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity{
         //I added this if statement to keep the selected fragment when rotating the device
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
-                    new HomeFragment()).commit();
+                    new AddFragment()).commit();
         }
 
     }
@@ -48,13 +48,13 @@ public class MainActivity extends AppCompatActivity{
                     Fragment selectedFragment = null;
                     switch (menuItem.getItemId()){
                         case R.id.navigation_add:
-                            selectedFragment = new HomeFragment();
+                            selectedFragment = new AddFragment();
                             break;
                         case R.id.navigation_remove:
                             selectedFragment = new DashboardFragment();
                             break;
                         case R.id.navigation_notifications:
-                            selectedFragment = new NotificationsFragment();
+                            selectedFragment = new RemoveFragment();
                             break;
 
                     }

@@ -1,4 +1,4 @@
-package com.example.ontime.ui.home;
+package com.example.ontime.ui;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.ontime.R;
+
 import java.util.List;
 
 
@@ -17,7 +18,7 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
     private List<Item> Items;
 
     // RecyclerView recyclerView;
-    MyListAdapter(List<Item> listdata) {
+    public MyListAdapter(List<Item> listdata) {
         this.Items = listdata;
     }
 

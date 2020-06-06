@@ -1,4 +1,4 @@
-package com.example.ontime.ui.home;
+package com.example.ontime.ui;
 
 public class Item {
     private String name;

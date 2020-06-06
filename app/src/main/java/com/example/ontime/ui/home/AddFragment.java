@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ontime.R;
+import com.example.ontime.ui.Item;
+import com.example.ontime.ui.MyListAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class HomeFragment extends Fragment{
+public class AddFragment extends Fragment{
 
     //ThingsAdapter adapter;
     //FragmentActivity listener;
@@ -45,7 +47,7 @@ public class HomeFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_add, parent, false);
 
-        final RecyclerView ItemsToAddRecycleView = (RecyclerView) view.findViewById(R.id.ItemsToAdd);
+        final RecyclerView ItemsToAddRecycleView = view.findViewById(R.id.ItemsToAdd);
         ItemsToAddRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
         // this is data fro recycler view
         Item[] defaultItemsDataItemsToAdd = { new Item("Indigo"),
@@ -63,23 +65,6 @@ public class HomeFragment extends Fragment{
         // 5. set item animator to DefaultAnimator
         ItemsToAddRecycleView.setItemAnimator(new DefaultItemAnimator());
 
-        final RecyclerView recyclerViewItemsToRemove = (RecyclerView) view.findViewById(R.id.ItemsToRemove);
-        recyclerViewItemsToRemove.setLayoutManager(new LinearLayoutManager(getActivity()));
-        // this is data fro recycler view
-        Item[] defaultItemsDataItemsToRemove = { new Item("Indigo"),
-                new Item("Red"),
-                new Item("Blue"),
-                new Item("Green"),
-                new Item("Amber"),
-                new Item("Deep Orange")};
-        List<Item> itemsDataItemsToRemove = new ArrayList<>(Arrays.asList(defaultItemsDataItemsToRemove));
-
-        // 3. create an adapter
-        MyListAdapter mAdapterItemsToRemove = new MyListAdapter(itemsDataItemsToRemove);
-        // 4. set adapter
-        recyclerViewItemsToRemove.setAdapter(mAdapterItemsToRemove);
-        // 5. set item animator to DefaultAnimator
-        recyclerViewItemsToRemove.setItemAnimator(new DefaultItemAnimator());
 
         return view;
     }
