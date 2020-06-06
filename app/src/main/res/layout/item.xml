@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="80dp"
+    android:background="@drawable/borders"
+    android:id="@+id/relativeLayout">
+
+    <!-- icon -->
+    <ImageButton
+        android:id="@+id/layout_list_delete"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="@color/white"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="1dp"
+        android:contentDescription="@string/icon"
+        app:srcCompat="@drawable/ic_to_delete"
+        android:layout_alignParentEnd="true" />
+
+    <!-- title -->
+    <TextView
+        android:id="@+id/layout_list_name"
+        android:layout_width="351dp"
+        android:layout_height="64dp"
+        android:layout_alignBaseline="@+id/layout_list_delete"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="1dp"
+        android:layout_toStartOf="@+id/layout_list_delete"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="28sp"
+        android:paddingStart="5dp"/>
+
+</RelativeLayout>

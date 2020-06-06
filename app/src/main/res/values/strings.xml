@@ -1,0 +1,10 @@
+ <resources>
+    <string name="app_name">OnTime</string>
+    <string name="title_add">Add</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_remove">Remove</string>
+    <string name="main_text"><u>bag modifications</u></string>
+    <string name="To_add">add into bag</string>
+    <string name="To_remove">remove from bag</string>
+    <string name="icon">Some text</string>
+</resources>
