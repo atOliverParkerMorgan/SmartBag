@@ -1,5 +1,7 @@
 package com.example.ontime.Adapter;
 
+import android.widget.Toast;
+
 public class Item {
     private String itemName;
     private String subjectName;
@@ -16,15 +18,18 @@ public class Item {
         return itemName;
     }
 
-    public String getNameInitialsOfSubject(){
+    public String getNameInitialsOfSubject() {
         StringBuilder intials = new StringBuilder();
         intials.append(Character.toUpperCase(getSubjectName().charAt(0)));
-        for (int i = 1; i < getSubjectName().length() - 1; i++)
-            if (getSubjectName().charAt(i) == ' ')
-                intials.append(Character.toUpperCase(itemName.charAt(i + 1)));
+        for (int i = 1; i < getSubjectName().length() - 1; i++){
+            if (getSubjectName().charAt(i) == ' ') {
+                intials.append(Character.toUpperCase(getSubjectName().charAt(i + 1)));
+            }
             if(intials.length()==2){
                 return intials.toString();
             }
+
+        }
         return intials.toString();
     }
 }

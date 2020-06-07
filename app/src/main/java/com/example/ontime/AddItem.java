@@ -80,47 +80,26 @@ public class AddItem extends AppCompatActivity {
 
         viewHolder.create.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // adding to database
-                // DataBase work
-                FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(v.getContext());
-                FeedReaderDbHelperItems dbHelperForItems = new FeedReaderDbHelperItems(v.getContext());
 
-                // Gets the data repository in write mode
-                SQLiteDatabase dbForSubject = dbHelperForSubject.getWritableDatabase();
-                SQLiteDatabase dbForItems = dbHelperForItems.getWritableDatabase();
+                if(defaultItemsDataItemsToAdd.size()==0) {
+                    Toast.makeText(v.getContext(),"You must add at least one item",Toast.LENGTH_LONG).show();
+                }else {
 
-                // Create a new map of values, where column names are the keys
-                ContentValues valuesForSubject = new ContentValues();
-                valuesForSubject.put(FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_TITLE, subject);
-                valuesForSubject.put(FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_MONDAY, (String) getIntent().getSerializableExtra("Monday"));
-                valuesForSubject.put(FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_TUESDAY, (String) getIntent().getSerializableExtra("Tuesday"));
-                valuesForSubject.put(FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_WEDNESDAY, (String) getIntent().getSerializableExtra("Wednesday"));
-                valuesForSubject.put(FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_THURSDAY, (String) getIntent().getSerializableExtra("Thursday"));
-                valuesForSubject.put(FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_FRIDAY, (String) getIntent().getSerializableExtra("Friday"));
-                valuesForSubject.put(FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_SATURDAY, (String) getIntent().getSerializableExtra("Saturday"));
-                valuesForSubject.put(FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_SUNDAY, (String) getIntent().getSerializableExtra("Sunday"));
+                    // Insert the new row, returning the primary key value of the new row
+                    long newRowId = FeedReaderDbHelperSubjects.write(v.getContext(), getIntent(), subject);
 
-                // adding data to table
-                ContentValues valuesForItems = new ContentValues();
-                for(Item item: defaultItemsDataItemsToAdd){
-                    valuesForItems.put(FeedReaderDbHelperItems.FeedEntry.COLUMN_NAME_TITLE,item.getItemName());
-                    valuesForItems.put(FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE, subject);
+                    // Insert the new row, returning the primary key value of the new row
+                    long newRowId2 = FeedReaderDbHelperItems.write(v.getContext(), defaultItemsDataItemsToAdd, subject);
+
+                    // -1 means an Error has occurred
+                    if (newRowId == -1 || newRowId2 == -1) {
+                        Toast.makeText(v.getContext(), "An error as occurred in the database report this issue",
+                                Toast.LENGTH_LONG).show();
+                    }
+                    // go back to main activity
+                    Intent i = new Intent(AddItem.this, MainActivity.class);
+                    startActivity(i);
                 }
-
-                // Insert the new row, returning the primary key value of the new row
-                long newRowId = dbForSubject.insert(FeedReaderDbHelperSubjects.FeedEntry.TABLE_NAME, null, valuesForSubject);
-
-                // Insert the new row, returning the primary key value of the new row
-                long newRowId2 = dbForItems.insert(FeedReaderDbHelperItems.FeedEntry.TABLE_NAME, null, valuesForItems);
-
-                // -1 means an Error has occurred
-                if(newRowId==-1||newRowId2==-1){
-                    Toast.makeText(v.getContext(), "An error as occurred in the database report this issue",
-                            Toast.LENGTH_LONG).show();
-                }
-                // go back to main activity
-                Intent i = new Intent(AddItem.this, MainActivity.class);
-                startActivity(i);
 
 
             }

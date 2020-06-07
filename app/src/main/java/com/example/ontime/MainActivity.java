@@ -1,9 +1,16 @@
 package com.example.ontime;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.BaseColumns;
 import android.view.MenuItem;
 
+import com.example.ontime.Adapter.Item;
+import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems;
+import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.example.ontime.ui.AddSubject.AddSubjectFragment;
 import com.example.ontime.ui.Add.AddFragment;
 import com.example.ontime.ui.Remove.RemoveFragment;
@@ -12,6 +19,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity{
 
