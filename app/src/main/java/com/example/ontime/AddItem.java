@@ -38,7 +38,7 @@ public class AddItem extends AppCompatActivity {
             public void onClick(View v) {
                 String text = viewHolder.itemName.getText().toString();
                 if(text.equals("")){
-                    Toast.makeText(v.getContext(), "To add an item write some text into the text field.",
+                    Toast.makeText(v.getContext(), "To add an item write some text into the text field.(Textbook)",
                             Toast.LENGTH_LONG).show();
                 }else {
 

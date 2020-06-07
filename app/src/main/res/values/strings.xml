@@ -2,7 +2,7 @@
     <string name="app_name">SmartBag</string>
 
     <string name="title_add_button_navigation">Add</string>
-    <string name="title_add_item_button_navigation">Add Items</string>
+    <string name="title_add_item_button_navigation">Create Subject</string>
     <string name="title_remove_button_navigation">Remove</string>
 
 
@@ -31,4 +31,5 @@
      <string name="discard_button">discard</string>
      <string name="create_button">create</string>
      <string name="add_button">add</string>
+     <string name="proceed_to_add_items_button">Proceed to add Items</string>
  </resources>

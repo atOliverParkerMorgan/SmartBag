@@ -43,13 +43,13 @@ public class AddItemsFragment extends Fragment {
                     // Create a new map of values, where column names are the keys
                     ContentValues values = new ContentValues();
                     values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_TITLE, s);
-                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_MONDAY, viewHolder.monday.toString());
-                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_TEUSDAY, viewHolder.tuesday.toString());
-                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_WEDNESDAY, viewHolder.wednesday.toString());
-                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_THURSDAY, viewHolder.thursday.toString());
-                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_FRIDAY, viewHolder.friday.toString());
-                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_SATURDAY, viewHolder.saturday.toString());
-                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_SUNDAY, viewHolder.sunday.toString());
+                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_MONDAY, Boolean.toString(viewHolder.monday.isChecked()));
+                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_TEUSDAY, Boolean.toString(viewHolder.tuesday.isChecked()));
+                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_WEDNESDAY, Boolean.toString(viewHolder.wednesday.isChecked()));
+                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_THURSDAY, Boolean.toString(viewHolder.thursday.isChecked()));
+                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_FRIDAY, Boolean.toString(viewHolder.friday.isChecked()));
+                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_SATURDAY, Boolean.toString(viewHolder.saturday.isChecked()));
+                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_SUNDAY, Boolean.toString(viewHolder.sunday.isChecked()));
 
 
                     // Insert the new row, returning the primary key value of the new row
@@ -61,7 +61,7 @@ public class AddItemsFragment extends Fragment {
 
                     startActivity(i);
                 }else {
-                    Toast.makeText(v.getContext(), "To add an subject write some text into the text field.",
+                    Toast.makeText(v.getContext(), "To add an subject write some text into the text field (Mathematics).",
                             Toast.LENGTH_LONG).show();
                 }
 
