@@ -7,20 +7,22 @@
     android:id="@+id/relativeLayout">
 
     <!-- icon -->
+
+    <!-- title -->
+
     <ImageButton
         android:id="@+id/layout_list_delete"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:background="@color/white"
+        android:layout_alignParentEnd="true"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="1dp"
         android:layout_marginBottom="1dp"
+        android:background="@color/white"
         android:contentDescription="@string/delete_icon_description"
-        app:srcCompat="@drawable/ic_to_delete"
-        android:layout_alignParentEnd="true" />
-
-    <!-- title -->
+        app:srcCompat="@drawable/ic_to_add_check" />
 
     <TextView
         android:id="@+id/layout_list_name"

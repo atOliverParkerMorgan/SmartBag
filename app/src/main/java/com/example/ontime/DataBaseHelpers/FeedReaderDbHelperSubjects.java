@@ -17,7 +17,7 @@ import java.util.List;
 public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "FeedReader.db";
+    public static final String DATABASE_NAME = "Subject.db";
     private final static String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + FeedEntry.TABLE_NAME + " (" +
                 FeedEntry._ID + " INTEGER PRIMARY KEY," +
@@ -28,7 +28,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
                 FeedEntry.COLUMN_NAME_THURSDAY + " TEXT,"+
                 FeedEntry.COLUMN_NAME_FRIDAY + " TEXT,"+
                 FeedEntry.COLUMN_NAME_SATURDAY + " TEXT,"+
-                FeedEntry.COLUMN_NAME_SUNDAY + " TEXT)";;
+                FeedEntry.COLUMN_NAME_SUNDAY + " TEXT)";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + FeedEntry.TABLE_NAME;

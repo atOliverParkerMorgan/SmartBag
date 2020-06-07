@@ -1,4 +1,8 @@
 package com.example.ontime.ui.Overview;
 
-public class Overview {
+import androidx.fragment.app.Fragment;
+
+public class Overview extends Fragment {
+
+
 }

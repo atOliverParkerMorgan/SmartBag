@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems;
+import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperMyBag;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.example.ontime.R;
 import com.example.ontime.Adapter.Item;
@@ -41,19 +42,39 @@ public class AddFragment extends Fragment{
         final RecyclerView ItemsToAddRecycleView = view.findViewById(R.id.ItemsToAdd);
         ItemsToAddRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        // this is data fro recycler view
+        // this is data for recycler view
+        List<Item> inMyBag = new ArrayList<>();
         List<Item> itemsDataItemsToAdd = new ArrayList<>();
-
+        for(String subject: subjectNames) {
+            final List<String> myBagItems = FeedReaderDbHelperMyBag.getContent(getContext(), subject);
+            for (String item : myBagItems) {
+                inMyBag.add(new Item(item, subject));
+            }
+        }
 
 
         // loop through all relevant subjects
         for(String subject: subjectNames){
+
             final List<String> itemNames = FeedReaderDbHelperItems.getContent(getContext(), subject);
             for(String item: itemNames){
-                itemsDataItemsToAdd.add(new Item(item,subject));
+
+                // checking if item isn't already in bag
+                boolean found = false;
+                for (Item itemInBag: inMyBag){
+                    if(itemInBag.getItemName().equals(item) && itemInBag.getSubjectName().equals(subject)){
+                        found = true;
+                        break;
+                    }
+                }
+                if(!found) {
+                    itemsDataItemsToAdd.add(new Item(item, subject));
+                }
             }
 
         }
+
+
 
         // 3. create an adapter
         MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToAdd,(byte) 1);

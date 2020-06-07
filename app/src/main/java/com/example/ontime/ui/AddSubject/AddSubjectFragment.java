@@ -52,7 +52,7 @@ public class AddSubjectFragment extends Fragment {
 
                     startActivity(i);
                 }else {
-                    Toast.makeText(v.getContext(), "To add an subject write some text into the text field (Mathematics).",
+                    Toast.makeText(v.getContext(), "To add a subject write some text into the text field (Mathematics).",
                             Toast.LENGTH_LONG).show();
                 }
 

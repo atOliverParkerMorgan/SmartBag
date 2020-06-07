@@ -16,6 +16,16 @@
         android:icon="@drawable/ic_to_add_subject"
         android:title="@string/title_add_item_button_navigation" />
 
+    <item
+        android:id="@+id/navigation_bag"
+        android:icon="@drawable/ic_to_add_bag"
+        android:title="@string/title_bag_button_navigation" />
+
+    <item
+        android:id="@+id/navigation_overview"
+        android:icon="@drawable/ic_to_add_bag_overview"
+        android:title="@string/title_overview_button_navigation" />
+
 
 
 </menu>

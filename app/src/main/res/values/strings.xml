@@ -4,6 +4,8 @@
     <string name="title_add_button_navigation">Add</string>
     <string name="title_add_item_button_navigation">Create Subject</string>
     <string name="title_remove_button_navigation">Remove</string>
+     <string name="title_overview_button_navigation">Overview</string>
+     <string name="title_bag_button_navigation">Bag</string>
 
 
 
@@ -13,8 +15,12 @@
      <string name="none">N</string>
 
      <string name="days_of_the_week_text">What days of the week do you want these items in your bag?</string>
-     <string name="to_add_text"><u>put into bag</u></string>
-     <string name="to_remove_text"><u>remove from bag</u></string>
+     <string name="to_add_text">add to bag</string>
+     <string name="to_add_text_subtitle">put these items into your bag</string>
+     <string name="to_remove_text">remove from bag</string>
+     <string name="to_remove_text_subtitle">remove these items from your bag</string>
+     <string name="to_in_bag">your bag</string>
+     <string name="to_in_bag_instructions">these items are in your bag</string>
 
      <string name="monday">Monday</string>
      <string name="tuesday">Tuesday</string>

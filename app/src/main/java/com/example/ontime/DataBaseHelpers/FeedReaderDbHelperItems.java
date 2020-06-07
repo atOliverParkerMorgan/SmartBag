@@ -17,7 +17,7 @@ import java.util.List;
 public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "FeedReader2.db";
+    public static final String DATABASE_NAME = "Items.db";
     private final static String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + FeedReaderDbHelperItems.FeedEntry.TABLE_NAME + " (" +
                     FeedReaderDbHelperItems.FeedEntry._ID + " INTEGER PRIMARY KEY," +
