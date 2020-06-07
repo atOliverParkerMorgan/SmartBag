@@ -1,4 +1,4 @@
-package com.example.ontime.ui;
+package com.example.ontime.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;

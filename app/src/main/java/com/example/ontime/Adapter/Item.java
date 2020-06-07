@@ -1,4 +1,4 @@
-package com.example.ontime.ui;
+package com.example.ontime.Adapter;
 
 public class Item {
     private String itemName;

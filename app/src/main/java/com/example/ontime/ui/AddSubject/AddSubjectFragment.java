@@ -1,8 +1,6 @@
 package com.example.ontime.ui.AddSubject;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +14,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.ontime.AddItem;
 import com.example.ontime.R;
-import com.example.ontime.ui.FeedReaderDbHelper;
 
 import java.util.Objects;
 
@@ -33,29 +30,25 @@ public class AddSubjectFragment extends Fragment {
         viewHolder.addItems.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String s = viewHolder.subjectName.getText().toString();
-                if(!s.equals("")) {
-                    // DataBase work
-                    FeedReaderDbHelper dbHelper = new FeedReaderDbHelper(getContext());
-                    // Gets the data repository in write mode
-                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                if(!(viewHolder.monday.isChecked()||viewHolder.monday.isChecked()||
+                        viewHolder.tuesday.isChecked()||viewHolder.wednesday.isChecked()||viewHolder.thursday.isChecked()||
+                        viewHolder.friday.isChecked()||viewHolder.saturday.isChecked()||viewHolder.sunday.isChecked())){
+                    Toast.makeText(v.getContext(), "You have to choose at least one day of the week",
+                            Toast.LENGTH_LONG).show();
+                }
 
-                    // Create a new map of values, where column names are the keys
-                    ContentValues values = new ContentValues();
-                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_TITLE, s);
-                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_MONDAY, Boolean.toString(viewHolder.monday.isChecked()));
-                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_TEUSDAY, Boolean.toString(viewHolder.tuesday.isChecked()));
-                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_WEDNESDAY, Boolean.toString(viewHolder.wednesday.isChecked()));
-                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_THURSDAY, Boolean.toString(viewHolder.thursday.isChecked()));
-                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_FRIDAY, Boolean.toString(viewHolder.friday.isChecked()));
-                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_SATURDAY, Boolean.toString(viewHolder.saturday.isChecked()));
-                    values.put(FeedReaderDbHelper.FeedEntry.COLUMN_NAME_SUNDAY, Boolean.toString(viewHolder.sunday.isChecked()));
-
-
-                    // Insert the new row, returning the primary key value of the new row
-                    long newRowId = db.insert(FeedReaderDbHelper.FeedEntry.TABLE_NAME, null, values);
+                else if(!s.equals("")) {
 
                     Intent i = new Intent(Objects.requireNonNull(getActivity()).getApplicationContext(), AddItem.class);
                     i.putExtra("Subject", s);
+                    i.putExtra("Monday",Boolean.toString(viewHolder.monday.isChecked()));
+                    i.putExtra("Tuesday",Boolean.toString(viewHolder.tuesday.isChecked()));
+                    i.putExtra("Wednesday",Boolean.toString(viewHolder.wednesday.isChecked()));
+                    i.putExtra("Thursday",Boolean.toString(viewHolder.thursday.isChecked()));
+                    i.putExtra("Friday",Boolean.toString(viewHolder.friday.isChecked()));
+                    i.putExtra("Saturday",Boolean.toString(viewHolder.saturday.isChecked()));
+                    i.putExtra("Sunday",Boolean.toString(viewHolder.sunday.isChecked()));
+
 
                     startActivity(i);
                 }else {

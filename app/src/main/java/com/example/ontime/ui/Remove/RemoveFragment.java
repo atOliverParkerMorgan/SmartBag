@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ontime.R;
-import com.example.ontime.ui.Item;
-import com.example.ontime.ui.MyListAdapter;
+import com.example.ontime.Adapter.Item;
+import com.example.ontime.Adapter.MyListAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;

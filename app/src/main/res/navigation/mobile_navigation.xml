@@ -7,16 +7,16 @@
 
     <fragment
         android:id="@+id/navigation_add"
-        android:itemName="com.example.ontime.ui.Add.AddFragment"
+        android:name="com.example.ontime.ui.Add.AddFragment"
         tools:layout="@layout/fragment_add" />
 
     <fragment
         android:id="@+id/navigation_remove"
-        android:itemName="com.example.ontime.ui.AddSubject.AddSubjectFragment"
+        android:name="com.example.ontime.ui.AddSubject.AddSubjectFragment"
         tools:layout="@layout/fragment_remove" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:itemName="com.example.ontime.ui.Remove.RemoveFragment"
+        android:name="com.example.ontime.ui.Remove.RemoveFragment"
         tools:layout="@layout/fragment_add_subject" />
 </navigation>
