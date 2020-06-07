@@ -1,16 +1,12 @@
-package com.example.ontime.ui.notifications;
+package com.example.ontime.ui.Remove;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,12 +29,12 @@ public class RemoveFragment extends Fragment {
          final RecyclerView recyclerViewItemsToRemove =  view.findViewById(R.id.ItemsToRemove);
          recyclerViewItemsToRemove.setLayoutManager(new LinearLayoutManager(getActivity()));
          // this is data fro recycler view
-         Item[] defaultItemsDataItemsToRemove = { new Item("Indigo"),
-                 new Item("Red"),
-                 new Item("Blue"),
-                 new Item("Green"),
-                 new Item("Amber"),
-                 new Item("Deep Orange")};
+         Item[] defaultItemsDataItemsToRemove = { new Item("Indigo", "TEST"),
+                 new Item("Red", "TEST"),
+                 new Item("Blue", "TEST"),
+                 new Item("Green", "TEST"),
+                 new Item("Amber", "TEST"),
+                 new Item("Deep Orange", "TEST")};
          List<Item> itemsDataItemsToRemove = new ArrayList<>(Arrays.asList(defaultItemsDataItemsToRemove));
          // 3. create an adapter
          MyListAdapter mAdapterItemsToRemove = new MyListAdapter(itemsDataItemsToRemove, (byte) 0);

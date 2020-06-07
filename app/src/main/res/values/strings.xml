@@ -1,35 +1,35 @@
  <resources>
-    <string name="app_name">SmartBag</string>
+    <string itemName="app_name">SmartBag</string>
 
-    <string name="title_add_button_navigation">Add</string>
-    <string name="title_add_item_button_navigation">Create Subject</string>
-    <string name="title_remove_button_navigation">Remove</string>
+    <string itemName="title_add_button_navigation">Add</string>
+    <string itemName="title_add_item_button_navigation">Create Subject</string>
+    <string itemName="title_remove_button_navigation">Remove</string>
 
 
 
-    <string name="delete_icon_description">delete item button</string>
-     <string name="add_icon_description">add item button</string>
+    <string itemName="delete_icon_description">delete item button</string>
+     <string itemName="add_icon_description">add item button</string>
 
-     <string name="none">N</string>
+     <string itemName="none">N</string>
 
-     <string name="days_of_the_week_text">What days of the week do you want these items in your bag?</string>
-     <string name="to_add_text"><u>put into bag</u></string>
-     <string name="to_remove_text"><u>remove from bag</u></string>
+     <string itemName="days_of_the_week_text">What days of the week do you want these items in your bag?</string>
+     <string itemName="to_add_text"><u>put into bag</u></string>
+     <string itemName="to_remove_text"><u>remove from bag</u></string>
 
-     <string name="monday">Monday</string>
-     <string name="tuesday">Tuesday</string>
-     <string name="wednesday">Wednesday</string>
-     <string name="thursday">Thursday</string>
-     <string name="friday">Friday</string>
-     <string name="saturday">Saturday</string>
-     <string name="sunday">Sunday</string>
+     <string itemName="monday">Monday</string>
+     <string itemName="tuesday">Tuesday</string>
+     <string itemName="wednesday">Wednesday</string>
+     <string itemName="thursday">Thursday</string>
+     <string itemName="friday">Friday</string>
+     <string itemName="saturday">Saturday</string>
+     <string itemName="sunday">Sunday</string>
 
-     <string name="add_items_instructions">add the items that you need for this subject</string>
-     <string name="item_hint">Textbook</string>
-     <string name="subjects_hint">Mathematics</string>
+     <string itemName="add_items_instructions">add the items that you need for this subject</string>
+     <string itemName="item_hint">Textbook</string>
+     <string itemName="subjects_hint">Mathematics</string>
 
-     <string name="discard_button">discard</string>
-     <string name="create_button">create</string>
-     <string name="add_button">add</string>
-     <string name="proceed_to_add_items_button">Proceed to add Items</string>
+     <string itemName="discard_button">discard</string>
+     <string itemName="create_button">create</string>
+     <string itemName="add_button">add</string>
+     <string itemName="proceed_to_add_items_button">Proceed to add Items</string>
  </resources>

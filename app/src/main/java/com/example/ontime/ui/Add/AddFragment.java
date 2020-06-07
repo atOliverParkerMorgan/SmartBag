@@ -1,6 +1,5 @@
-package com.example.ontime.ui.home;
+package com.example.ontime.ui.Add;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +19,6 @@ import com.example.ontime.ui.MyListAdapter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class AddFragment extends Fragment{
 
@@ -34,12 +30,12 @@ public class AddFragment extends Fragment{
         final RecyclerView ItemsToAddRecycleView = view.findViewById(R.id.ItemsToAdd);
         ItemsToAddRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
         // this is data fro recycler view
-        Item[] defaultItemsDataItemsToAdd = { new Item("Indigo"),
-                new Item("Red"),
-                new Item("Blue"),
-                new Item("Green"),
-                new Item("Amber"),
-                new Item("Deep Orange")};
+        Item[] defaultItemsDataItemsToAdd = { new Item("Indigo", "TEST"),
+                new Item("Red", "TEST"),
+                new Item("Blue", "TEST"),
+                new Item("Green", "TEST"),
+                new Item("Amber", "TEST"),
+                new Item("Deep Orange", "TEST")};
         List<Item> itemsDataItemsToAdd = new ArrayList<>(Arrays.asList(defaultItemsDataItemsToAdd));
 
         // 3. create an adapter

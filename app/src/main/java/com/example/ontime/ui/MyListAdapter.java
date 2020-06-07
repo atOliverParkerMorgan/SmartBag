@@ -42,8 +42,8 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Item item = Items.get(position);
-        holder.textView.setText(Items.get(position).getName());
-        holder.circle.setText(Items.get(position).getNameInitials());
+        holder.textView.setText(Items.get(position).getItemName());
+        holder.circle.setText(Items.get(position).getNameInitialsOfSubject());
         holder.imageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // remove your itemAdd from data base
