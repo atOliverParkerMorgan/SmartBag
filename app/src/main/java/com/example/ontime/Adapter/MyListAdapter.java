@@ -3,9 +3,11 @@ package com.example.ontime.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,6 +46,11 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
         final Item item = Items.get(position);
         holder.textView.setText(Items.get(position).getItemName());
         holder.circle.setText(Items.get(position).getNameInitialsOfSubject());
+        holder.circle.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(),Items.get(position).getSubjectName(), Toast.LENGTH_SHORT).show();
+            }
+        });
         holder.imageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // remove your itemAdd from data base
@@ -64,7 +71,7 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageButton imageButton;
         TextView textView;
-        TextView circle;
+        Button circle;
         RelativeLayout relativeLayout;
         ViewHolder(View itemView) {
             super(itemView);

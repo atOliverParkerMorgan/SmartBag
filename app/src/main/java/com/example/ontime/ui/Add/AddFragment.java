@@ -50,7 +50,7 @@ public class AddFragment extends Fragment{
                 FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_SATURDAY,
                 FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_SUNDAY
         };
-
+        // subset is initialized in switch statement
         String selectionSubject = null;
         String[] selectionArgsSubject = {"true"};
 
@@ -93,8 +93,6 @@ public class AddFragment extends Fragment{
         String sortOrderSubject =
                 FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_TITLE + " DESC";
 
-        Toast.makeText(getContext(),selectionSubject,Toast.LENGTH_LONG).show();
-
         Cursor cursorSubject = dbForSubject.query(
                 FeedReaderDbHelperSubjects.FeedEntry.TABLE_NAME,   // The table to query
                 projectionSubject,             // The array of columns to return (pass null to get all)
@@ -105,11 +103,12 @@ public class AddFragment extends Fragment{
                 sortOrderSubject               // The sort order
         );
 
-        List<String> itemIds = new ArrayList<>();
+        // get all the subjects that have today marked as true
+        List<String> subjectNames = new ArrayList<>();
         while(cursorSubject.moveToNext()) {
-            String itemId = cursorSubject.getString(
+            String subject = cursorSubject.getString(
                     cursorSubject.getColumnIndexOrThrow(FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_TITLE));
-            itemIds.add(itemId);
+            subjectNames.add(subject);
         }
         cursorSubject.close();
 
@@ -118,8 +117,11 @@ public class AddFragment extends Fragment{
 
         final RecyclerView ItemsToAddRecycleView = view.findViewById(R.id.ItemsToAdd);
         ItemsToAddRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         // this is data fro recycler view
         List<Item> itemsDataItemsToAdd = new ArrayList<>();
+
+        // init items database
         FeedReaderDbHelperItems dbHelperForItems = new FeedReaderDbHelperItems(getContext());
         SQLiteDatabase dbForItems = dbHelperForItems.getReadableDatabase();
         String[] projectionItems = {
@@ -129,9 +131,10 @@ public class AddFragment extends Fragment{
 
         };
 
-        for(String item: itemIds){
+        // loop through all relevant subjects
+        for(String subject: subjectNames){
             String selectionItems = FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE + " = ?";
-            String[] selectionArgsItems = {item};
+            String[] selectionArgsItems = {subject}; // find items for the given subject
             String sortOrderItems =
                     FeedReaderDbHelperItems.FeedEntry.COLUMN_NAME_TITLE + " DESC";
 
@@ -147,18 +150,10 @@ public class AddFragment extends Fragment{
             while(cursorItems.moveToNext()) {
                 String itemName = cursorItems.getString(
                         cursorItems.getColumnIndexOrThrow(FeedReaderDbHelperItems.FeedEntry.COLUMN_NAME_TITLE));
-                itemsDataItemsToAdd.add(new Item(itemName,item));
+                itemsDataItemsToAdd.add(new Item(itemName,subject));
 
             }
         }
-     //
-     //   Item[] defaultItemsDataItemsToAdd = { new Item("Indigo", "TEST"),
-     //           new Item("Red", "TEST"),
-     //           new Item("Blue", "TEST"),
-     //           new Item("Green", "TEST"),
-     //           new Item("Amber", "TEST"),
-     //           new Item("Deep Orange", "TEST")};
-     //   List<Item> itemsDataItemsToAdd = new ArrayList<>(Arrays.asList(defaultItemsDataItemsToAdd));
 
         // 3. create an adapter
         MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToAdd,(byte) 1);
