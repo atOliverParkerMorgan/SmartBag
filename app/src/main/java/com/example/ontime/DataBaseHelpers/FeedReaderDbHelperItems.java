@@ -116,6 +116,15 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
         // Insert the new row, returning the primary key value of the new row
         return dbForItems.insert(FeedReaderDbHelperItems.FeedEntry.TABLE_NAME, null, valuesForItems);
 
+    }
+    public static boolean delete(Context context, Item item){
+        // deleting from database
+        // DataBase work
+        FeedReaderDbHelperItems dbHelperForItems = new FeedReaderDbHelperItems(context);
+        // Gets the data repository in write mode
+        SQLiteDatabase dbForItems = dbHelperForItems.getWritableDatabase();
 
+        //  delete
+        return dbForItems.delete(FeedReaderDbHelperItems.FeedEntry.TABLE_NAME, FeedReaderDbHelperItems.FeedEntry.COLUMN_NAME_TITLE + " LIKE ? and "+ FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE +  " LIKE ?", new String[]{item.getItemName(), item.getSubjectName()})>0;
     }
 }

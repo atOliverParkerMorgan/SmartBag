@@ -1,31 +1,25 @@
-package com.example.ontime.ui.AddSubject;
+package com.example.ontime.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
-import com.example.ontime.AddItem;
+import androidx.appcompat.app.AppCompatActivity;
 import com.example.ontime.R;
 
-import java.util.Objects;
 
 
-public class AddSubjectFragment extends Fragment {
+public class AddSubject extends AppCompatActivity {
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             final ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_add_subject, container, false);
-        final ViewHolder viewHolder = new ViewHolder(view);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activivty_add_subject);
 
-
+        final ViewHolder viewHolder = new ViewHolder();
 
         viewHolder.addItems.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -39,7 +33,7 @@ public class AddSubjectFragment extends Fragment {
 
                 else if(!s.equals("")) {
 
-                    Intent i = new Intent(Objects.requireNonNull(getActivity()).getApplicationContext(), AddItem.class);
+                    Intent i = new Intent(AddSubject.this, AddItem.class);
                     i.putExtra("Subject", s);
                     i.putExtra("Monday",Boolean.toString(viewHolder.monday.isChecked()));
                     i.putExtra("Tuesday",Boolean.toString(viewHolder.tuesday.isChecked()));
@@ -59,7 +53,6 @@ public class AddSubjectFragment extends Fragment {
             }
         });
 
-        return view;
     }
     public class ViewHolder{
         final Switch monday;
@@ -72,16 +65,16 @@ public class AddSubjectFragment extends Fragment {
         EditText subjectName;
         Button addItems;
 
-        ViewHolder(View view){
-            monday = view.findViewById(R.id.Monday);
-            tuesday = view.findViewById(R.id.Tuesday);
-            wednesday = view.findViewById(R.id.Wednesday);
-            thursday = view.findViewById(R.id.Thursday);
-            friday = view.findViewById(R.id.Friday);
-            saturday = view.findViewById(R.id.Saturday);
-            sunday = view.findViewById(R.id.Sunday);
-            addItems = view.findViewById(R.id.add_items);
-            subjectName = view.findViewById(R.id.editSubject);
+        ViewHolder(){
+            monday = findViewById(R.id.Monday);
+            tuesday = findViewById(R.id.Tuesday);
+            wednesday = findViewById(R.id.Wednesday);
+            thursday = findViewById(R.id.Thursday);
+            friday = findViewById(R.id.Friday);
+            saturday = findViewById(R.id.Saturday);
+            sunday = findViewById(R.id.Sunday);
+            addItems = findViewById(R.id.add_items);
+            subjectName = findViewById(R.id.editSubject);
         }
     }
 }

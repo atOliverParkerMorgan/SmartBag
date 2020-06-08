@@ -13,17 +13,18 @@
         android:layout_marginStart="8dp"
         android:background="#F2FF1732"
         android:text="@string/discard_button"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
 
     <TextView
         android:id="@+id/weekInputInstuctions"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/add_items_instructions"
         android:textAlignment="center"
         android:textColor="#000000"
@@ -36,7 +37,7 @@
         android:id="@+id/editItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="88dp"
         android:ems="10"
         android:hint="@string/item_hint"
@@ -72,6 +73,7 @@
         android:layout_height="wrap_content"
         android:background="#43A047"
         android:text="@string/create_button"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/guideline" />

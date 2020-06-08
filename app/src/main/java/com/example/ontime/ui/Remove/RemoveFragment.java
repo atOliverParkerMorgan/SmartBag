@@ -1,6 +1,7 @@
 package com.example.ontime.ui.Remove;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,6 @@ import com.example.ontime.Adapter.Item;
 import com.example.ontime.Adapter.MyListAdapter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class RemoveFragment extends Fragment {
@@ -39,31 +39,38 @@ public class RemoveFragment extends Fragment {
         // this is data for recycler view
         List<Item> inMyBag = new ArrayList<>();
         List<Item> itemsDataItemsToRemove = new ArrayList<>();
-        for(String subject: subjectNames) {
-            final List<String> myBagItems = FeedReaderDbHelperMyBag.getContent(getContext(), subject);
-            for (String item : myBagItems) {
-                inMyBag.add(new Item(item, subject));
-            }
-        }
 
+        // adding all of my items in bag to list
+        final List<String[]> myBagItems = FeedReaderDbHelperMyBag.getContent(getContext());
+        for (String[] item : myBagItems) {
+            inMyBag.add(new Item(item[0], item[1]));
+        }
 
         // loop through all relevant subjects
         for(String subject: subjectNames){
 
-            final List<String> itemNames = FeedReaderDbHelperItems.getContent(getContext(), subject);
-            for(String item: itemNames){
-
-                // checking if item isn't already in bag
+            // get the items that i need for today
+            final List<String> itemsForToday = FeedReaderDbHelperItems.getContent(getContext(), subject);
+            for (Item itemInBag: inMyBag){
                 boolean found = false;
-                for (Item itemInBag: inMyBag){
+                for(String item: itemsForToday){
+                    // checking if item isn't already in bag
+
+                        Log.d("Items for today: ",item);
+                        Log.d("Subject for today: ",subject);
+                        Log.d("Items in bag name: ",itemInBag.getItemName());
+                        Log.d("Subject in bag name: ",itemInBag.getSubjectName());
+
                     if(itemInBag.getItemName().equals(item) && itemInBag.getSubjectName().equals(subject)){
                         found = true;
-                        break;
                     }
+
                 }
-                if(found) {
-                    itemsDataItemsToRemove.add(new Item(item, subject));
+                if(!found) {
+                    itemsDataItemsToRemove.add(new Item(itemInBag.getItemName(), itemInBag.getSubjectName()));
                 }
+
+
             }
 
         }

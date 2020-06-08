@@ -12,23 +12,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperMyBag;
 import com.example.ontime.R;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 
-public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder>{
+public class MyBagAdapter extends RecyclerView.Adapter<MyBagAdapter.ViewHolder>{
     private List<Item> Items;
-    private byte add;
 
     // RecyclerView recyclerView;
-    public MyListAdapter(List<Item> listdata, byte add) {
-        this.add = add;
+    public MyBagAdapter(List<Item> listdata) {
         this.Items = listdata;
     }
 
@@ -37,13 +31,9 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View listItem;
-        if(add == 1) {
-            listItem = layoutInflater.inflate(R.layout.item_add, parent, false);
-        }else if(add == 0){
-            listItem = layoutInflater.inflate(R.layout.item_remove, parent, false);
-        }else{
-            listItem = layoutInflater.inflate(R.layout.item_default, parent, false);
-        }
+
+        listItem = layoutInflater.inflate(R.layout.item_default, parent, false);
+
         return new ViewHolder(listItem);
     }
 
@@ -58,17 +48,15 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
         });
         holder.imageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(add==1){
-                    if(FeedReaderDbHelperMyBag.write(v.getContext(), new ArrayList<>(Collections.singletonList(Items.get(position))))){
-                        Toast.makeText(v.getContext(), Items.get(position).getItemName()+" has been added to your bag", Toast.LENGTH_LONG).show();
-                        // remove your itemAdd from data base
-                        Items.remove(Items.get(position));  // remove the itemAdd from list
-                        notifyItemRemoved(position); // notify the adapter about the removed itemAdd
-                        notifyItemRangeChanged(position, Items.size());
-                    }else {
-                        Toast.makeText(v.getContext(), "Oops an error has occurred", Toast.LENGTH_LONG).show();
-                    }
-                }
+               if(FeedReaderDbHelperMyBag.delete(v.getContext(), Items.get(position))){
+                   Toast.makeText(v.getContext(), Items.get(position).getItemName()+" has been successfully removed from your bag", Toast.LENGTH_LONG).show();
+                   Items.remove(Items.get(position));  // remove the itemAdd from list
+                   notifyItemRemoved(position); // notify the adapter about the removed itemAdd
+                   notifyItemRangeChanged(position, Items.size());
+                }else{
+                   Toast.makeText(v.getContext(), "Oops an error has occurred", Toast.LENGTH_LONG).show();
+               }
+
 
 
 

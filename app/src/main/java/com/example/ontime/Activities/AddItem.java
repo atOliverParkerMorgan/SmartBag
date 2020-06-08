@@ -1,8 +1,6 @@
-package com.example.ontime;
+package com.example.ontime.Activities;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +16,7 @@ import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.example.ontime.Adapter.Item;
 import com.example.ontime.Adapter.MyListAdapter;
+import com.example.ontime.R;
 
 import java.util.ArrayList;
 import java.util.List;

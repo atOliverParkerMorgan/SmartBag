@@ -54,7 +54,7 @@ public class FeedReaderDbHelperMyBag extends SQLiteOpenHelper {
 
 
     }
-    public static List<String> getContent(Context context, final String subjectName){
+    public static List<String[]> getContent(Context context){
         FeedReaderDbHelperMyBag dbHelperForItem = new FeedReaderDbHelperMyBag(context);
         SQLiteDatabase dbForItem = dbHelperForItem.getReadableDatabase();
 
@@ -66,36 +66,30 @@ public class FeedReaderDbHelperMyBag extends SQLiteOpenHelper {
                 FeedEntry.COLUMN_SUBJECT_TITLE
         };
         // subset is initialized in switch statement
-        String selectionItem = FeedEntry.COLUMN_SUBJECT_TITLE + " = ?";
-        final String[] selectionArgsItem = {subjectName};
+        String selectionItem = "select * from "+FeedEntry.TABLE_NAME;
+        final String[] selectionArgsItem = {};
 
         // How you want the results sorted in the resulting Cursor
         String sortOrderItem =
                 FeedEntry.COLUMN_NAME_TITLE + " DESC";
 
-        Cursor cursorItem = dbForItem.query(
-                FeedEntry.TABLE_NAME,   // The table to query
-                projectionItem,             // The array of columns to return (pass null to get all)
-                selectionItem,              // The columns for the WHERE clause
-                selectionArgsItem,          // The values for the WHERE clause
-                null,                   // don't group the rows
-                null,                   // don't filter by row groups
-                sortOrderItem               // The sort order
-        );
+        Cursor  cursorItem = dbForItem.rawQuery(selectionItem,null);
 
         // get all the subjects that have today marked as true
-        List<String> subjectNames = new ArrayList<>();
+        List<String[]> subjectNames = new ArrayList<>();
         while(cursorItem.moveToNext()) {
-            String subject = cursorItem.getString(
+            String item = cursorItem.getString(
                     cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_TITLE));
-            subjectNames.add(subject);
+            String subject = cursorItem.getString(
+                    cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_SUBJECT_TITLE));
+            subjectNames.add(new String[]{item,subject});
         }
         cursorItem.close();
 
         return subjectNames;
     }
 
-    public static long write(Context context, final List<Item> defaultItemsDataItemsToAdd, String subject){
+    public static boolean write(Context context, final List<Item> defaultItemsDataItemsToAdd){
         // adding to database
         // DataBase work
         FeedReaderDbHelperMyBag dbHelperForItems = new FeedReaderDbHelperMyBag(context);
@@ -108,12 +102,23 @@ public class FeedReaderDbHelperMyBag extends SQLiteOpenHelper {
         ContentValues valuesForItems = new ContentValues();
         for (Item item : defaultItemsDataItemsToAdd) {
             valuesForItems.put(FeedEntry.COLUMN_NAME_TITLE, item.getItemName());
-            valuesForItems.put(FeedEntry.COLUMN_SUBJECT_TITLE, subject);
+            valuesForItems.put(FeedEntry.COLUMN_SUBJECT_TITLE, item.getSubjectName());
         }
 
         // Insert the new row, returning the primary key value of the new row
-        return dbForItems.insert(FeedEntry.TABLE_NAME, null, valuesForItems);
+        return dbForItems.insert(FeedEntry.TABLE_NAME, null, valuesForItems) > 0;
 
 
     }
+    public static boolean delete(Context context, Item item){
+        // deleting from database
+        // DataBase work
+        FeedReaderDbHelperMyBag dbHelperForItems = new FeedReaderDbHelperMyBag(context);
+        // Gets the data repository in write mode
+        SQLiteDatabase dbForItems = dbHelperForItems.getWritableDatabase();
+
+        //  delete
+        return dbForItems.delete(FeedEntry.TABLE_NAME, FeedEntry.COLUMN_NAME_TITLE + " LIKE ? and "+ FeedEntry.COLUMN_SUBJECT_TITLE +  " LIKE ?", new String[]{item.getItemName(), item.getSubjectName()})>0;
+    }
+
 }

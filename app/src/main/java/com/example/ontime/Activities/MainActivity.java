@@ -1,19 +1,12 @@
-package com.example.ontime;
+package com.example.ontime.Activities;
 
-import android.content.ContentValues;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.provider.BaseColumns;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.example.ontime.Adapter.Item;
-import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems;
-import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects;
-import com.example.ontime.ui.AddSubject.AddSubjectFragment;
+import com.example.ontime.R;
 import com.example.ontime.ui.Add.AddFragment;
 import com.example.ontime.ui.Bag.BagFragment;
 import com.example.ontime.ui.Remove.RemoveFragment;
@@ -22,8 +15,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
-import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -75,9 +66,6 @@ public class MainActivity extends AppCompatActivity{
                     switch (menuItem.getItemId()){
                         case R.id.navigation_add:
                             selectedFragment = new AddFragment();
-                            break;
-                        case R.id.navigation_remove:
-                            selectedFragment = new AddSubjectFragment();
                             break;
                         case R.id.navigation_notifications:
                             selectedFragment = new RemoveFragment();

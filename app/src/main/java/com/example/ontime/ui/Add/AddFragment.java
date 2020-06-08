@@ -46,9 +46,9 @@ public class AddFragment extends Fragment{
         List<Item> inMyBag = new ArrayList<>();
         List<Item> itemsDataItemsToAdd = new ArrayList<>();
         for(String subject: subjectNames) {
-            final List<String> myBagItems = FeedReaderDbHelperMyBag.getContent(getContext(), subject);
-            for (String item : myBagItems) {
-                inMyBag.add(new Item(item, subject));
+            final List<String[]> myBagItems = FeedReaderDbHelperMyBag.getContent(getContext());
+            for (String[] item : myBagItems) {
+                inMyBag.add(new Item(item[0], item[1]));
             }
         }
 

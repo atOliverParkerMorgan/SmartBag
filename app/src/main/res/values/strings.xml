@@ -2,7 +2,7 @@
     <string name="app_name">SmartBag</string>
 
     <string name="title_add_button_navigation">Add</string>
-    <string name="title_add_item_button_navigation">Create Subject</string>
+    <string name="title_create_subject">create a subject</string>
     <string name="title_remove_button_navigation">Remove</string>
      <string name="title_overview_button_navigation">Overview</string>
      <string name="title_bag_button_navigation">Bag</string>
@@ -14,7 +14,9 @@
 
      <string name="none">N</string>
 
-     <string name="days_of_the_week_text">What days of the week do you want these items in your bag?</string>
+     <string name="days_of_the_week_text">What days of the week do you want this subject in your bag?</string>
+     <string name="add_to_bag">Do you want to add this subject into your bag?</string>
+     <string name="subject_input_text">Add the name of the subject.</string>
      <string name="to_add_text">add to bag</string>
      <string name="to_add_text_subtitle">put these items into your bag</string>
      <string name="to_remove_text">remove from bag</string>
@@ -32,7 +34,7 @@
 
      <string name="add_items_instructions">add the items that you need for this subject</string>
      <string name="item_hint">Textbook</string>
-     <string name="subjects_hint">Mathematics</string>
+     <string name="subjects_hint">Add a subject name (i.e. History)</string>
 
      <string name="discard_button">discard</string>
      <string name="create_button">create</string>
