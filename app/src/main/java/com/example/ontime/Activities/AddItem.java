@@ -2,6 +2,7 @@ package com.example.ontime.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -65,6 +66,7 @@ public class AddItem extends AppCompatActivity {
                         viewHolder.addedItemsRecycleView.setAdapter(mAdapterItemsToAdd);
                         // 5. set itemAdd animator to DefaultAnimator
                         viewHolder.addedItemsRecycleView.setItemAnimator(new DefaultItemAnimator());
+                        Log.d("List size: ", Integer.toString(defaultItemsDataItemsToAdd.size()));
                         viewHolder.itemName.setText("");
 
                     }else{
@@ -84,14 +86,13 @@ public class AddItem extends AppCompatActivity {
                     Toast.makeText(v.getContext(),"You must add at least one item",Toast.LENGTH_LONG).show();
                 }else {
 
-                    // Insert the new row, returning the primary key value of the new row
-                    long newRowId = FeedReaderDbHelperSubjects.write(v.getContext(), getIntent(), subject);
 
+                    Log.d("List size: ", Integer.toString(defaultItemsDataItemsToAdd.size()));
                     // Insert the new row, returning the primary key value of the new row
-                    long newRowId2 = FeedReaderDbHelperItems.write(v.getContext(), defaultItemsDataItemsToAdd, subject);
+                    // Insert the new row, returning the primary key value of the new row
 
                     // -1 means an Error has occurred
-                    if (newRowId == -1 || newRowId2 == -1) {
+                    if ( !FeedReaderDbHelperItems.write(v.getContext(), defaultItemsDataItemsToAdd)|| !FeedReaderDbHelperSubjects.write(v.getContext(), getIntent(), subject)) {
                         Toast.makeText(v.getContext(), "An error as occurred in the database report this issue",
                                 Toast.LENGTH_LONG).show();
                     }

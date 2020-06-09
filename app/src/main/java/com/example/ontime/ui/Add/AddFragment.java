@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,18 +46,19 @@ public class AddFragment extends Fragment{
         // this is data for recycler view
         List<Item> inMyBag = new ArrayList<>();
         List<Item> itemsDataItemsToAdd = new ArrayList<>();
-        for(String subject: subjectNames) {
-            final List<String[]> myBagItems = FeedReaderDbHelperMyBag.getContent(getContext());
-            for (String[] item : myBagItems) {
-                inMyBag.add(new Item(item[0], item[1]));
-            }
+
+        final List<String[]> myBagItems = FeedReaderDbHelperMyBag.getContent(getContext());
+        for (String[] item : myBagItems) {
+            inMyBag.add(new Item(item[0], item[1]));
         }
+
 
 
         // loop through all relevant subjects
         for(String subject: subjectNames){
 
             final List<String> itemNames = FeedReaderDbHelperItems.getContent(getContext(), subject);
+            Log.d("ALL items", Arrays.toString(itemNames.toArray()));
             for(String item: itemNames){
 
                 // checking if item isn't already in bag

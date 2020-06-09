@@ -103,10 +103,13 @@ public class FeedReaderDbHelperMyBag extends SQLiteOpenHelper {
         for (Item item : defaultItemsDataItemsToAdd) {
             valuesForItems.put(FeedEntry.COLUMN_NAME_TITLE, item.getItemName());
             valuesForItems.put(FeedEntry.COLUMN_SUBJECT_TITLE, item.getSubjectName());
+            if(dbForItems.insert(FeedEntry.TABLE_NAME, null, valuesForItems) < 0){
+                return false;
+            }
         }
 
         // Insert the new row, returning the primary key value of the new row
-        return dbForItems.insert(FeedEntry.TABLE_NAME, null, valuesForItems) > 0;
+        return true;
 
 
     }

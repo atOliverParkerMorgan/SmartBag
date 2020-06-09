@@ -49,7 +49,7 @@ public class MyBagAdapter extends RecyclerView.Adapter<MyBagAdapter.ViewHolder>{
         holder.imageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                if(FeedReaderDbHelperMyBag.delete(v.getContext(), Items.get(position))){
-                   Toast.makeText(v.getContext(), Items.get(position).getItemName()+" has been successfully removed from your bag", Toast.LENGTH_LONG).show();
+                   Toast.makeText(v.getContext(), Items.get(position).getItemName()+" has been removed from your bag", Toast.LENGTH_LONG).show();
                    Items.remove(Items.get(position));  // remove the itemAdd from list
                    notifyItemRemoved(position); // notify the adapter about the removed itemAdd
                    notifyItemRangeChanged(position, Items.size());

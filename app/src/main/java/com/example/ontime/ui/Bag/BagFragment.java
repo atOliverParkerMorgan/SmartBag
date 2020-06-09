@@ -34,7 +34,7 @@ public class BagFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_in_bag, container, false);
 
         // floating button logic
-         FloatingActionButton floatingButton = view.findViewById(R.id.floatingActionButton);
+        FloatingActionButton floatingButton = view.findViewById(R.id.floatingActionButton);
         floatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,10 +43,8 @@ public class BagFragment extends Fragment {
             }
         });
 
-        final BagFragment.ViewHolder viewHolder = new BagFragment.ViewHolder(view);
         // init database
         final List<String[]> subjectNames = FeedReaderDbHelperMyBag.getContent(getContext());
-        Log.d("Bruh", subjectNames.toString());
         final RecyclerView ItemsInBagRecycleView = view.findViewById(R.id.RecycleViewYourBag);
         ItemsInBagRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
         List<Item> inMyBag = new ArrayList<>();
@@ -71,13 +69,4 @@ public class BagFragment extends Fragment {
 
         return view;
     }
-    public class ViewHolder{
-        EditText subjectName;
-        Button addItems;
-
-        ViewHolder(android.view.View view){
-
-        }
-    }
-
 }

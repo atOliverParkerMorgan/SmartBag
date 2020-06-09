@@ -139,7 +139,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
         return subjectNames;
     }
 
-    public static long write(Context context, Intent intent, String subject){
+    public static boolean write(Context context, Intent intent, String subject){
 
 
         // adding to database
@@ -162,7 +162,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
 
 
         // Insert the new row, returning the primary key value of the new row
-       return dbForSubject.insert(FeedEntry.TABLE_NAME, null, valuesForSubject);
+       return dbForSubject.insert(FeedEntry.TABLE_NAME, null, valuesForSubject)>0;
 
 
     }

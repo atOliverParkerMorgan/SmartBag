@@ -84,8 +84,6 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
                 null,                   // don't filter by row groups
                 sortOrderItem               // The sort order
         );
-
-        // get all the subjects that have today marked as true
         List<String> subjectNames = new ArrayList<>();
         while(cursorItem.moveToNext()) {
             String subject = cursorItem.getString(
@@ -97,7 +95,7 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
         return subjectNames;
     }
 
-    public static long write(Context context, final List<Item> defaultItemsDataItemsToAdd, String subject){
+    public static boolean write(Context context, final List<Item> defaultItemsDataItemsToAdd){
         // adding to database
         // DataBase work
         FeedReaderDbHelperItems dbHelperForItems = new FeedReaderDbHelperItems(context);
@@ -107,14 +105,18 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
         // Create a new map of values, where column names are the keys
 
         // adding data to table
-        ContentValues valuesForItems = new ContentValues();
-        for (Item item : defaultItemsDataItemsToAdd) {
-            valuesForItems.put(FeedEntry.COLUMN_NAME_TITLE, item.getItemName());
-            valuesForItems.put(FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE, subject);
-        }
 
-        // Insert the new row, returning the primary key value of the new row
-        return dbForItems.insert(FeedReaderDbHelperItems.FeedEntry.TABLE_NAME, null, valuesForItems);
+        for (Item item : defaultItemsDataItemsToAdd) {
+            ContentValues valuesForItems = new ContentValues();
+            valuesForItems.put(FeedEntry.COLUMN_NAME_TITLE, item.getItemName());
+            valuesForItems.put(FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE, item.getSubjectName());
+            // Insert the new row, returning the primary key value of the new row
+            if (dbForItems.insert(FeedReaderDbHelperItems.FeedEntry.TABLE_NAME, null, valuesForItems)<0){
+                return false;
+            }
+        }
+        // the method was successful
+        return true;
 
     }
     public static boolean delete(Context context, Item item){
