@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -31,7 +32,7 @@ public class RemoveFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_remove, parent, false);
 
         // init database
-        final List<String> subjectNames = FeedReaderDbHelperSubjects.getContent(getContext());
+        final List<String> subjectNames = FeedReaderDbHelperSubjects.getContent(getContext(), true);
 
         final RecyclerView ItemsToRemoveRecycleView = view.findViewById(R.id.ItemsToRemove);
         ItemsToRemoveRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -54,15 +55,10 @@ public class RemoveFragment extends Fragment {
             for (Item itemInBag: inMyBag){
                 boolean found = false;
                 for(String item: itemsForToday){
-                    // checking if item isn't already in bag
 
-                        Log.d("Items for today: ",item);
-                        Log.d("Subject for today: ",subject);
-                        Log.d("Items in bag name: ",itemInBag.getItemName());
-                        Log.d("Subject in bag name: ",itemInBag.getSubjectName());
-
-                    if(itemInBag.getItemName().equals(item) && itemInBag.getSubjectName().equals(subject)){
+                    if (itemInBag.getItemName().equals(item) && itemInBag.getSubjectName().equals(subject)) {
                         found = true;
+                        break;
                     }
 
                 }

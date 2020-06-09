@@ -24,14 +24,19 @@ public class AddSubject extends AppCompatActivity {
         viewHolder.addItems.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String s = viewHolder.subjectName.getText().toString();
-                if(!(viewHolder.monday.isChecked()||viewHolder.monday.isChecked()||
+                if(s.equals("")) {
+                    Toast.makeText(v.getContext(), "To add a subject write some text into the text field (Mathematics).",
+                            Toast.LENGTH_LONG).show();
+                }
+
+                else if(!(viewHolder.monday.isChecked()||viewHolder.monday.isChecked()||
                         viewHolder.tuesday.isChecked()||viewHolder.wednesday.isChecked()||viewHolder.thursday.isChecked()||
                         viewHolder.friday.isChecked()||viewHolder.saturday.isChecked()||viewHolder.sunday.isChecked())){
                     Toast.makeText(v.getContext(), "You have to choose at least one day of the week",
                             Toast.LENGTH_LONG).show();
                 }
 
-                else if(!s.equals("")) {
+                else{
 
                     Intent i = new Intent(AddSubject.this, AddItem.class);
                     i.putExtra("Subject", s);
@@ -42,14 +47,10 @@ public class AddSubject extends AppCompatActivity {
                     i.putExtra("Friday",Boolean.toString(viewHolder.friday.isChecked()));
                     i.putExtra("Saturday",Boolean.toString(viewHolder.saturday.isChecked()));
                     i.putExtra("Sunday",Boolean.toString(viewHolder.sunday.isChecked()));
-
+                    i.putExtra("putInToBag",viewHolder.putInToBag.isChecked());
 
                     startActivity(i);
-                }else {
-                    Toast.makeText(v.getContext(), "To add a subject write some text into the text field (Mathematics).",
-                            Toast.LENGTH_LONG).show();
                 }
-
             }
         });
 
@@ -60,8 +61,9 @@ public class AddSubject extends AppCompatActivity {
         final Switch wednesday;
         final Switch thursday;
         final Switch friday;
-        final  Switch saturday;
-        final  Switch sunday;
+        final Switch saturday;
+        final Switch sunday;
+        final Switch putInToBag;
         EditText subjectName;
         Button addItems;
 
@@ -73,6 +75,9 @@ public class AddSubject extends AppCompatActivity {
             friday = findViewById(R.id.Friday);
             saturday = findViewById(R.id.Saturday);
             sunday = findViewById(R.id.Sunday);
+
+            putInToBag = findViewById(R.id.addToBag);
+
             addItems = findViewById(R.id.add_items);
             subjectName = findViewById(R.id.editSubject);
         }

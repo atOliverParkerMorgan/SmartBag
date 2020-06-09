@@ -15,9 +15,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ontime.Activities.AddItem;
 import com.example.ontime.Activities.AddSubject;
-import com.example.ontime.Activities.MainActivity;
 import com.example.ontime.Adapter.Item;
 import com.example.ontime.Adapter.MyBagAdapter;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperMyBag;
@@ -55,8 +53,6 @@ public class BagFragment extends Fragment {
         for (String[] item : myBagItems) {
             inMyBag.add(new Item(item[0], item[1]));
         }
-
-
 
         // loop through all relevant subjects
 

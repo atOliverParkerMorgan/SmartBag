@@ -67,11 +67,6 @@ public class FeedReaderDbHelperMyBag extends SQLiteOpenHelper {
         };
         // subset is initialized in switch statement
         String selectionItem = "select * from "+FeedEntry.TABLE_NAME;
-        final String[] selectionArgsItem = {};
-
-        // How you want the results sorted in the resulting Cursor
-        String sortOrderItem =
-                FeedEntry.COLUMN_NAME_TITLE + " DESC";
 
         Cursor  cursorItem = dbForItem.rawQuery(selectionItem,null);
 

@@ -68,6 +68,16 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
                     }else {
                         Toast.makeText(v.getContext(), "Oops an error has occurred", Toast.LENGTH_LONG).show();
                     }
+                }else if(add == 0){
+                    if(FeedReaderDbHelperMyBag.delete(v.getContext(), Items.get(position))) {
+                        Toast.makeText(v.getContext(), Items.get(position).getItemName()+" has been removed from your bag", Toast.LENGTH_LONG).show();
+                        // remove your itemAdd from data base
+                        Items.remove(Items.get(position));  // remove the itemAdd from list
+                        notifyItemRemoved(position); // notify the adapter about the removed itemAdd
+                        notifyItemRangeChanged(position, Items.size());
+                    }else {
+                    Toast.makeText(v.getContext(), "Oops an error has occurred", Toast.LENGTH_LONG).show();
+                    }
                 }
 
 

@@ -95,7 +95,13 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
         return subjectNames;
     }
 
-    public static boolean write(Context context, final List<Item> defaultItemsDataItemsToAdd){
+
+
+    public static boolean write(Context context, Intent intent, final List<Item> defaultItemsDataItemsToAdd){
+        if((boolean)intent.getSerializableExtra("putInToBag")){
+            FeedReaderDbHelperMyBag.write(context, defaultItemsDataItemsToAdd);
+        }
+
         // adding to database
         // DataBase work
         FeedReaderDbHelperItems dbHelperForItems = new FeedReaderDbHelperItems(context);

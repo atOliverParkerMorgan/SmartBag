@@ -60,13 +60,13 @@ public class AddItem extends AppCompatActivity {
                         defaultItemsDataItemsToAdd.add(new Item(viewHolder.itemName.getText().toString(), subject));
                         List<Item> itemsDataItemsToAdd = new ArrayList<>(defaultItemsDataItemsToAdd);
 
-                        // 3. create an adapter
+                        // create an adapter
                         MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToAdd, (byte)-1);
-                        // 4. set adapter
+                        // set adapter
                         viewHolder.addedItemsRecycleView.setAdapter(mAdapterItemsToAdd);
-                        // 5. set itemAdd animator to DefaultAnimator
+                        // set itemAdd animator to DefaultAnimator
                         viewHolder.addedItemsRecycleView.setItemAnimator(new DefaultItemAnimator());
-                        Log.d("List size: ", Integer.toString(defaultItemsDataItemsToAdd.size()));
+
                         viewHolder.itemName.setText("");
 
                     }else{
@@ -86,13 +86,11 @@ public class AddItem extends AppCompatActivity {
                     Toast.makeText(v.getContext(),"You must add at least one item",Toast.LENGTH_LONG).show();
                 }else {
 
-
-                    Log.d("List size: ", Integer.toString(defaultItemsDataItemsToAdd.size()));
                     // Insert the new row, returning the primary key value of the new row
                     // Insert the new row, returning the primary key value of the new row
 
                     // -1 means an Error has occurred
-                    if ( !FeedReaderDbHelperItems.write(v.getContext(), defaultItemsDataItemsToAdd)|| !FeedReaderDbHelperSubjects.write(v.getContext(), getIntent(), subject)) {
+                    if ( !FeedReaderDbHelperItems.write(v.getContext(),  getIntent(), defaultItemsDataItemsToAdd)|| !FeedReaderDbHelperSubjects.write(v.getContext(), getIntent(), subject)) {
                         Toast.makeText(v.getContext(), "An error as occurred in the database report this issue",
                                 Toast.LENGTH_LONG).show();
                     }
