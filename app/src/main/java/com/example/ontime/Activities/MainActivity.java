@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import com.example.ontime.R;
 import com.example.ontime.ui.Add.AddFragment;
 import com.example.ontime.ui.Bag.BagFragment;
+import com.example.ontime.ui.Overview.OverviewFragment;
 import com.example.ontime.ui.Remove.RemoveFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -74,13 +75,13 @@ public class MainActivity extends AppCompatActivity{
                             selectedFragment = new BagFragment();
                             break;
                         case R.id.navigation_overview:
-                            selectedFragment = new RemoveFragment();
+                            selectedFragment = new OverviewFragment();
                             break;
 
                     }
 
                     assert selectedFragment != null;
-                    getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,selectedFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment, selectedFragment).commit();
                     return true;
                 }
     };

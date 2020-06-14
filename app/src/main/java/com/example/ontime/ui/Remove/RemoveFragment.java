@@ -32,7 +32,10 @@ public class RemoveFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_remove, parent, false);
 
         // init database
-        final List<String> subjectNames = FeedReaderDbHelperSubjects.getContent(getContext(), true);
+        final List<String> subjectNames = new ArrayList<>();
+        for (List<String> list: FeedReaderDbHelperSubjects.getContent(getContext(), true)) {
+            subjectNames.add(list.get(0));
+        }
 
         final RecyclerView ItemsToRemoveRecycleView = view.findViewById(R.id.ItemsToRemove);
         ItemsToRemoveRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));

@@ -18,6 +18,7 @@
      <string name="add_to_bag">Do you want to add this subject into your bag?</string>
      <string name="subject_input_text">Add the name of the subject.</string>
      <string name="to_add_text">add to bag</string>
+     <string name="title_overview">overview</string>
      <string name="to_add_text_subtitle">put these items into your bag</string>
      <string name="to_remove_text">remove from bag</string>
      <string name="to_remove_text_subtitle">remove these items from your bag</string>
@@ -31,6 +32,13 @@
      <string name="friday">Friday</string>
      <string name="saturday">Saturday</string>
      <string name="sunday">Sunday</string>
+    <string name="mondayShort">Mon</string>
+    <string name="tuesdayShort">Tue</string>
+    <string name="wednesdayShort">Wed</string>
+    <string name="thursdayShort">Thu</string>
+    <string name="fridayShort">Fri</string>
+    <string name="saturdayShort">Sat</string>
+    <string name="sundayShort">Sun</string>
 
      <string name="add_items_instructions">add the items that you need for this subject</string>
      <string name="item_hint">Textbook</string>

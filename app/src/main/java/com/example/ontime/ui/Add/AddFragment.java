@@ -38,7 +38,11 @@ public class AddFragment extends Fragment{
         final View view = inflater.inflate(R.layout.fragment_add, parent, false);
 
         // init database
-        final List<String> subjectNames = FeedReaderDbHelperSubjects.getContent(getContext(), false);
+        final List<String> subjectNames = new ArrayList<>();
+        for (List<String> list: FeedReaderDbHelperSubjects.getContent(getContext(), false)) {
+           subjectNames.add(list.get(0));
+        }
+
 
         final RecyclerView ItemsToAddRecycleView = view.findViewById(R.id.ItemsToAdd);
         ItemsToAddRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));

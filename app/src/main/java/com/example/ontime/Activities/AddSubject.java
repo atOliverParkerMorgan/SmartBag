@@ -68,7 +68,7 @@ public class AddSubject extends AppCompatActivity {
         Button addItems;
 
         ViewHolder(){
-            monday = findViewById(R.id.Monday);
+            monday = findViewById(R.id.mondayTextView);
             tuesday = findViewById(R.id.Tuesday);
             wednesday = findViewById(R.id.Wednesday);
             thursday = findViewById(R.id.Thursday);

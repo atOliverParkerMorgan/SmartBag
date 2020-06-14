@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/overview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="@string/to_in_bag"
+        android:textColor="#FF9100"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TableLayout
+        android:id="@+id/Table"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/overview">
+
+        <TableRow android:background="@drawable/borders">
+
+            <TextView
+                android:gravity="start"
+                android:padding="21dp"
+                android:text="@string/mondayShort"
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow android:background="@drawable/borders">
+
+            <TextView
+                android:gravity="start"
+                android:padding="21dp"
+                android:text="@string/tuesdayShort"
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow android:background="@drawable/borders">
+
+            <TextView
+                android:gravity="start"
+                android:padding="21dp"
+                android:text="@string/wednesdayShort"
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow android:background="@drawable/borders">
+
+            <TextView
+                android:gravity="start"
+                android:paddingTop="10dp"
+                android:text="@string/thursdayShort"
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow android:background="@drawable/borders">
+
+            <TextView
+                android:gravity="start"
+                android:padding="21dp"
+                android:text="@string/fridayShort"
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow android:background="@drawable/borders">
+
+            <TextView
+                android:gravity="start"
+                android:padding="21dp"
+                android:text="@string/saturdayShort"
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow android:background="@drawable/borders">
+
+            <TextView
+                android:layout_height="match_parent"
+                android:gravity="start"
+                android:padding="21dp"
+                android:text="@string/sundayShort"
+                android:textSize="18sp" />
+        </TableRow>
+    </TableLayout>
+
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="17dp"
+        android:scrollbars="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Table"
+        app:layout_constraintTop_toBottomOf="@+id/overview">
+
+
+        <TableLayout
+            android:id="@+id/mainTable"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+
+        </TableLayout>
+    </HorizontalScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

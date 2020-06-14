@@ -66,10 +66,10 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
         public static final String COLUMN_NAME_SUNDAY = "sunday";
 
     }
-    public static List<String> getContent(Context context, boolean getAll){
+    public static List<List<String>> getContent(Context context, boolean getAll){
         FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(context);
         SQLiteDatabase dbForSubject = dbHelperForSubject.getReadableDatabase();
-        List<String> subjectNames = new ArrayList<>();
+        List<List<String>> subjectNames = new ArrayList<>();
 
         if(!getAll) {
             // Define a projection that specifies which columns from the database
@@ -80,6 +80,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
                     FeedEntry.COLUMN_NAME_MONDAY,
                     FeedEntry.COLUMN_NAME_TUESDAY,
                     FeedEntry.COLUMN_NAME_WEDNESDAY,
+                    FeedEntry.COLUMN_NAME_THURSDAY,
                     FeedEntry.COLUMN_NAME_FRIDAY,
                     FeedEntry.COLUMN_NAME_SATURDAY,
                     FeedEntry.COLUMN_NAME_SUNDAY
@@ -132,8 +133,16 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
 
             // get all the subjects that have today marked as true
             while (cursorSubject.moveToNext()) {
-                String subject = cursorSubject.getString(
-                        cursorSubject.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_TITLE));
+                List<String> subject = new ArrayList<>();
+                subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_TITLE)));
+                subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_MONDAY)));
+                subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_TUESDAY)));
+                subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_WEDNESDAY)));
+                subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_THURSDAY)));
+                subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_FRIDAY)));
+                subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_SATURDAY)));
+                subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_SUNDAY)));
+
                 subjectNames.add(subject);
             }
             cursorSubject.close();
@@ -142,8 +151,16 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
 
             Cursor  cursorItem = dbForSubject.rawQuery(selectionItem,null);
             while (cursorItem.moveToNext()) {
-                String subject = cursorItem.getString(
-                        cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_TITLE));
+                List<String> subject = new ArrayList<>();
+               subject.add(cursorItem.getString(cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_TITLE)));
+                subject.add(cursorItem.getString(cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_MONDAY)));
+                subject.add(cursorItem.getString(cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_TUESDAY)));
+                subject.add(cursorItem.getString(cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_WEDNESDAY)));
+                subject.add(cursorItem.getString(cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_THURSDAY)));
+                subject.add(cursorItem.getString(cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_FRIDAY)));
+                subject.add(cursorItem.getString(cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_SATURDAY)));
+                subject.add(cursorItem.getString(cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_SUNDAY)));
+
                 subjectNames.add(subject);
             }
             cursorItem.close();
