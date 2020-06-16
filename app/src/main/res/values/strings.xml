@@ -17,12 +17,12 @@
      <string name="days_of_the_week_text">What days of the week do you want this subject in your bag?</string>
      <string name="add_to_bag">Do you want to add this subject into your bag?</string>
      <string name="subject_input_text">Add the name of the subject.</string>
-     <string name="to_add_text">add to bag</string>
-     <string name="title_overview">overview</string>
+     <string name="to_add_text">ADD TO BAG</string>
+     <string name="title_overview">OVERVIEW</string>
      <string name="to_add_text_subtitle">put these items into your bag</string>
-     <string name="to_remove_text">remove from bag</string>
+     <string name="to_remove_text">REMOVE FROM BAG</string>
      <string name="to_remove_text_subtitle">remove these items from your bag</string>
-     <string name="to_in_bag">your bag</string>
+     <string name="to_in_bag">YOUR BAG</string>
      <string name="to_in_bag_instructions">these items are in your bag</string>
 
      <string name="monday">Monday</string>
@@ -43,6 +43,8 @@
      <string name="add_items_instructions">add the items that you need for this subject</string>
      <string name="item_hint">Textbook</string>
      <string name="subjects_hint">Add a subject name (i.e. History)</string>
+     <string name="noItemsInAdd">There aren\'t any items to add</string>
+     <string name="noItemsInRemove">There aren\'t any items to remove</string>
 
      <string name="discard_button">discard</string>
      <string name="create_button">create</string>

@@ -12,12 +12,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperMyBag;
 import com.example.ontime.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,11 +23,13 @@ import java.util.List;
 public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder>{
     private List<Item> Items;
     private byte add;
+    private View view;
 
     // RecyclerView recyclerView;
-    public MyListAdapter(List<Item> listdata, byte add) {
+    public MyListAdapter(List<Item> listdata, byte add, View view) {
         this.add = add;
         this.Items = listdata;
+        this.view = view;
     }
 
     @NonNull
@@ -65,6 +65,16 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
                         Items.remove(Items.get(position));  // remove the itemAdd from list
                         notifyItemRemoved(position); // notify the adapter about the removed itemAdd
                         notifyItemRangeChanged(position, Items.size());
+
+                        // instruction logic
+                        TextView noItems = view.findViewById(R.id.noItemsTextAdd);
+                        noItems.setAlpha(1.0f);
+                        if(Items.size()>0){
+                            noItems.setAlpha(0.0f);
+                        }else{
+                            TextView instructions = view.findViewById(R.id.instructionsAdd);
+                            instructions.setAlpha(0.0f);
+                        }
                     }else {
                         Toast.makeText(v.getContext(), "Oops an error has occurred", Toast.LENGTH_LONG).show();
                     }
@@ -75,6 +85,16 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
                         Items.remove(Items.get(position));  // remove the itemAdd from list
                         notifyItemRemoved(position); // notify the adapter about the removed itemAdd
                         notifyItemRangeChanged(position, Items.size());
+
+                        // instruction logic
+                        TextView noItems = view.findViewById(R.id.noItemsTextRemove);
+                        noItems.setAlpha(1.0f);
+                        if(Items.size()>0){
+                            noItems.setAlpha(0.0f);
+                        }else{
+                            TextView instructions = view.findViewById(R.id.instructionsRemove);
+                            instructions.setAlpha(0.0f);
+                        }
                     }else {
                     Toast.makeText(v.getContext(), "Oops an error has occurred", Toast.LENGTH_LONG).show();
                     }

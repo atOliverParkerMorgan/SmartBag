@@ -1,14 +1,10 @@
 package com.example.ontime.ui.Add;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.provider.BaseColumns;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 
 import androidx.annotation.Nullable;
@@ -25,8 +21,6 @@ import com.example.ontime.Adapter.Item;
 import com.example.ontime.Adapter.MyListAdapter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 public class AddFragment extends Fragment{
@@ -36,6 +30,10 @@ public class AddFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // create view
         final View view = inflater.inflate(R.layout.fragment_add, parent, false);
+
+        // no items
+        TextView noItems = view.findViewById(R.id.noItemsTextAdd);
+        noItems.setAlpha(1.0f);
 
         // init database
         final List<String> subjectNames = new ArrayList<>();
@@ -62,7 +60,6 @@ public class AddFragment extends Fragment{
         for(String subject: subjectNames){
 
             final List<String> itemNames = FeedReaderDbHelperItems.getContent(getContext(), subject);
-            Log.d("ALL items", Arrays.toString(itemNames.toArray()));
             for(String item: itemNames){
 
                 // checking if item isn't already in bag
@@ -83,11 +80,19 @@ public class AddFragment extends Fragment{
 
 
         // 3. create an adapter
-        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToAdd,(byte) 1);
+        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToAdd,(byte) 1,view);
         // 4. set adapter
         ItemsToAddRecycleView.setAdapter(mAdapterItemsToAdd);
         // 5. set itemAdd animator to DefaultAnimator
         ItemsToAddRecycleView.setItemAnimator(new DefaultItemAnimator());
+
+        //instructions logic
+        if(itemsDataItemsToAdd.size()>0){
+            noItems.setAlpha(0.0f);
+        }else{
+            TextView instructions = view.findViewById(R.id.instructionsAdd);
+            instructions.setAlpha(0.0f);
+        }
 
         return view;
     }

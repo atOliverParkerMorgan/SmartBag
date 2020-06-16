@@ -7,7 +7,7 @@
         android:title="@string/title_add_button_navigation" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_remove"
         android:icon="@drawable/ic_to_remove"
         android:title="@string/title_remove_button_navigation" />
 
@@ -21,10 +21,5 @@
         android:id="@+id/navigation_overview"
         android:icon="@drawable/ic_to_add_bag_overview"
         android:title="@string/title_overview_button_navigation" />
-    <item
-        android:id="@+id/navigation_settings"
-        android:icon="@drawable/ic_settings"
-        android:title="@string/title_overview_button_navigation" />
-
 
 </menu>

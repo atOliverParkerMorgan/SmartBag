@@ -61,7 +61,7 @@ public class AddItem extends AppCompatActivity {
                         List<Item> itemsDataItemsToAdd = new ArrayList<>(defaultItemsDataItemsToAdd);
 
                         // create an adapter
-                        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToAdd, (byte)-1);
+                        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToAdd, (byte)-1, findViewById(android.R.id.content).getRootView());
                         // set adapter
                         viewHolder.addedItemsRecycleView.setAdapter(mAdapterItemsToAdd);
                         // set itemAdd animator to DefaultAnimator

@@ -1,11 +1,10 @@
 package com.example.ontime.ui.Remove;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -31,10 +30,24 @@ public class RemoveFragment extends Fragment {
         // create view
         final View view = inflater.inflate(R.layout.fragment_remove, parent, false);
 
+        // no items
+        TextView noItems = view.findViewById(R.id.noItemsTextRemove);
+        noItems.setAlpha(1.0f);
+
         // init database
+        // get subject names that aren't for today
         final List<String> subjectNames = new ArrayList<>();
         for (List<String> list: FeedReaderDbHelperSubjects.getContent(getContext(), true)) {
-            subjectNames.add(list.get(0));
+            boolean found = false;
+            for (List<String> list2: FeedReaderDbHelperSubjects.getContent(getContext(), false)) {
+                if(list.equals(list2)){
+                    found = true;
+                    break;
+                }
+            }
+            if(!found) {
+                subjectNames.add(list.get(0));
+            }
         }
 
         final RecyclerView ItemsToRemoveRecycleView = view.findViewById(R.id.ItemsToRemove);
@@ -54,19 +67,22 @@ public class RemoveFragment extends Fragment {
         for(String subject: subjectNames){
 
             // get the items that i need for today
-            final List<String> itemsForToday = FeedReaderDbHelperItems.getContent(getContext(), subject);
+            final List<String> itemsNotForToday = FeedReaderDbHelperItems.getContent(getContext(), subject);
             for (Item itemInBag: inMyBag){
-                boolean found = false;
-                for(String item: itemsForToday){
 
+                boolean inBag = false;
+                String foundItem = "";
+                for(String item: itemsNotForToday){
+                    foundItem = item;
                     if (itemInBag.getItemName().equals(item) && itemInBag.getSubjectName().equals(subject)) {
-                        found = true;
+
+                        inBag = true;
                         break;
                     }
 
                 }
-                if(!found) {
-                    itemsDataItemsToRemove.add(new Item(itemInBag.getItemName(), itemInBag.getSubjectName()));
+                if(inBag) {
+                    itemsDataItemsToRemove.add(new Item(foundItem,subject));
                 }
 
 
@@ -74,14 +90,20 @@ public class RemoveFragment extends Fragment {
 
         }
 
-
-
         // 3. create an adapter
-        MyListAdapter mAdapterItemsToRemove = new MyListAdapter(itemsDataItemsToRemove,(byte) 0);
+        MyListAdapter mAdapterItemsToRemove = new MyListAdapter(itemsDataItemsToRemove,(byte) 0, view);
         // 4. set adapter
         ItemsToRemoveRecycleView.setAdapter(mAdapterItemsToRemove);
         // 5. set item to remove animator to DefaultAnimator
         ItemsToRemoveRecycleView.setItemAnimator(new DefaultItemAnimator());
+
+        //instructions logic
+        if(itemsDataItemsToRemove.size()>0){
+            noItems.setAlpha(0.0f);
+        }else{
+            TextView instructions = view.findViewById(R.id.instructionsRemove);
+            instructions.setAlpha(0.0f);
+        }
 
         return view;
     }
