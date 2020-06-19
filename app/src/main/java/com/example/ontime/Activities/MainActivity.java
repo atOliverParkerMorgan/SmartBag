@@ -1,11 +1,11 @@
 package com.example.ontime.Activities;
 
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.ontime.R;
@@ -13,14 +13,13 @@ import com.example.ontime.ui.Add.AddFragment;
 import com.example.ontime.ui.Bag.BagFragment;
 import com.example.ontime.ui.Overview.OverviewFragment;
 import com.example.ontime.ui.Remove.RemoveFragment;
+import com.example.ontime.ui.Settings.Settings;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -32,19 +31,36 @@ public class MainActivity extends AppCompatActivity{
 
     /** indicates whether onRebind should be used */
     boolean mAllowRebind;
+    private final String PREFS_NAME = "MyPrefsFile";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE);
+        if(preferences.getBoolean("Mode", false)){
+            setTheme(R.style.DARK);
+        }else{
+            setTheme(R.style.LIGHT);
+        }
+
         setContentView(R.layout.activity_main);
-        final String PREFS_NAME = "MyPrefsFile";
+        Configuration configuration = getResources().getConfiguration();
+        int currentNightMode = configuration.uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        switch (currentNightMode) {
+            case Configuration.UI_MODE_NIGHT_NO:
+                // Night mode is not active, we're using the light theme
+                break;
+            case Configuration.UI_MODE_NIGHT_YES:
+                // Night mode is active, we're using dark theme
+                break;
+        }
+
+
 
         TextView textView = findViewById(R.id.Title);
         textView.setText("TO ADD");
 
-        ImageButton imageButton = findViewById(R.id.settings);
-        imageButton.setBackgroundColor(getResources().getColor(R.color.green));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(getResources().getColor(R.color.green));
@@ -82,9 +98,6 @@ public class MainActivity extends AppCompatActivity{
                             TextView textView = findViewById(R.id.Title);
                             textView.setText(getResources().getText(R.string.to_add_text));
 
-                            ImageButton imageButton = findViewById(R.id.settings);
-                            imageButton.setBackgroundColor(getResources().getColor(R.color.green));
-
                             Toolbar toolbar = findViewById(R.id.toolbar);
                             toolbar.setBackgroundColor(getResources().getColor(R.color.green));
                             selectedFragment = new AddFragment();
@@ -93,8 +106,6 @@ public class MainActivity extends AppCompatActivity{
                             textView = findViewById(R.id.Title);
                             textView.setText(getResources().getText(R.string.to_remove_text));
 
-                            imageButton = findViewById(R.id.settings);
-                            imageButton.setBackgroundColor(getResources().getColor(R.color.red));
 
                             toolbar = findViewById(R.id.toolbar);
                             toolbar.setBackgroundColor(getResources().getColor(R.color.red));
@@ -103,8 +114,6 @@ public class MainActivity extends AppCompatActivity{
                         case R.id.navigation_bag:
                             textView = findViewById(R.id.Title);
                             textView.setText(getResources().getText(R.string.to_in_bag));
-                            imageButton = findViewById(R.id.settings);
-                            imageButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
 
                             toolbar = findViewById(R.id.toolbar);
                             toolbar.setBackgroundColor(getResources().getColor(R.color.colorAccent));
@@ -113,13 +122,20 @@ public class MainActivity extends AppCompatActivity{
                         case R.id.navigation_overview:
                             textView = findViewById(R.id.Title);
                             textView.setText(getResources().getText(R.string.title_overview));
-                            imageButton = findViewById(R.id.settings);
-                            imageButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
 
                             toolbar = findViewById(R.id.toolbar);
                             toolbar.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                             selectedFragment = new OverviewFragment();
                             break;
+                        case R.id.title_overview_button_settings:
+                            textView = findViewById(R.id.Title);
+                            textView.setText(getResources().getText(R.string.settings));
+
+                            toolbar = findViewById(R.id.toolbar);
+                            toolbar.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                            selectedFragment = new Settings();
+                            break;
+
 
                     }
 

@@ -51,4 +51,8 @@
      <string name="create_button">create</string>
      <string name="add_button">add</string>
      <string name="proceed_to_add_items_button">Proceed to add Items</string>
+
+     <string name="settings">Settings</string>
+     <string name="dark_mode">Enable dark mode</string>
+    <string name="doNotShowSaturdaySunday">Do not show Saturday and Sunday</string>
  </resources>

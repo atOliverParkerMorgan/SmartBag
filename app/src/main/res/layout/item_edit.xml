@@ -4,7 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="80dp"
     android:background="@drawable/borders"
-    android:id="@+id/relativeLayout">
+    android:id="@+id/relativeLayout"
+    >
 
     <!-- icon -->
     <ImageButton
@@ -16,7 +17,7 @@
         android:layout_marginTop="7dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="1dp"
-        android:background="@color/white"
+        android:background="?attr/bgColor"
         android:contentDescription="@string/delete_icon_description"
         app:srcCompat="@drawable/ic_to_edit_bag" />
 
