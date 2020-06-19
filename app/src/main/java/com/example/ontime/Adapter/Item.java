@@ -19,17 +19,17 @@ public class Item {
     }
 
     public String getNameInitialsOfSubject() {
-        StringBuilder intials = new StringBuilder();
-        intials.append(Character.toUpperCase(getSubjectName().charAt(0)));
+        StringBuilder initials = new StringBuilder();
+        initials.append(Character.toUpperCase(getSubjectName().charAt(0)));
         for (int i = 1; i < getSubjectName().length() - 1; i++){
             if (getSubjectName().charAt(i) == ' ') {
-                intials.append(Character.toUpperCase(getSubjectName().charAt(i + 1)));
+                initials.append(Character.toUpperCase(getSubjectName().charAt(i + 1)));
             }
-            if(intials.length()==2){
-                return intials.toString();
+            if(initials.length()==2){
+                return initials.toString();
             }
 
         }
-        return intials.toString();
+        return initials.toString();
     }
 }

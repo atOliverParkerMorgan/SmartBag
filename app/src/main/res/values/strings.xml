@@ -45,6 +45,7 @@
      <string name="subjects_hint">Add a subject name (i.e. History)</string>
      <string name="noItemsInAdd">There aren\'t any items to add</string>
      <string name="noItemsInRemove">There aren\'t any items to remove</string>
+     <string name="instructionsEditBag">edit items</string>
 
      <string name="discard_button">discard</string>
      <string name="create_button">create</string>

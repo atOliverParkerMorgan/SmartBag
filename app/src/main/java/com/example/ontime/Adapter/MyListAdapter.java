@@ -41,8 +41,10 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
             listItem = layoutInflater.inflate(R.layout.item_add, parent, false);
         }else if(add == 0){
             listItem = layoutInflater.inflate(R.layout.item_remove, parent, false);
-        }else{
+        }else if(add==-1){
             listItem = layoutInflater.inflate(R.layout.item_default, parent, false);
+        }else{
+            listItem = layoutInflater.inflate(R.layout.item_edit, parent, false);
         }
         return new ViewHolder(listItem);
     }

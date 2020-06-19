@@ -20,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity{
 
     /** indicates how to behave if the service is killed */
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity{
         toolbar.setBackgroundColor(getResources().getColor(R.color.green));
 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+
 
         if (settings.getBoolean("my_first_time", true)) {
             //the app is being launched for first time, do something

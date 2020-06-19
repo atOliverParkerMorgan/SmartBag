@@ -37,7 +37,7 @@ public class EditSubject extends AppCompatActivity {
            itemsInSubject.add(new Item(item,subject));
         }
 
-        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsInSubject,(byte) -1, findViewById(android.R.id.content).getRootView());
+        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsInSubject,(byte) -2, findViewById(android.R.id.content).getRootView());
         // 4. set adapter
         recyclerView.setAdapter(mAdapterItemsToAdd);
 

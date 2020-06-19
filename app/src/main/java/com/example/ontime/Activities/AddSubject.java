@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -64,6 +65,7 @@ public class AddSubject extends AppCompatActivity {
         final Switch saturday;
         final Switch sunday;
         final Switch putInToBag;
+
         EditText subjectName;
         Button addItems;
 
@@ -77,7 +79,6 @@ public class AddSubject extends AppCompatActivity {
             sunday = findViewById(R.id.Sunday);
 
             putInToBag = findViewById(R.id.addToBag);
-
             addItems = findViewById(R.id.add_items);
             subjectName = findViewById(R.id.editSubject);
         }
