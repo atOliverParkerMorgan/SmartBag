@@ -38,7 +38,8 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE);
-        if(preferences.getBoolean("Mode", false)){
+        boolean darkMode = preferences.getBoolean("Mode", false);
+        if(darkMode){
             setTheme(R.style.DARK);
         }else{
             setTheme(R.style.LIGHT);
