@@ -1,5 +1,6 @@
 package com.example.ontime.ui.Settings;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.ontime.Activities.MainActivity;
 import com.example.ontime.R;
 
 import java.util.Objects;
@@ -62,6 +64,9 @@ public class Settings extends Fragment {
                     Toast.makeText(getContext(), "Light mode is on", Toast.LENGTH_LONG).show();
                     getContext().setTheme(R.style.LIGHT);
                 }
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
         });
 

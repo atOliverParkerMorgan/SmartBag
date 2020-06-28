@@ -23,7 +23,9 @@
         android:layout_marginBottom="1dp"
         android:background="?attr/bgColor"
         android:contentDescription="@string/delete_icon_description"
-        app:srcCompat="@drawable/ic_to_add_check" />
+        app:itemIconTint="@color/white"
+        app:srcCompat="@drawable/ic_to_add_check"
+        />
 
     <TextView
         android:id="@+id/layout_list_name"
