@@ -1,36 +1,48 @@
 package com.example.ontime.ui.Add;
 
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ontime.Adapter.Item;
+import com.example.ontime.Adapter.MyListAdapter;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperMyBag;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.example.ontime.R;
-import com.example.ontime.Adapter.Item;
-import com.example.ontime.Adapter.MyListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class AddFragment extends Fragment{
+public class AddFragment extends Fragment {
+
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+
         // create view
         final View view = inflater.inflate(R.layout.fragment_add, parent, false);
-
         // no items
         TextView noItems = view.findViewById(R.id.noItemsTextAdd);
         noItems.setAlpha(1.0f);
@@ -95,6 +107,27 @@ public class AddFragment extends Fragment{
         }
 
         return view;
+    }
+
+    @Override
+   // public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+   //     NavController navController = Navigation.findNavController(view);
+   //
+   //     AppBarConfiguration appBarConfiguration =
+   //             new AppBarConfiguration.Builder(navController.getGraph()).build();
+   //     Toolbar toolbar = view.findViewById(R.id.toolbar);
+   //     toolbar.setBackgroundColor(getResources().getColor(R.color.green));
+//
+   //     NavigationUI.setupWithNavController(toolbar,navController,appBarConfiguration);
+   // }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // TODO Add your menu entries here
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem fav;
+        fav = menu.add("add");
+        fav.setIcon(R.drawable.ic_to_add);
+
     }
 
 }

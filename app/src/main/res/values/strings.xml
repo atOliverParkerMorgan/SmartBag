@@ -2,7 +2,7 @@
     <string name="app_name">SmartBag</string>
 
     <string name="title_add_button_navigation">Add</string>
-    <string name="title_create_subject">create a subject</string>
+    <string name="title_create_subject">Create a subject</string>
     <string name="title_remove_button_navigation">Remove</string>
      <string name="title_overview_button_navigation">Overview</string>
      <string name="title_bag_button_navigation">Bag</string>
@@ -17,12 +17,12 @@
      <string name="days_of_the_week_text">What days of the week do you want this subject in your bag?</string>
      <string name="add_to_bag">Do you want to add this subject into your bag?</string>
      <string name="subject_input_text">Add the name of the subject.</string>
-     <string name="to_add_text">ADD TO BAG</string>
-     <string name="title_overview">OVERVIEW</string>
+     <string name="to_add_text">Add to bag</string>
+     <string name="title_overview">Overview</string>
      <string name="to_add_text_subtitle">put these items into your bag</string>
-     <string name="to_remove_text">REMOVE FROM BAG</string>
+     <string name="to_remove_text">Remove from bag</string>
      <string name="to_remove_text_subtitle">remove these items from your bag</string>
-     <string name="to_in_bag">YOUR BAG</string>
+     <string name="to_in_bag">Your bag</string>
      <string name="to_in_bag_instructions">these items are in your bag</string>
 
      <string name="monday">Monday</string>
@@ -52,7 +52,12 @@
      <string name="add_button">add</string>
      <string name="proceed_to_add_items_button">Proceed to add Items</string>
 
+     <string name="settings_title">Settings</string>
      <string name="settings">Settings</string>
      <string name="dark_mode">Enable dark mode</string>
     <string name="doNotShowSaturdaySunday">Do not show Saturday and Sunday</string>
+
+     <string name="editItemInstructions">edit the days when you want this subject in your bag</string>
+     <string name="deleteEdit">Delete</string>
+     <string name="saveChangesEdit">Save changes</string>
  </resources>

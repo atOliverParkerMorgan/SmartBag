@@ -31,6 +31,9 @@
         <activity
             android:name=".Activities.EditSubject" >
         </activity>
+        <activity
+            android:name=".Activities.Settings" >
+        </activity>
     </application>
 
 </manifest>

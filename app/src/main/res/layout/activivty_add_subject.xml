@@ -2,39 +2,39 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ConstaintLayout"
-    android:background="?attr/bgColor"
+    android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/bgColor">
 
     <EditText
         android:id="@+id/editSubject"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:autofillHints=""
-        android:textColor="?attr/textColor"
         android:ems="10"
         android:hint="@string/subjects_hint"
         android:inputType="textPersonName"
+        android:textColor="?attr/textColor"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleCreteSubject"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         tools:targetApi="o" />
 
     <Switch
         android:id="@+id/mondayTextView"
-        android:textColor="?attr/textColor"
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:text="@string/monday"
+        android:textColor="?attr/textColor"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,13 +42,13 @@
 
     <Switch
         android:id="@+id/Tuesday"
-        android:textColor="?attr/textColor"
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:text="@string/tuesday"
+        android:textColor="?attr/textColor"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -57,13 +57,13 @@
 
     <Switch
         android:id="@+id/Wednesday"
-        android:textColor="?attr/textColor"
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:text="@string/wednesday"
+        android:textColor="?attr/textColor"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -72,13 +72,13 @@
 
     <Switch
         android:id="@+id/Thursday"
-        android:textColor="?attr/textColor"
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:text="@string/thursday"
+        android:textColor="?attr/textColor"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -87,13 +87,13 @@
 
     <Switch
         android:id="@+id/Friday"
-        android:textColor="?attr/textColor"
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:text="@string/friday"
+        android:textColor="?attr/textColor"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -102,13 +102,13 @@
 
     <Switch
         android:id="@+id/Saturday"
-        android:textColor="?attr/textColor"
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:text="@string/saturday"
+        android:textColor="?attr/textColor"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -117,13 +117,13 @@
 
     <Switch
         android:id="@+id/Sunday"
-        android:textColor="?attr/textColor"
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:text="@string/sunday"
+        android:textColor="?attr/textColor"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -132,13 +132,13 @@
 
     <Switch
         android:id="@+id/addToBag"
-        android:textColor="?attr/textColor"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:text="@string/add_to_bag"
+        android:textColor="?attr/textColor"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -146,55 +146,68 @@
 
     <Button
         android:id="@+id/add_items"
-        android:layout_width="0dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:background="#FF9100"
         android:text="@string/proceed_to_add_items_button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Sunday"
-        app:layout_constraintVertical_bias="0.492" />
+        app:layout_constraintTop_toBottomOf="@+id/Sunday" />
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
+        android:id="@+id/toolbar"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
+        android:background="?attr/barColor"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/titleCreteSubject"
+        android:id="@+id/addSubjectTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title_create_subject"
-        android:textAllCaps="true"
         android:textColor="?attr/textColor"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar2"
-        app:layout_constraintEnd_toEndOf="@+id/toolbar2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar2" />
-
-    <ImageButton
-        android:id="@+id/settingsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar2"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/titleCreteSubject"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_settings" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
+
+
+    <FrameLayout
+        android:id="@+id/HostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@id/nav_view"
+        app:layout_constraintBottom_toTopOf="@+id/nav_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/windowBackground"
+        app:itemBackground="?attr/colorPrimaryDark"
+        app:itemIconTint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

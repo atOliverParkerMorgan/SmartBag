@@ -1,23 +1,46 @@
 package com.example.ontime.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.text.Layout;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-import com.example.ontime.R;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
+import com.example.ontime.R;
+import com.example.ontime.ui.Add.AddFragment;
+import com.example.ontime.ui.Bag.BagFragment;
+import com.example.ontime.ui.Overview.OverviewFragment;
+import com.example.ontime.ui.Remove.RemoveFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.Objects;
 
 
 public class AddSubject extends AppCompatActivity {
+    static boolean firstViewOfActivity = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences preferences = Objects.requireNonNull(this.getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE));
+        boolean darkModeOn = preferences.getBoolean("Mode", false);
+        if (darkModeOn) {
+            setTheme(R.style.DARK);
+        } else {
+            setTheme(R.style.LIGHT);
+        }
         setContentView(R.layout.activivty_add_subject);
 
         final ViewHolder viewHolder = new ViewHolder();
@@ -55,7 +78,55 @@ public class AddSubject extends AppCompatActivity {
             }
         });
 
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView.setOnNavigationItemSelectedListener(navListener);
+        //I added this if statement to keep the selected fragment when rotating the device
+        if (savedInstanceState == null && !firstViewOfActivity) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
+                    new AddFragment()).commit();
+        }
+
+
     }
+
+    // navigation
+    public BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    if(firstViewOfActivity){
+                        // remove button
+                        View v = (View) findViewById(R.id.add_items);
+                        ((ViewManager)v.getParent()).removeView(v);
+                    }
+
+                    firstViewOfActivity = false;
+
+
+                    Fragment selectedFragment = null;
+                    switch (menuItem.getItemId()){
+                        case R.id.navigation_add:
+                            selectedFragment = new AddFragment();
+                            break;
+                        case R.id.navigation_remove:
+                            selectedFragment = new RemoveFragment();
+                            break;
+                        case R.id.navigation_bag:
+                            selectedFragment = new BagFragment();
+                            break;
+                        case R.id.navigation_overview:
+                            selectedFragment = new OverviewFragment();
+                            break;
+                    }
+
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment, Objects.requireNonNull(selectedFragment)).commit();
+                    return true;
+                }
+            };
+
+
+
     public class ViewHolder{
         final Switch monday;
         final Switch tuesday;

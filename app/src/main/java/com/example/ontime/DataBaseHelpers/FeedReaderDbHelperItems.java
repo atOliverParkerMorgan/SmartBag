@@ -11,7 +11,6 @@ import android.provider.BaseColumns;
 import com.example.ontime.Adapter.Item;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class FeedReaderDbHelperItems extends SQLiteOpenHelper {

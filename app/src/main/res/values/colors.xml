@@ -6,4 +6,6 @@
     <color name="colorAccent">#ff9248</color>
     <color name="green">#4CAF50</color>
     <color name="red">#C0063E</color>
-</resources>
+    <color name="bgColor">#000000</color>
+    <color name="barColor">#000000</color>
+    </resources>
