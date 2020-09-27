@@ -36,6 +36,8 @@ public class BagFragment extends Fragment {
         floatingButtonAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // setting add Subject first to falls to avoid error
+                AddSubject.firstViewOfActivity = true;
                 Intent intent = new Intent(getActivity(), AddSubject.class);
                 startActivity(intent);
             }

@@ -19,7 +19,7 @@
         android:layout_marginBottom="1dp"
         android:background="?attr/bgColor"
         android:contentDescription="@string/delete_icon_description"
-        app:srcCompat="@drawable/ic_to_edit_bag" />
+        app:srcCompat="?attr/ic_to_edit_bag" />
 
     <!-- title -->
     <TextView

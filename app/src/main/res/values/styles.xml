@@ -11,6 +11,12 @@
         <item name="metaTextColor">#aeaeae</item>
         <item name="barColor">#424242</item>
         <item name="bgColor">#201C1C</item>
+
+        <item name="ic_to_edit_bag">@drawable/ic_to_edit_bag_white</item>
+        <item name="ic_to_add_check">@drawable/ic_to_add_check_white</item>
+        <item name="ic_to_add_clear">@drawable/ic_to_add_clear_white</item>
+        <item name="ic_to_delete">@drawable/ic_to_delete_white</item>
+
     </style>
 
     <!-- Base application theme. -->
@@ -25,6 +31,11 @@
         <item name="barColor">#F3F3F3</item>
         <item name="metaTextColor">#606060</item>
         <item name="bgColor">#ffffff</item>
+
+        <item name="ic_to_edit_bag">@drawable/ic_to_edit_bag</item>
+        <item name="ic_to_add_check">@drawable/ic_to_add_check</item>
+        <item name="ic_to_add_clear">@drawable/ic_to_add_clear</item>
+        <item name="ic_to_delete">@drawable/ic_to_delete</item>
     </style>
 
 </resources>

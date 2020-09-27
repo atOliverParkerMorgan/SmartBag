@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
         SharedPreferences preferences = Objects.requireNonNull(this.getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE));
         boolean darkModeOn = preferences.getBoolean("Mode", false);
         if (darkModeOn) {
@@ -50,8 +51,6 @@ public class MainActivity extends AppCompatActivity{
 
 
         if (settings.getBoolean("my_first_time", true)) {
-            //the app is being launched for first time, do something
-            Log.d("Comments", "First time");
 
 
             // record the fact that the app has been started at least once

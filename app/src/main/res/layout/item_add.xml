@@ -24,7 +24,7 @@
         android:background="?attr/bgColor"
         android:contentDescription="@string/delete_icon_description"
         app:itemIconTint="@color/white"
-        app:srcCompat="@drawable/ic_to_add_check"
+        app:srcCompat="?attr/ic_to_add_check"
         />
 
     <TextView

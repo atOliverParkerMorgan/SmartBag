@@ -18,7 +18,7 @@
         android:layout_marginBottom="1dp"
         android:background="?attr/bgColor"
         android:contentDescription="@string/delete_icon_description"
-        app:srcCompat="@drawable/ic_to_delete" />
+        app:srcCompat="?attr/ic_to_delete" />
 
     <!-- title -->
     <TextView

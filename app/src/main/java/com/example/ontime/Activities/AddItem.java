@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -32,13 +33,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class AddItem extends AppCompatActivity {
+    public static boolean firstViewOfActivity = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Get subject from AddFragment
-        final String subject = (String) getIntent().getSerializableExtra("Subject");
-        // Item List
-        final List<Item> defaultItemsDataItemsToAdd = new ArrayList<>();
+
         SharedPreferences preferences = Objects.requireNonNull(this.getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE));
         boolean darkModeOn = preferences.getBoolean("Mode", false);
         if (darkModeOn) {
@@ -46,7 +45,12 @@ public class AddItem extends AppCompatActivity {
         } else {
             setTheme(R.style.LIGHT);
         }
-        setContentView(R.layout.add_items);
+        setContentView(R.layout.activity_add_items);
+        // Get subject from AddFragment
+        final String subject = (String) getIntent().getSerializableExtra("Subject");
+        // Item List
+        final List<Item> defaultItemsDataItemsToAdd = new ArrayList<>();
+
         // create a view holder for this layout
         final ViewHolder viewHolder = new ViewHolder();
         viewHolder.addedItemsRecycleView.setLayoutManager(new LinearLayoutManager(this));
@@ -125,9 +129,10 @@ public class AddItem extends AppCompatActivity {
         });
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView.setSelectedItemId(R.id.navigation_bag);
         navView.setOnNavigationItemSelectedListener(navListener);
-        //I added this if statement to keep the selected fragment when rotating the device
-        if (savedInstanceState == null) {
+        // I added this if statement to keep the selected fragment when rotating the device
+        if (savedInstanceState == null && !firstViewOfActivity) {
 
             getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
                     new AddFragment()).commit();
@@ -140,19 +145,42 @@ public class AddItem extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    if(firstViewOfActivity){
+                        // remove button
+                        View v1 = (View) findViewById(R.id.addItem);
+                        View v2 =  (View) findViewById(R.id.create);
+                        View v3 = (View) findViewById(R.id.discard);
+                        if(v1!=null) {
+                            v1.setVisibility(View.GONE);
+                            ((ViewManager) v1.getParent()).removeView(v1);
+                        }
+                        if(v2!=null) {
+                            v2.setVisibility(View.GONE);
+                            ((ViewManager) v2.getParent()).removeView(v2);
+                        }
+                        if(v3!=null){
+                            v3.setVisibility(View.GONE);
+                            ((ViewManager) v3.getParent()).removeView(v3);
+                        }
+                    }
 
+                    firstViewOfActivity = false;
                     Fragment selectedFragment = null;
                     switch (menuItem.getItemId()){
                         case R.id.navigation_add:
+                            firstViewOfActivity = true;
                             selectedFragment = new AddFragment();
                             break;
                         case R.id.navigation_remove:
+                            firstViewOfActivity = true;
                             selectedFragment = new RemoveFragment();
                             break;
                         case R.id.navigation_bag:
+                            firstViewOfActivity = true;
                             selectedFragment = new BagFragment();
                             break;
                         case R.id.navigation_overview:
+                            firstViewOfActivity = true;
                             selectedFragment = new OverviewFragment();
                             break;
                     }
@@ -163,7 +191,6 @@ public class AddItem extends AppCompatActivity {
                 }
             };
     public class ViewHolder{
-
         EditText itemName;
         Button addItems;
         Button discard;
@@ -171,7 +198,7 @@ public class AddItem extends AppCompatActivity {
         RecyclerView addedItemsRecycleView;
 
         ViewHolder(){
-            addItems = findViewById(R.id.add_item);
+            addItems = findViewById(R.id.addItem);
             itemName = findViewById(R.id.editItem);
             discard = findViewById(R.id.discard);
             create = findViewById(R.id.create);

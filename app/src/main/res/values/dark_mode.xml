@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
         <attr name="bgColor" format="color"/>
         <attr name="textColor" format="color"/>
         <attr name="metaTextColor" format="color"/>
         <attr name="barColor" format="color"/>
+        <attr name="ic_to_add_clear" format="reference"/>
+        <attr name="ic_to_add_item" format="reference"/>
+        <attr name="ic_to_add_subject" format="reference"/>
+        <attr name="ic_to_delete" format="reference"/>
+        <attr name="ic_to_edit_bag" format="reference"/>
+        <attr name="ic_to_add_check" format="reference"/>
+        <attr name="ic_to_edit_bag_white" format="reference"/>
 </resources>

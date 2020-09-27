@@ -29,7 +29,7 @@ import java.util.Objects;
 
 
 public class AddSubject extends AppCompatActivity {
-    static boolean firstViewOfActivity = true;
+    public static boolean firstViewOfActivity = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +79,7 @@ public class AddSubject extends AppCompatActivity {
         });
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView.setSelectedItemId(R.id.navigation_bag);
         navView.setOnNavigationItemSelectedListener(navListener);
         //I added this if statement to keep the selected fragment when rotating the device
         if (savedInstanceState == null && !firstViewOfActivity) {

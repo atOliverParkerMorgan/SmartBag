@@ -20,9 +20,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="1dp"
-        android:background="@color/white"
+        android:background="?attr/bgColor"
         android:contentDescription="@string/delete_icon_description"
-        app:srcCompat="@drawable/ic_to_add_clear" />
+        app:srcCompat="?attr/ic_to_add_clear" />
 
     <TextView
         android:id="@+id/layout_list_name"
