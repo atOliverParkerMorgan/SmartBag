@@ -26,6 +26,7 @@
      <string name="to_in_bag">Your bag</string>
      <string name="to_in_bag_instructions">these items are in your bag</string>
 
+
      <string name="monday">Monday</string>
      <string name="tuesday">Tuesday</string>
      <string name="wednesday">Wednesday</string>
@@ -46,6 +47,7 @@
      <string name="subjects_hint">Add a subject name (i.e. History)</string>
      <string name="noItemsInAdd">There aren\'t any items to add</string>
      <string name="noItemsInRemove">There aren\'t any items to remove</string>
+     <string name="noItemsInBag">There aren\'t any items in your bag</string>
      <string name="instructionsEditBag">edit items</string>
 
      <string name="discard_button">discard</string>
@@ -58,7 +60,7 @@
      <string name="dark_mode">Enable dark mode</string>
     <string name="doNotShowSaturdaySunday">Do not show Saturday and Sunday</string>
 
-     <string name="editItemInSubject">edit the Items in this Subject</string>
+     <string name="editItemSwitchInstructions"><b>Edit when you need this subject</b></string>
      <string name="deleteEdit">Delete</string>
      <string name="saveChangesEdit">Save</string>
  </resources>

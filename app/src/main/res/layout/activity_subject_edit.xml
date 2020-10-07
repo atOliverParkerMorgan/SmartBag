@@ -4,164 +4,219 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/bgColor">
+    android:background="?attr/bgColor"
+    android:windowSoftInputMode="stateVisible|adjustResize">
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/editItemsRecycleView"
-        android:layout_width="wrap_content"
-        android:layout_height="250dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/Delete"
+ <!--   <FrameLayout
+        android:background="?attr/bgColor"
+        android:id="@+id/HostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@id/nav_view"
+        app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SundaySwitchEdit" />
-
-    <Switch
-        android:id="@+id/MondaySwitchEdit"
-        android:layout_width="347dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/monday"
-        android:textColor="?attr/textColor"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/TuesdaySwitchEdit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Switch
-        android:id="@+id/TuesdaySwitchEdit"
-        android:layout_width="347dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/tuesday"
-        android:textColor="?attr/textColor"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/WednesdaySwitchEdit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Switch
-        android:id="@+id/WednesdaySwitchEdit"
-        android:layout_width="347dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/wednesday"
-        android:textColor="?attr/textColor"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/ThursdaySwitchEdit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Switch
-        android:id="@+id/ThursdaySwitchEdit"
-        android:layout_width="347dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/thursday"
-        android:textColor="?attr/textColor"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/FridaySwitchEdit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Switch
-        android:id="@+id/FridaySwitchEdit"
-        android:layout_width="347dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/friday"
-        android:textColor="?attr/textColor"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/SaturdaySwitchEdit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Switch
-        android:id="@+id/SaturdaySwitchEdit"
-        android:layout_width="347dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/saturday"
-        android:textColor="?attr/textColor"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/SundaySwitchEdit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Switch
-        android:id="@+id/SundaySwitchEdit"
-        android:layout_width="347dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:text="@string/sunday"
-        android:textColor="?attr/textColor"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/subjectText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-smallcaps"
-        android:text="@string/none"
-        android:textColor="#FF9100"
-        android:textSize="36sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" /> -->
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
+        android:id="@+id/guidelineForSaveAndDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
     <Button
         android:id="@+id/Delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
+        android:background="?attr/bgColor"
         android:backgroundTint="#F2FF1732"
         android:text="@string/deleteEdit"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineForSaveAndDelete"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/Save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
+        android:background="?attr/bgColor"
         android:backgroundTint="#43A047"
         android:text="@string/saveChangesEdit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline4" />
+        app:layout_constraintStart_toStartOf="@+id/guidelineForSaveAndDelete" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
+   <!-- <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+        android:background="?android:attr/windowBackground"
+        app:itemBackground="?attr/colorPrimaryDark"
+        app:itemIconTint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu" /> -->
+
+    <ScrollView
+        android:background="?attr/bgColor"
+        android:id="@+id/scrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/Delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp">
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineForSwitches"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="448dp" />
+
+            <EditText
+                android:id="@+id/editSubjectName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="?attr/ic_to_edit_bag"
+                android:ems="10"
+                android:importantForAutofill="no"
+                android:inputType="textPersonName"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/mondaySwitchEdit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Switch
+                android:id="@+id/mondaySwitchEdit"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/monday"
+                android:textColor="?attr/textColor"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/tuesdaySwitchEdit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Switch
+                android:id="@+id/tuesdaySwitchEdit"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/tuesday"
+                android:textColor="?attr/textColor"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/wednesdaySwitchEdit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Switch
+                android:id="@+id/wednesdaySwitchEdit"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/wednesday"
+                android:textColor="?attr/textColor"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/thursdaySwitchEdit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Switch
+                android:id="@+id/thursdaySwitchEdit"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/thursday"
+                android:textColor="?attr/textColor"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/fridaySwitchEdit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Switch
+                android:id="@+id/fridaySwitchEdit"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/friday"
+                android:textColor="?attr/textColor"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/saturdaySwitchEdit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Switch
+                android:id="@+id/saturdaySwitchEdit"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/saturday"
+                android:textColor="?attr/textColor"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/sundaySwitchEdit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Switch
+                android:id="@+id/sundaySwitchEdit"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/sunday"
+                android:textColor="?attr/textColor"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/guidelineForSwitches"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/editItemsRecycleView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guidelineForSwitches" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ontime.Adapter.MyBagAdapter;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.example.ontime.Adapter.Item;
@@ -75,7 +76,7 @@ public class AddItem extends AppCompatActivity {
                         }
                     }
                     if(!found) {
-                        // this is data fro recycler view
+                        // this is data for recycler view
                         defaultItemsDataItemsToAdd.add(new Item(viewHolder.itemName.getText().toString(), subject));
                         List<Item> itemsDataItemsToAdd = new ArrayList<>(defaultItemsDataItemsToAdd);
 
@@ -120,6 +121,7 @@ public class AddItem extends AppCompatActivity {
             }
         });
 
+
         viewHolder.discard.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // go back to main activity
@@ -137,6 +139,7 @@ public class AddItem extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
                     new AddFragment()).commit();
         }
+        // loop through all relevant subjects
 
     }
 

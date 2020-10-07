@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -30,6 +31,10 @@ public class BagFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         final View view = inflater.inflate(R.layout.fragment_in_bag, container, false);
+
+        // no items
+        TextView noItems = view.findViewById(R.id.noItemsInBag);
+        noItems.setAlpha(1.0f);
 
         // floating button logic add item
         FloatingActionButton floatingButtonAddItem = view.findViewById(R.id.floatingActionButton);
@@ -68,12 +73,20 @@ public class BagFragment extends Fragment {
 
         // loop through all relevant subjects
 
-        // 3. create an adapter
+        // create an adapter
         MyBagAdapter mAdapterItemsToAdd = new MyBagAdapter(inMyBag);
-        // 4. set adapter
+        // set adapter
         ItemsInBagRecycleView.setAdapter(mAdapterItemsToAdd);
-        // 5. set itemAdd animator to DefaultAnimator
+        // set itemAdd animator to DefaultAnimator
         ItemsInBagRecycleView.setItemAnimator(new DefaultItemAnimator());
+
+        //instructions logic
+        if(myBagItems.size()>0){
+            noItems.setAlpha(0.0f);
+        }else{
+            TextView instructions = view.findViewById(R.id.instructions_bag);
+            instructions.setAlpha(0.0f);
+        }
 
         return view;
     }

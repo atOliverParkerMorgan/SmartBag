@@ -14,14 +14,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_TITLE;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.TABLE_NAME;
+
 public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Subject.db";
     private final static String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + FeedEntry.TABLE_NAME + " (" +
+            "CREATE TABLE " + TABLE_NAME + " (" +
                 FeedEntry._ID + " INTEGER PRIMARY KEY," +
-                FeedEntry.COLUMN_NAME_TITLE + " TEXT," +
+                COLUMN_NAME_TITLE + " TEXT," +
                 FeedEntry.COLUMN_NAME_MONDAY + " TEXT,"+
                 FeedEntry.COLUMN_NAME_TUESDAY + " TEXT,"+
                 FeedEntry.COLUMN_NAME_WEDNESDAY + " TEXT,"+
@@ -31,7 +34,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
                 FeedEntry.COLUMN_NAME_SUNDAY + " TEXT)";
 
     private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + FeedEntry.TABLE_NAME;
+            "DROP TABLE IF EXISTS " + TABLE_NAME;
 
     public FeedReaderDbHelperSubjects(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -42,6 +45,15 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
     }
     public void delete(SQLiteDatabase db){
         db.execSQL(SQL_DELETE_ENTRIES);
+    }
+
+    public static boolean deleteSubject(String subjectName, Context context){
+        FeedReaderDbHelperSubjects dbHelperForItems = new FeedReaderDbHelperSubjects(context);
+        // Gets the data repository in write mode
+        SQLiteDatabase dbForItems = dbHelperForItems.getWritableDatabase();
+
+        //  delete
+        return dbForItems.delete(TABLE_NAME, COLUMN_NAME_TITLE + " LIKE ? ", new String[]{subjectName})>0;
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -76,7 +88,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
             // you will actually use after this query.
             final String[] projectionSubject = {
                     BaseColumns._ID,
-                    FeedEntry.COLUMN_NAME_TITLE,
+                    COLUMN_NAME_TITLE,
                     FeedEntry.COLUMN_NAME_MONDAY,
                     FeedEntry.COLUMN_NAME_TUESDAY,
                     FeedEntry.COLUMN_NAME_WEDNESDAY,
@@ -119,10 +131,10 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
 
             // How you want the results sorted in the resulting Cursor
             String sortOrderSubject =
-                    FeedEntry.COLUMN_NAME_TITLE + " DESC";
+                    COLUMN_NAME_TITLE + " DESC";
 
             Cursor cursorSubject = dbForSubject.query(
-                    FeedEntry.TABLE_NAME,   // The table to query
+                    TABLE_NAME,   // The table to query
                     projectionSubject,             // The array of columns to return (pass null to get all)
                     selectionSubject,              // The columns for the WHERE clause
                     selectionArgsSubject,          // The values for the WHERE clause
@@ -134,7 +146,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
             // get all the subjects that have today marked as true
             while (cursorSubject.moveToNext()) {
                 List<String> subject = new ArrayList<>();
-                subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_TITLE)));
+                subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(COLUMN_NAME_TITLE)));
                 subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_MONDAY)));
                 subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_TUESDAY)));
                 subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_WEDNESDAY)));
@@ -147,12 +159,12 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
             }
             cursorSubject.close();
         }else {
-            String selectionItem = "select * from "+ FeedEntry.TABLE_NAME;
+            String selectionItem = "select * from "+ TABLE_NAME;
 
             Cursor  cursorItem = dbForSubject.rawQuery(selectionItem,null);
             while (cursorItem.moveToNext()) {
                 List<String> subject = new ArrayList<>();
-               subject.add(cursorItem.getString(cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_TITLE)));
+               subject.add(cursorItem.getString(cursorItem.getColumnIndexOrThrow(COLUMN_NAME_TITLE)));
                 subject.add(cursorItem.getString(cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_MONDAY)));
                 subject.add(cursorItem.getString(cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_TUESDAY)));
                 subject.add(cursorItem.getString(cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_WEDNESDAY)));
@@ -181,7 +193,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
 
         // Create a new map of values, where column names are the keys
         ContentValues valuesForSubject = new ContentValues();
-        valuesForSubject.put(FeedEntry.COLUMN_NAME_TITLE, subject);
+        valuesForSubject.put(COLUMN_NAME_TITLE, subject);
         valuesForSubject.put(FeedEntry.COLUMN_NAME_MONDAY, (String) intent.getSerializableExtra("Monday"));
         valuesForSubject.put(FeedEntry.COLUMN_NAME_TUESDAY, (String) intent.getSerializableExtra("Tuesday"));
         valuesForSubject.put(FeedEntry.COLUMN_NAME_WEDNESDAY, (String) intent.getSerializableExtra("Wednesday"));
@@ -192,7 +204,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
 
 
         // Insert the new row, returning the primary key value of the new row
-       return dbForSubject.insert(FeedEntry.TABLE_NAME, null, valuesForSubject)>0;
+       return dbForSubject.insert(TABLE_NAME, null, valuesForSubject)>0;
 
 
     }
