@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?attr/bgColor"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/bgColor"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
@@ -15,18 +16,20 @@
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.appcompat.widget.Toolbar>
 
     <TextView
         android:id="@+id/inBagTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
         android:text="@string/title_overview_button_navigation"
         android:textColor="?attr/textColor"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
@@ -34,106 +37,113 @@
         android:id="@+id/Table"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="32dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <TableRow android:background="@drawable/borders">
 
             <TextView
-                android:textColor="?attr/textColor"
+                android:id="@+id/Mon"
                 android:layout_height="66dp"
                 android:gravity="center"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="@string/mondayShort"
+                android:textColor="?attr/textColor"
                 android:textSize="18sp" />
         </TableRow>
 
         <TableRow android:background="@drawable/borders">
 
             <TextView
-                android:textColor="?attr/textColor"
+                android:id="@+id/Tue"
                 android:layout_height="66dp"
                 android:gravity="center"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="@string/tuesdayShort"
+                android:textColor="?attr/textColor"
                 android:textSize="18sp" />
         </TableRow>
 
         <TableRow android:background="@drawable/borders">
 
             <TextView
-                android:textColor="?attr/textColor"
+                android:id="@+id/Wed"
                 android:layout_height="66dp"
                 android:gravity="center"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="@string/wednesdayShort"
+                android:textColor="?attr/textColor"
                 android:textSize="18sp" />
         </TableRow>
 
         <TableRow android:background="@drawable/borders">
 
             <TextView
-                android:textColor="?attr/textColor"
+                android:id="@+id/Thu"
                 android:layout_height="66dp"
                 android:gravity="center"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="@string/thursdayShort"
+                android:textColor="?attr/textColor"
                 android:textSize="18sp" />
         </TableRow>
 
         <TableRow android:background="@drawable/borders">
 
             <TextView
-                android:textColor="?attr/textColor"
+                android:id="@+id/Fri"
                 android:layout_height="66dp"
                 android:gravity="center"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="@string/fridayShort"
+                android:textColor="?attr/textColor"
                 android:textSize="18sp" />
         </TableRow>
 
         <TableRow android:background="@drawable/borders">
 
             <TextView
-                android:textColor="?attr/textColor"
+                android:id="@+id/Sat"
                 android:layout_height="66dp"
                 android:gravity="center"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="@string/saturdayShort"
+                android:textColor="?attr/textColor"
                 android:textSize="18sp" />
         </TableRow>
 
         <TableRow android:background="@drawable/borders">
 
             <TextView
-                android:textColor="?attr/textColor"
+                android:id="@+id/Sun"
                 android:layout_height="66dp"
                 android:gravity="center"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="@string/sundayShort"
+                android:textColor="?attr/textColor"
                 android:textSize="18sp" />
         </TableRow>
     </TableLayout>
 
 
     <HorizontalScrollView
-        android:textColor="?attr/textColor"
         android:id="@+id/horizontalView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:scrollbars="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="?attr/textColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/Table"
-        app:layout_constraintTop_toTopOf="@+id/Table">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
 
         <TableLayout
@@ -144,6 +154,30 @@
 
         </TableLayout>
     </HorizontalScrollView>
+
+    <ImageButton
+        android:id="@+id/settingsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:background="?attr/barColor"
+        android:contentDescription="@string/settings_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="?attr/ic_to_settings" />
+
+    <ImageButton
+        android:id="@+id/addSubjectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:background="?attr/barColor"
+        app:layout_constraintEnd_toStartOf="@+id/settingsButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="?attr/ic_to_add_subject"
+        android:contentDescription="TODO" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

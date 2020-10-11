@@ -116,6 +116,7 @@ public class AddItem extends AppCompatActivity {
                     }
                     // go back to main activity
                     Intent i = new Intent(AddItem.this, MainActivity.class);
+                    i.putExtra("Fragment","bag");
                     startActivity(i);
                 }
             }
@@ -126,6 +127,7 @@ public class AddItem extends AppCompatActivity {
             public void onClick(View v) {
                 // go back to main activity
                 Intent i = new Intent(AddItem.this, MainActivity.class);
+                i.putExtra("Fragment","bag");
                 startActivity(i);
             }
         });

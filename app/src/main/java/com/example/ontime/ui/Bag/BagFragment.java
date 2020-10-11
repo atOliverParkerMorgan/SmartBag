@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,9 +37,9 @@ public class BagFragment extends Fragment {
         TextView noItems = view.findViewById(R.id.noItemsInBag);
         noItems.setAlpha(1.0f);
 
-        // floating button logic add item
-        FloatingActionButton floatingButtonAddItem = view.findViewById(R.id.floatingActionButton);
-        floatingButtonAddItem.setOnClickListener(new View.OnClickListener() {
+        // image button logic add item
+        ImageButton imageButtonAddSubject = view.findViewById(R.id.addSubjectButton);
+        imageButtonAddSubject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // setting add Subject first to falls to avoid error
@@ -48,9 +49,9 @@ public class BagFragment extends Fragment {
             }
         });
 
-        // floating button logic settings
-        FloatingActionButton floatingButtonSettings = view.findViewById(R.id.floatingActionButtonSettings);
-        floatingButtonSettings.setOnClickListener(new View.OnClickListener() {
+        // image button logic settings
+        ImageButton imageButtonSettings = view.findViewById(R.id.settingsButton);
+        imageButtonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), Settings.class);

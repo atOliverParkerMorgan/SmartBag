@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?attr/bgColor"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/bgColor">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -21,14 +21,14 @@
         android:id="@+id/inBagTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
         android:text="@string/to_in_bag"
         android:textColor="?attr/textColor"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/instructions_bag"
@@ -54,28 +54,6 @@
         app:layout_constraintTop_toBottomOf="@+id/instructions_bag"
         app:layout_constraintVertical_bias="1.0" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_to_add_subject" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButtonSettings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_settings" />
-
     <TextView
         android:id="@+id/noItemsInBag"
         android:layout_width="wrap_content"
@@ -86,5 +64,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inBagTitle" />
+
+    <ImageButton
+        android:id="@+id/settingsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:background="?attr/barColor"
+        android:contentDescription="@string/settings_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="?attr/ic_to_settings" />
+
+    <ImageButton
+        android:id="@+id/addSubjectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:background="?attr/barColor"
+        android:contentDescription="TODO"
+        app:layout_constraintEnd_toStartOf="@+id/settingsButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="?attr/ic_to_add_subject" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

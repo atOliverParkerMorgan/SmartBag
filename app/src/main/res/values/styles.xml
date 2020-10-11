@@ -16,6 +16,8 @@
         <item name="ic_to_add_check">@drawable/ic_to_add_check_white</item>
         <item name="ic_to_add_clear">@drawable/ic_to_add_clear_white</item>
         <item name="ic_to_delete">@drawable/ic_to_delete_white</item>
+        <item name="ic_to_settings">@drawable/ic_to_settings_white</item>
+        <item name="ic_to_add_subject">@drawable/ic_to_add_subject_white</item>
 
     </style>
 
@@ -36,6 +38,8 @@
         <item name="ic_to_add_check">@drawable/ic_to_add_check</item>
         <item name="ic_to_add_clear">@drawable/ic_to_add_clear</item>
         <item name="ic_to_delete">@drawable/ic_to_delete</item>
+        <item name="ic_to_settings">@drawable/ic_to_settings</item>
+        <item name="ic_to_add_subject">@drawable/ic_to_add_subject</item>
     </style>
 
 </resources>

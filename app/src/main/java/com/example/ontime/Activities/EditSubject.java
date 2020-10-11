@@ -1,19 +1,26 @@
 package com.example.ontime.Activities;
 
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.os.Bundle;
+import android.os.Debug;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -52,32 +59,78 @@ public class EditSubject extends AppCompatActivity {
         setContentView(R.layout.activity_subject_edit);
 
         final String subject = (String) getIntent().getSerializableExtra("subjectName");
-        EditText title = findViewById(R.id.editSubjectName);
+        final EditText title = findViewById(R.id.editSubjectName);
         title.setText(subject);
+
+        // setting up switches
+
+        String[] daysOfTheWeek = FeedReaderDbHelperSubjects.getDaysOfSubjects(getApplicationContext(), subject);
+        final Switch mon = findViewById(R.id.mondaySwitchEdit);
+        final Switch tue = findViewById(R.id.tuesdaySwitchEdit);
+        final Switch wed = findViewById(R.id.wednesdaySwitchEdit);
+        final Switch thu = findViewById(R.id.thursdaySwitchEdit);
+        final Switch fri = findViewById(R.id.fridaySwitchEdit);
+        final Switch sat = findViewById(R.id.saturdaySwitchEdit);
+        final Switch sun = findViewById(R.id.sundaySwitchEdit);
+
+        // hide weekend
+        SharedPreferences preferencesWeekendOn = Objects.requireNonNull(this.getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
+        boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
+
+        if(weekendOnBoolean){
+            ((ViewManager) sat.getParent()).removeView(sat);
+            ((ViewManager) sun.getParent()).removeView(sun);
+        }else{
+            ConstraintLayout constraintLayout = findViewById(R.id.parent);
+            ConstraintSet constraintSet = new ConstraintSet();
+            constraintSet.clone(constraintLayout);
+            constraintSet.connect(R.id.editItemsRecycleView,ConstraintSet.TOP,R.id.sundaySwitchEdit,ConstraintSet.BOTTOM,64);
+            constraintSet.applyTo(constraintLayout);
+
+        }
+        
+        Switch[] daysOfWeek = new Switch[]{mon,tue,wed,thu,fri,sat,sun};
+        for (int i = 0; i < daysOfWeek.length; i++) {
+            daysOfWeek[i].setChecked(daysOfTheWeek[i].equals("true"));
+        }
+
 
         // create a view holder for this layout
         final ViewHolder viewHolder = new ViewHolder();
         viewHolder.editItemsRecycleView.setLayoutManager(new LinearLayoutManager(this));
 
         // delete and save buttons
+        viewHolder.saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    FeedReaderDbHelperSubjects.edit(v.getContext(), subject, title.getText().toString(),
+                            mon.isChecked(), tue.isChecked(), wed.isChecked(), thu.isChecked(),
+                            fri.isChecked(), sat.isChecked(), sun.isChecked());
+                    Intent i = new Intent(EditSubject.this, MainActivity.class);
+                    i.putExtra("Fragment","overview");
+                    startActivity(i);
+
+                }catch (android.database.sqlite.SQLiteException e){
+                    System.err.println(e);
+                }
+
+            }
+        });
+
+
         viewHolder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-//                FeedReaderDbHelperItems dbHelperForItems = new FeedReaderDbHelperItems(getApplicationContext());
-//                for(String itemName : FeedReaderDbHelperItems.getContent(getApplicationContext(), subject)){
-//
-//                }
+                FeedReaderDbHelperSubjects.deleteSubject(subject, getApplicationContext());
+                Intent i = new Intent(EditSubject.this, MainActivity.class);
+                i.putExtra("Fragment","overview");
+                startActivity(i);
 
-                if( !FeedReaderDbHelperSubjects.deleteSubject(subject, getApplicationContext())){
-                    Toast.makeText(getApplicationContext(),"an Error Occurred in the database", Toast.LENGTH_LONG);
-                }else{
-                    Toast.makeText(getApplicationContext(),subject+" was successfully deleted", Toast.LENGTH_LONG);
-                    Intent i = new Intent(EditSubject.this, MainActivity.class);
-                    startActivity(i);
-                }
             }
         });
+
 
         // loop through all relevant subjects
         List<Item> itemsDataItemsToEdit = new ArrayList<>();

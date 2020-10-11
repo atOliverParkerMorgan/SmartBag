@@ -1,9 +1,11 @@
 package com.example.ontime.ui.Remove;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -12,6 +14,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ontime.Activities.AddSubject;
+import com.example.ontime.Activities.Settings;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperMyBag;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects;
@@ -50,6 +54,28 @@ public class RemoveFragment extends Fragment {
                 subjectNames.add(list.get(0));
             }
         }
+
+        // image button logic add item
+        ImageButton imageButtonAddSubject = view.findViewById(R.id.addSubjectButton);
+        imageButtonAddSubject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // setting add Subject first to falls to avoid error
+                AddSubject.firstViewOfActivity = true;
+                Intent intent = new Intent(getActivity(), AddSubject.class);
+                startActivity(intent);
+            }
+        });
+
+        // image button logic settings
+        ImageButton imageButtonSettings = view.findViewById(R.id.settingsButton);
+        imageButtonSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Settings.class);
+                startActivity(intent);
+            }
+        });
 
         final RecyclerView ItemsToRemoveRecycleView = view.findViewById(R.id.ItemsToRemove);
         ItemsToRemoveRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));

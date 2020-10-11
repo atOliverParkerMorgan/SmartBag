@@ -13,12 +13,22 @@ import com.example.ontime.Adapter.Item;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems.FeedEntry.TABLE_NAME;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_FRIDAY;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_MONDAY;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_SATURDAY;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_SUNDAY;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_THURSDAY;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_TITLE;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_TUESDAY;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_WEDNESDAY;
+
 public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Items.db";
     private final static String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + FeedReaderDbHelperItems.FeedEntry.TABLE_NAME + " (" +
+            "CREATE TABLE " + TABLE_NAME + " (" +
                     FeedReaderDbHelperItems.FeedEntry._ID + " INTEGER PRIMARY KEY," +
                     FeedReaderDbHelperItems.FeedEntry.COLUMN_NAME_TITLE + " TEXT," +
                     FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE + " TEXT)";
@@ -75,7 +85,7 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
                 FeedEntry.COLUMN_NAME_TITLE + " DESC";
 
         Cursor cursorItem = dbForItem.query(
-                FeedEntry.TABLE_NAME,   // The table to query
+                TABLE_NAME,   // The table to query
                 projectionItem,             // The array of columns to return (pass null to get all)
                 selectionItem,              // The columns for the WHERE clause
                 selectionArgsItem,          // The values for the WHERE clause
@@ -116,7 +126,7 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
             valuesForItems.put(FeedEntry.COLUMN_NAME_TITLE, item.getItemName());
             valuesForItems.put(FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE, item.getSubjectName());
             // Insert the new row, returning the primary key value of the new row
-            if (dbForItems.insert(FeedReaderDbHelperItems.FeedEntry.TABLE_NAME, null, valuesForItems)<0){
+            if (dbForItems.insert(TABLE_NAME, null, valuesForItems)<0){
                 return false;
             }
         }
@@ -124,14 +134,28 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
         return true;
 
     }
-    public static boolean delete(Context context, Item item){
-        // deleting from database
-        // DataBase work
-        FeedReaderDbHelperItems dbHelperForItems = new FeedReaderDbHelperItems(context);
-        // Gets the data repository in write mode
-        SQLiteDatabase dbForItems = dbHelperForItems.getWritableDatabase();
 
-        //  delete
-        return dbForItems.delete(FeedReaderDbHelperItems.FeedEntry.TABLE_NAME, FeedReaderDbHelperItems.FeedEntry.COLUMN_NAME_TITLE + " LIKE ? and "+ FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE +  " LIKE ?", new String[]{item.getItemName(), item.getSubjectName()})>0;
+
+
+    public static void delete(Context context, String subjectName) throws android.database.sqlite.SQLiteException{
+        FeedReaderDbHelperItems dbHelperItems = new FeedReaderDbHelperItems(context);
+        SQLiteDatabase dbForItems = dbHelperItems.getWritableDatabase();
+        String queryItems =
+                " DELETE FROM "+ TABLE_NAME + " WHERE "+ FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE +" = "+"'"+subjectName+"'";
+
+        dbForItems.execSQL(queryItems);
+
+    }
+
+    public static void edit(Context context, String subjectName, String oldSubjectName) throws android.database.sqlite.SQLiteException{
+        FeedReaderDbHelperItems dbHelperItems = new FeedReaderDbHelperItems(context);
+        SQLiteDatabase dbForItems = dbHelperItems.getWritableDatabase();
+        String queryItems =
+                "UPDATE "+ TABLE_NAME+" SET "+
+                        FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE+" = "+"'"+subjectName+"'"+
+                        " WHERE "+ FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE+" = "+"'"+oldSubjectName+"'";
+
+        dbForItems.execSQL(queryItems);
+
     }
 }

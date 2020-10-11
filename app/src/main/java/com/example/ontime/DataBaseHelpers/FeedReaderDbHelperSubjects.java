@@ -14,7 +14,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_FRIDAY;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_MONDAY;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_SATURDAY;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_SUNDAY;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_THURSDAY;
 import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_TITLE;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_TUESDAY;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_WEDNESDAY;
 import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.TABLE_NAME;
 
 public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
@@ -47,13 +54,18 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_ENTRIES);
     }
 
-    public static boolean deleteSubject(String subjectName, Context context){
-        FeedReaderDbHelperSubjects dbHelperForItems = new FeedReaderDbHelperSubjects(context);
-        // Gets the data repository in write mode
-        SQLiteDatabase dbForItems = dbHelperForItems.getWritableDatabase();
+    public static void deleteSubject(String subjectName, Context context) throws android.database.sqlite.SQLiteException{
+        FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(context);
 
-        //  delete
-        return dbForItems.delete(TABLE_NAME, COLUMN_NAME_TITLE + " LIKE ? ", new String[]{subjectName})>0;
+        // Gets the data repository in write mode
+        SQLiteDatabase dbForSubject = dbHelperForSubject.getWritableDatabase();
+
+        String querySubject =
+                "DELETE FROM "+TABLE_NAME+ " WHERE "+ COLUMN_NAME_TITLE+" = "+"'"+subjectName+"'";
+        FeedReaderDbHelperItems.delete(context, subjectName); // delete all items of this subject
+
+        dbForSubject.execSQL(querySubject);
+
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -78,6 +90,51 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
         public static final String COLUMN_NAME_SUNDAY = "sunday";
 
     }
+    public static String[] getDaysOfSubjects(Context context, String subjectName){
+        FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(context);
+        SQLiteDatabase dbForSubject = dbHelperForSubject.getReadableDatabase();
+
+        final String[] projectionSubject = {
+                FeedEntry.COLUMN_NAME_MONDAY,
+                FeedEntry.COLUMN_NAME_TUESDAY,
+                FeedEntry.COLUMN_NAME_WEDNESDAY,
+                FeedEntry.COLUMN_NAME_THURSDAY,
+                FeedEntry.COLUMN_NAME_FRIDAY,
+                FeedEntry.COLUMN_NAME_SATURDAY,
+                FeedEntry.COLUMN_NAME_SUNDAY
+        };
+        // subset is initialized in switch statement
+        String selectionSubject =  COLUMN_NAME_TITLE + " = ?";
+        final String[] selectionArgsSubject = {subjectName};
+
+        // How you want the results sorted in the resulting Cursor
+
+        Cursor cursorSubject = dbForSubject.query(
+                TABLE_NAME,   // The table to query
+                projectionSubject,             // The array of columns to return (pass null to get all)
+                selectionSubject,              // The columns for the WHERE clause
+                selectionArgsSubject,          // The values for the WHERE clause
+                null,                   // don't group the rows
+                null,                   // don't filter by row groups
+                null               // The sort order
+        );
+        String[] daysValue = new String[]{};
+        if (cursorSubject.moveToFirst()) {
+            daysValue = new String[]{(cursorSubject.getString(cursorSubject.getColumnIndex(FeedEntry.COLUMN_NAME_MONDAY))),
+                    (cursorSubject.getString(cursorSubject.getColumnIndex(FeedEntry.COLUMN_NAME_TUESDAY))),
+                    (cursorSubject.getString(cursorSubject.getColumnIndex(FeedEntry.COLUMN_NAME_WEDNESDAY))),
+                    (cursorSubject.getString(cursorSubject.getColumnIndex(FeedEntry.COLUMN_NAME_THURSDAY))),
+                    (cursorSubject.getString(cursorSubject.getColumnIndex(FeedEntry.COLUMN_NAME_FRIDAY))),
+                    (cursorSubject.getString(cursorSubject.getColumnIndex(FeedEntry.COLUMN_NAME_SATURDAY))),
+                    (cursorSubject.getString(cursorSubject.getColumnIndex(FeedEntry.COLUMN_NAME_SUNDAY)))
+            };
+
+        }
+
+        return daysValue;
+    }
+
+
     public static List<List<String>> getContent(Context context, boolean getAll){
         FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(context);
         SQLiteDatabase dbForSubject = dbHelperForSubject.getReadableDatabase();
@@ -205,6 +262,39 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
 
         // Insert the new row, returning the primary key value of the new row
        return dbForSubject.insert(TABLE_NAME, null, valuesForSubject)>0;
+
+
+    }
+
+    public static void edit(Context context, String oldSubjectName, String newSubjectName,
+                            boolean Mon, boolean Tue, boolean Wed, boolean Thu, boolean Fri,
+                            boolean Sat, boolean Sun) throws android.database.sqlite.SQLiteException{
+
+        // adding to database
+        // DataBase work
+        FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(context);
+
+        // Gets the data repository in write mode
+        SQLiteDatabase dbForSubject = dbHelperForSubject.getWritableDatabase();
+
+        String query =
+                "UPDATE "+TABLE_NAME+" SET "+
+                COLUMN_NAME_TITLE+" = "+"'"+newSubjectName+"'"+", "+
+                COLUMN_NAME_MONDAY+" = "+"'"+Mon +"'"+", "+
+                COLUMN_NAME_TUESDAY+" = "+"'"+Tue+"'"+", "+
+                COLUMN_NAME_WEDNESDAY+" = "+"'"+Wed+"'"+", "+
+                COLUMN_NAME_THURSDAY+" = "+"'"+Thu+"'"+", "+
+                COLUMN_NAME_FRIDAY+" = "+"'"+Fri+"'"+", "+
+                COLUMN_NAME_SUNDAY+" = "+"'"+Sun+"'"+", "+
+                COLUMN_NAME_SATURDAY+" = "+"'"+Sat+"'"+
+                " WHERE "+ COLUMN_NAME_TITLE+" = "+"'"+oldSubjectName+"'";
+
+
+        FeedReaderDbHelperItems.edit(context, newSubjectName, oldSubjectName); // edit all items of this subject
+        dbForSubject.execSQL(query);
+
+
+
 
 
     }

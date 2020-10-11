@@ -25,6 +25,7 @@ import com.example.ontime.ui.Overview.OverviewFragment;
 import com.example.ontime.ui.Remove.RemoveFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 
@@ -44,6 +45,14 @@ public class AddSubject extends AppCompatActivity {
         setContentView(R.layout.activivty_add_subject);
 
         final ViewHolder viewHolder = new ViewHolder();
+        // hide weekend
+        SharedPreferences preferencesWeekendOn = Objects.requireNonNull(this.getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
+        boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
+
+        if(weekendOnBoolean){
+            ((ViewManager) viewHolder.saturday.getParent()).removeView(viewHolder.saturday);
+            ((ViewManager) viewHolder.sunday.getParent()).removeView(viewHolder.sunday);
+        }
 
         viewHolder.addItems.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -86,7 +95,6 @@ public class AddSubject extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
                     new AddFragment()).commit();
         }
-
 
     }
 

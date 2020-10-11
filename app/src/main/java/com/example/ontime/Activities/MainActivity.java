@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity{
@@ -65,6 +66,27 @@ public class MainActivity extends AppCompatActivity{
             getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
                     new AddFragment()).commit();
         }
+        Serializable fragment = getIntent().getSerializableExtra("Fragment");
+        if(fragment!=null) {
+            if ("add".equals(fragment)) {
+                navView.setSelectedItemId(R.id.navigation_add);
+                getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
+                        new AddFragment()).commit();
+            } else if ("remove".equals(fragment)) {
+                navView.setSelectedItemId(R.id.navigation_remove);
+                getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
+                        new RemoveFragment()).commit();
+            } else if ("bag".equals(fragment)) {
+                navView.setSelectedItemId(R.id.navigation_bag);
+                getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
+                        new BagFragment()).commit();
+            } else if ("overview".equals(fragment)) {
+                navView.setSelectedItemId(R.id.navigation_overview);
+                getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
+                        new OverviewFragment()).commit();
+            }
+        }
+
 
     }
     // navigation

@@ -11,4 +11,5 @@
         <attr name="ic_to_edit_bag" format="reference"/>
         <attr name="ic_to_add_check" format="reference"/>
         <attr name="ic_to_edit_bag_white" format="reference"/>
+        <attr name="ic_to_settings" format="reference"/>
 </resources>

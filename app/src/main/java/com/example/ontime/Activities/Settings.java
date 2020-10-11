@@ -19,6 +19,7 @@ import com.example.ontime.ui.Overview.OverviewFragment;
 import com.example.ontime.ui.Remove.RemoveFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 
@@ -30,8 +31,12 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // create view
 
-        SharedPreferences preferences = Objects.requireNonNull(this.getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE));
-        boolean darkModeOn = preferences.getBoolean("Mode", false);
+        SharedPreferences preferencesDarkMode = Objects.requireNonNull(this.getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE));
+        boolean darkModeOn = preferencesDarkMode.getBoolean("Mode", true);
+
+        SharedPreferences preferencesWeekendOn = Objects.requireNonNull(this.getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
+        boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
+
         if (darkModeOn) {
             setTheme(R.style.DARK);
         } else {
@@ -68,6 +73,38 @@ public class Settings extends AppCompatActivity {
                 finish();
             }
         });
+
+        Switch weekendOn = findViewById(R.id.deleteSundayAndSaturdaySwitch);
+        weekendOn.setChecked(weekendOnBoolean);
+        weekendOn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                //declare the shardPreferences variable..
+                SharedPreferences sp = Objects.requireNonNull(getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
+
+                // to save data you have to call the editor
+                SharedPreferences.Editor edit = sp.edit();
+
+                //save the value same as putExtras using keyNamePair
+                edit.putBoolean("Mode", isChecked);
+
+                //when done save changes.
+                edit.apply();
+
+                if (isChecked) {
+                    Toast.makeText(getApplicationContext(), "Do not show Weekend on", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(getApplicationContext(),"Do not show Weekend off", Toast.LENGTH_SHORT).show();
+
+                }
+                Intent intent = new Intent(getApplicationContext(), Settings.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setSelectedItemId(R.id.navigation_bag);
         navView.setOnNavigationItemSelectedListener(navListener);

@@ -67,22 +67,23 @@
         app:menu="@menu/bottom_nav_menu" /> -->
 
     <ScrollView
-        android:background="?attr/bgColor"
         android:id="@+id/scrollView"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="16dp"
+        android:background="?attr/bgColor"
         android:fillViewport="true"
         app:layout_constraintBottom_toTopOf="@+id/Delete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/parent"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp">
 
@@ -92,130 +93,132 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="448dp" />
+                app:layout_constraintGuide_end="569dp" />
 
             <EditText
                 android:id="@+id/editSubjectName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="16dp"
                 android:drawableEnd="?attr/ic_to_edit_bag"
                 android:ems="10"
                 android:importantForAutofill="no"
                 android:inputType="textPersonName"
                 android:textAlignment="center"
                 android:textSize="24sp"
-                app:layout_constraintBottom_toTopOf="@+id/mondaySwitchEdit"
+                app:layout_constraintBottom_toTopOf="@+id/guidelineForSwitches"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.496" />
 
             <Switch
                 android:id="@+id/mondaySwitchEdit"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
                 android:text="@string/monday"
                 android:textColor="?attr/textColor"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@+id/tuesdaySwitchEdit"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guidelineForSwitches" />
 
             <Switch
                 android:id="@+id/tuesdaySwitchEdit"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="@string/tuesday"
                 android:textColor="?attr/textColor"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@+id/wednesdaySwitchEdit"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mondaySwitchEdit" />
 
             <Switch
                 android:id="@+id/wednesdaySwitchEdit"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="@string/wednesday"
                 android:textColor="?attr/textColor"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@+id/thursdaySwitchEdit"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tuesdaySwitchEdit" />
 
             <Switch
                 android:id="@+id/thursdaySwitchEdit"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="@string/thursday"
                 android:textColor="?attr/textColor"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@+id/fridaySwitchEdit"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/wednesdaySwitchEdit" />
 
             <Switch
                 android:id="@+id/fridaySwitchEdit"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="@string/friday"
                 android:textColor="?attr/textColor"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@+id/saturdaySwitchEdit"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/thursdaySwitchEdit" />
 
             <Switch
                 android:id="@+id/saturdaySwitchEdit"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="@string/saturday"
                 android:textColor="?attr/textColor"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@+id/sundaySwitchEdit"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fridaySwitchEdit" />
 
             <Switch
                 android:id="@+id/sundaySwitchEdit"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="@string/sunday"
                 android:textColor="?attr/textColor"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@+id/guidelineForSwitches"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/saturdaySwitchEdit" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/editItemsRecycleView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/guidelineForSwitches" />
+                app:layout_constraintTop_toBottomOf="@+id/fridaySwitchEdit" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
