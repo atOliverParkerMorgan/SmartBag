@@ -1,15 +1,9 @@
 package com.example.ontime.Activities;
 
-import android.app.AlertDialog;
-import android.app.FragmentTransaction;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.os.Bundle;
-import android.os.Debug;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewManager;
 import android.widget.Button;
@@ -17,11 +11,9 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,13 +21,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ontime.Adapter.Item;
 import com.example.ontime.Adapter.MyListAdapter;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems;
+import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperMyBag;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.example.ontime.R;
-import com.example.ontime.ui.Add.AddFragment;
-import com.example.ontime.ui.Bag.BagFragment;
-import com.example.ontime.ui.Overview.OverviewFragment;
-import com.example.ontime.ui.Remove.RemoveFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,6 +87,22 @@ public class EditSubject extends AppCompatActivity {
         final ViewHolder viewHolder = new ViewHolder();
         viewHolder.editItemsRecycleView.setLayoutManager(new LinearLayoutManager(this));
 
+
+
+        // loop through all relevant subjects
+        final List<Item> itemsDataItemsToEdit = new ArrayList<>();
+        final List<String> itemNames = FeedReaderDbHelperItems.getContent(this, subject);
+        for(String item: itemNames){
+            itemsDataItemsToEdit.add(new Item(item, subject));
+        }
+
+
+        // 3. create an adapter
+        final MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToEdit, (byte) -10, findViewById(android.R.id.content), false, true);
+        // 4. set adapter
+        viewHolder.editItemsRecycleView.setAdapter(mAdapterItemsToAdd);
+        // 5. set itemAdd animator to DefaultAnimator
+
         // delete and save buttons
         viewHolder.saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,13 +111,32 @@ public class EditSubject extends AppCompatActivity {
                     FeedReaderDbHelperSubjects.edit(v.getContext(), subject, title.getText().toString(),
                             mon.isChecked(), tue.isChecked(), wed.isChecked(), thu.isChecked(),
                             fri.isChecked(), sat.isChecked(), sun.isChecked());
+                    // item logic
+
+                    // get items pre edit
+                    List<String> oldList = FeedReaderDbHelperItems.getContent(v.getContext(), subject);
+                    // -1 means an Error has occurred
+                    FeedReaderDbHelperItems.delete(v.getContext(), subject);
+
                     Intent i = new Intent(EditSubject.this, MainActivity.class);
                     i.putExtra("Fragment","overview");
+
+                    i.putExtra("putInToBag", false );
+                    if ( !FeedReaderDbHelperItems.write(v.getContext(),  i, mAdapterItemsToAdd.getItems())) {
+                        Toast.makeText(v.getContext(), "Annnn error as occurred in the database report this issue",
+                                Toast.LENGTH_LONG).show();
+                    }
+
+
+
                     startActivity(i);
 
                 }catch (android.database.sqlite.SQLiteException e){
                     System.err.println(e);
+                    Toast.makeText(v.getContext(), "An 2 error as occurred in the database report this issue",
+                            Toast.LENGTH_LONG).show();
                 }
+
 
             }
         });
@@ -130,22 +153,6 @@ public class EditSubject extends AppCompatActivity {
 
             }
         });
-
-
-        // loop through all relevant subjects
-        List<Item> itemsDataItemsToEdit = new ArrayList<>();
-        final List<String> itemNames = FeedReaderDbHelperItems.getContent(this, subject);
-        for(String item: itemNames){
-            itemsDataItemsToEdit.add(new Item(item, subject));
-        }
-
-
-        // 3. create an adapter
-        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToEdit,(byte) -2, findViewById(android.R.id.content));
-        // 4. set adapter
-        viewHolder.editItemsRecycleView.setAdapter(mAdapterItemsToAdd);
-        // 5. set itemAdd animator to DefaultAnimator
-        viewHolder.editItemsRecycleView.setItemAnimator(new DefaultItemAnimator());
 //        BottomNavigationView navView = findViewById(R.id.nav_view);
 //        navView.setSelectedItemId(R.id.navigation_overview);
 //        navView.setOnNavigationItemSelectedListener(navListener);
@@ -211,6 +218,7 @@ public class EditSubject extends AppCompatActivity {
             deleteButton = findViewById(R.id.Delete);
             itemName = findViewById(R.id.editItem);
             editItemsRecycleView = findViewById(R.id.editItemsRecycleView);
+            editItemsRecycleView.setNestedScrollingEnabled(false);
         }
     }
 }

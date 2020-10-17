@@ -12,6 +12,16 @@ import com.example.ontime.Adapter.Item;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_FRIDAY;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_MONDAY;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_SATURDAY;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_SUNDAY;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_THURSDAY;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_TITLE;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_TUESDAY;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_WEDNESDAY;
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.TABLE_NAME;
+
 public class FeedReaderDbHelperMyBag extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
@@ -117,6 +127,25 @@ public class FeedReaderDbHelperMyBag extends SQLiteOpenHelper {
 
         //  delete
         return dbForItems.delete(FeedEntry.TABLE_NAME, FeedEntry.COLUMN_NAME_TITLE + " LIKE ? and "+ FeedEntry.COLUMN_SUBJECT_TITLE +  " LIKE ?", new String[]{item.getItemName(), item.getSubjectName()})>0;
+    }
+
+    public static void editMyBag(Context context, List<String> oldList, List<Item> newList) {
+
+        // adding to database
+        // DataBase work
+        FeedReaderDbHelperMyBag dbHelperForSubject = new FeedReaderDbHelperMyBag(context);
+        SQLiteDatabase dbForSubject = dbHelperForSubject.getWritableDatabase();
+        // Gets the data repository in write mode
+        for(int i = 0; i<oldList.size();i++) {
+
+            String query =
+                    "UPDATE " + FeedEntry.TABLE_NAME + " SET " +
+                            FeedEntry.COLUMN_NAME_TITLE + " = " + "'" + newList.get(i).getItemName() + "'" + ", " +
+                            "WHERE " + FeedEntry.COLUMN_NAME_TITLE + " = " + "'" + oldList.get(i) + "'";
+
+            dbForSubject.execSQL(query);
+        }
+
     }
 
 }

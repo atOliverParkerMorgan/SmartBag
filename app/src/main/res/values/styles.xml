@@ -18,6 +18,7 @@
         <item name="ic_to_delete">@drawable/ic_to_delete_white</item>
         <item name="ic_to_settings">@drawable/ic_to_settings_white</item>
         <item name="ic_to_add_subject">@drawable/ic_to_add_subject_white</item>
+        <item name="ic_to_back">@drawable/ic_to_back_white</item>
 
     </style>
 
@@ -40,6 +41,7 @@
         <item name="ic_to_delete">@drawable/ic_to_delete</item>
         <item name="ic_to_settings">@drawable/ic_to_settings</item>
         <item name="ic_to_add_subject">@drawable/ic_to_add_subject</item>
+        <item name="ic_to_back">@drawable/ic_to_back</item>
     </style>
 
 </resources>

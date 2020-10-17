@@ -63,4 +63,6 @@
      <string name="editItemSwitchInstructions"><b>Edit when you need this subject</b></string>
      <string name="deleteEdit">Delete</string>
      <string name="saveChangesEdit">Save</string>
+     <string name="weekendText">enjoy your weekend 🙂</string>
+     <string name="editSubjectItemHint">Add and Edit Items</string>
  </resources>

@@ -8,16 +8,14 @@ import android.view.View;
 import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.ontime.Adapter.MyBagAdapter;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.example.ontime.Adapter.Item;
@@ -28,7 +26,6 @@ import com.example.ontime.ui.Bag.BagFragment;
 import com.example.ontime.ui.Overview.OverviewFragment;
 import com.example.ontime.ui.Remove.RemoveFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -81,7 +78,7 @@ public class AddItem extends AppCompatActivity {
                         List<Item> itemsDataItemsToAdd = new ArrayList<>(defaultItemsDataItemsToAdd);
 
                         // create an adapter
-                        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToAdd, (byte)-1, findViewById(android.R.id.content).getRootView());
+                        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToAdd, (byte)-1, findViewById(android.R.id.content).getRootView(), false, false);
                         // set adapter
                         viewHolder.addedItemsRecycleView.setAdapter(mAdapterItemsToAdd);
                         // set itemAdd animator to DefaultAnimator
@@ -132,6 +129,13 @@ public class AddItem extends AppCompatActivity {
             }
         });
 
+        viewHolder.back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setSelectedItemId(R.id.navigation_bag);
         navView.setOnNavigationItemSelectedListener(navListener);
@@ -152,9 +156,10 @@ public class AddItem extends AppCompatActivity {
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     if(firstViewOfActivity){
                         // remove button
-                        View v1 = (View) findViewById(R.id.addItem);
-                        View v2 =  (View) findViewById(R.id.create);
-                        View v3 = (View) findViewById(R.id.discard);
+                        View v1 = findViewById(R.id.addItem);
+                        View v2 = findViewById(R.id.create);
+                        View v3 = findViewById(R.id.discard);
+                        View v4 = findViewById(R.id.imageButtonBack);
                         if(v1!=null) {
                             v1.setVisibility(View.GONE);
                             ((ViewManager) v1.getParent()).removeView(v1);
@@ -166,6 +171,10 @@ public class AddItem extends AppCompatActivity {
                         if(v3!=null){
                             v3.setVisibility(View.GONE);
                             ((ViewManager) v3.getParent()).removeView(v3);
+                        }
+                        if(v4!=null){
+                            v4.setVisibility(View.GONE);
+                            ((ViewManager) v4.getParent()).removeView(v3);
                         }
                     }
 
@@ -200,9 +209,11 @@ public class AddItem extends AppCompatActivity {
         Button addItems;
         Button discard;
         Button create;
+        ImageButton back;
         RecyclerView addedItemsRecycleView;
 
         ViewHolder(){
+            back = findViewById(R.id.imageButtonBack);
             addItems = findViewById(R.id.addItem);
             itemName = findViewById(R.id.editItem);
             discard = findViewById(R.id.discard);

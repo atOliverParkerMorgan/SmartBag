@@ -1,7 +1,6 @@
 package com.example.ontime.ui.Bag;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,6 @@ import com.example.ontime.Adapter.MyBagAdapter;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperMyBag;
 import com.example.ontime.R;
 import com.example.ontime.Activities.Settings;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +73,7 @@ public class BagFragment extends Fragment {
         // loop through all relevant subjects
 
         // create an adapter
-        MyBagAdapter mAdapterItemsToAdd = new MyBagAdapter(inMyBag);
+        MyBagAdapter mAdapterItemsToAdd = new MyBagAdapter(inMyBag, true);
         // set adapter
         ItemsInBagRecycleView.setAdapter(mAdapterItemsToAdd);
         // set itemAdd animator to DefaultAnimator

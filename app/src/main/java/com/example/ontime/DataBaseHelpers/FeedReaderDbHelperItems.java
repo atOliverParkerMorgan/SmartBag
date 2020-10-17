@@ -156,6 +156,6 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
                         " WHERE "+ FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE+" = "+"'"+oldSubjectName+"'";
 
         dbForItems.execSQL(queryItems);
-
     }
+
 }

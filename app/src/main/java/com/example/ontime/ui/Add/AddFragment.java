@@ -15,12 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +30,7 @@ import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.example.ontime.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -90,43 +86,52 @@ public class AddFragment extends Fragment {
         List<Item> itemsDataItemsToAdd = new ArrayList<>();
 
         final List<String[]> myBagItems = FeedReaderDbHelperMyBag.getContent(getContext());
+
+        //a
         for (String[] item : myBagItems) {
             inMyBag.add(new Item(item[0], item[1]));
         }
+        SharedPreferences preferencesWeekendOn = Objects.requireNonNull(Objects.requireNonNull(getActivity()).getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
+        boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
+        Calendar calendar = Calendar.getInstance();
+        boolean doNotShow = !((weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Sa"))
+                ||(weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Su")));
 
+        if(doNotShow) {
+            // loop through all relevant subjects
+            for (String subject : subjectNames) {
 
+                final List<String> itemNames = FeedReaderDbHelperItems.getContent(getContext(), subject);
+                for (String item : itemNames) {
 
-        // loop through all relevant subjects
-        for(String subject: subjectNames){
-
-            final List<String> itemNames = FeedReaderDbHelperItems.getContent(getContext(), subject);
-            for(String item: itemNames){
-
-                // checking if item isn't already in bag
-                boolean found = false;
-                for (Item itemInBag: inMyBag){
-                    if(itemInBag.getItemName().equals(item) && itemInBag.getSubjectName().equals(subject)){
-                        found = true;
-                        break;
+                    // checking if item isn't already in bag
+                    boolean found = false;
+                    for (Item itemInBag : inMyBag) {
+                        if (itemInBag.getItemName().equals(item) && itemInBag.getSubjectName().equals(subject)) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        itemsDataItemsToAdd.add(new Item(item, subject));
                     }
                 }
-                if(!found) {
-                    itemsDataItemsToAdd.add(new Item(item, subject));
-                }
-            }
 
+            }
         }
 
 
 
         // 3. create an adapter
-        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToAdd,(byte) 1,view);
+        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToAdd,(byte) 1,view, true, false);
         // 4. set adapter
         ItemsToAddRecycleView.setAdapter(mAdapterItemsToAdd);
         // 5. set itemAdd animator to DefaultAnimator
         ItemsToAddRecycleView.setItemAnimator(new DefaultItemAnimator());
 
         //instructions logic
+        if(!doNotShow) noItems.setText(R.string.weekendText);
+
         if(itemsDataItemsToAdd.size()>0){
             noItems.setAlpha(0.0f);
         }else{
@@ -136,18 +141,6 @@ public class AddFragment extends Fragment {
 
         return view;
     }
-
-    @Override
-   // public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-   //     NavController navController = Navigation.findNavController(view);
-   //
-   //     AppBarConfiguration appBarConfiguration =
-   //             new AppBarConfiguration.Builder(navController.getGraph()).build();
-   //     Toolbar toolbar = view.findViewById(R.id.toolbar);
-   //     toolbar.setBackgroundColor(getResources().getColor(R.color.green));
-//
-   //     NavigationUI.setupWithNavController(toolbar,navController,appBarConfiguration);
-   // }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // TODO Add your menu entries here

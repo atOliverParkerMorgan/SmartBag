@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="80dp"
-    android:background="@drawable/borders"
+    android:background="?attr/bgColor"
     android:id="@+id/relativeLayout"
     >
 
@@ -19,7 +19,7 @@
         android:layout_marginBottom="1dp"
         android:background="?attr/bgColor"
         android:contentDescription="@string/delete_icon_description"
-        app:srcCompat="?attr/ic_to_edit_bag" />
+        app:srcCompat="?attr/ic_to_delete" />
 
     <!-- title -->
     <TextView
@@ -36,7 +36,7 @@
         android:paddingStart="0dp"
         android:paddingEnd="0dp"
         android:textAlignment="gravity"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="?attr/textColor"
         android:textSize="26sp" />
 
     <Button
@@ -53,5 +53,28 @@
         android:text="@string/none"
         android:textColor="@android:color/white"
         android:textSize="30sp" />
+
+    <EditText
+        android:id="@+id/editTextItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/layout_list_button"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@+id/layout_list_button"
+        android:layout_toEndOf="@+id/mark"
+        android:ems="10"
+        android:gravity="start|center_vertical"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp"
+        android:text="Name"
+        android:textAlignment="gravity"
+        android:textColor="?attr/textColor"
+        android:textSize="26sp"
+        android:visibility="gone" />
 
 </RelativeLayout>

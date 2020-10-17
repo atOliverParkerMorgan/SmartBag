@@ -1,6 +1,7 @@
 package com.example.ontime.ui.Remove;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.example.ontime.Adapter.Item;
 import com.example.ontime.Adapter.MyListAdapter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,16 +44,24 @@ public class RemoveFragment extends Fragment {
         // init database
         // get subject names that aren't for today
         final List<String> subjectNames = new ArrayList<>();
-        for (List<String> list: FeedReaderDbHelperSubjects.getContent(getContext(), true)) {
-            boolean found = false;
-            for (List<String> list2: FeedReaderDbHelperSubjects.getContent(getContext(), false)) {
-                if(list.equals(list2)){
-                    found = true;
-                    break;
+        SharedPreferences preferencesWeekendOn = Objects.requireNonNull(Objects.requireNonNull(getActivity()).getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
+        boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
+        Calendar calendar = Calendar.getInstance();
+        boolean doNotShow = !((weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Sa"))
+                ||(weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Su")));
+
+        if(doNotShow) {
+            for (List<String> list : FeedReaderDbHelperSubjects.getContent(getContext(), true)) {
+                boolean found = false;
+                for (List<String> list2 : FeedReaderDbHelperSubjects.getContent(getContext(), false)) {
+                    if (list.equals(list2)) {
+                        found = true;
+                        break;
+                    }
                 }
-            }
-            if(!found) {
-                subjectNames.add(list.get(0));
+                if (!found) {
+                    subjectNames.add(list.get(0));
+                }
             }
         }
 
@@ -83,53 +93,58 @@ public class RemoveFragment extends Fragment {
         // this is data for recycler view
         List<Item> inMyBag = new ArrayList<>();
         List<Item> itemsDataItemsToRemove = new ArrayList<>();
-
-        // adding all of my items in bag to list
-        final List<String[]> myBagItems = FeedReaderDbHelperMyBag.getContent(getContext());
-        for (String[] item : myBagItems) {
-            inMyBag.add(new Item(item[0], item[1]));
-        }
-
-        // loop through all relevant subjects
-        for(String subject: subjectNames){
-
-            // get the items that i need for today
-            final List<String> itemsNotForToday = FeedReaderDbHelperItems.getContent(getContext(), subject);
-            for (Item itemInBag: inMyBag){
-
-                boolean inBag = false;
-                String foundItem = "";
-                for(String item: itemsNotForToday){
-                    foundItem = item;
-                    if (itemInBag.getItemName().equals(item) && itemInBag.getSubjectName().equals(subject)) {
-
-                        inBag = true;
-                        break;
-                    }
-
-                }
-                if(inBag) {
-                    itemsDataItemsToRemove.add(new Item(foundItem,subject));
-                }
-
-
+        if(doNotShow) {
+            // adding all of my items in bag to list
+            final List<String[]> myBagItems = FeedReaderDbHelperMyBag.getContent(getContext());
+            for (String[] item : myBagItems) {
+                inMyBag.add(new Item(item[0], item[1]));
             }
 
+
+            // loop through all relevant subjects
+
+            for (String subject : subjectNames) {
+
+                // get the items that i need for today
+                final List<String> itemsNotForToday = FeedReaderDbHelperItems.getContent(getContext(), subject);
+                for (Item itemInBag : inMyBag) {
+
+                    boolean inBag = false;
+                    String foundItem = "";
+                    for (String item : itemsNotForToday) {
+                        foundItem = item;
+                        if (itemInBag.getItemName().equals(item) && itemInBag.getSubjectName().equals(subject)) {
+
+                            inBag = true;
+                            break;
+                        }
+
+                    }
+                    if (inBag) {
+                        itemsDataItemsToRemove.add(new Item(foundItem, subject));
+                    }
+
+
+                }
+
+            }
         }
 
         // 3. create an adapter
-        MyListAdapter mAdapterItemsToRemove = new MyListAdapter(itemsDataItemsToRemove,(byte) 0, view);
+        MyListAdapter mAdapterItemsToRemove = new MyListAdapter(itemsDataItemsToRemove,(byte) 0, view, true, false);
         // 4. set adapter
         ItemsToRemoveRecycleView.setAdapter(mAdapterItemsToRemove);
         // 5. set item to remove animator to DefaultAnimator
         ItemsToRemoveRecycleView.setItemAnimator(new DefaultItemAnimator());
 
         //instructions logic
+        if(!doNotShow) noItems.setText(R.string.weekendText);
         if(itemsDataItemsToRemove.size()>0){
             noItems.setAlpha(0.0f);
         }else{
             TextView instructions = view.findViewById(R.id.instructionsRemove);
             instructions.setAlpha(0.0f);
+
         }
 
         return view;
