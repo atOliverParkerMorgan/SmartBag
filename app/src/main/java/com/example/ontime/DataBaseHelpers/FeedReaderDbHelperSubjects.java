@@ -8,8 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
-import com.example.ontime.Adapter.Item;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -62,7 +60,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
 
         String querySubject =
                 "DELETE FROM "+TABLE_NAME+ " WHERE "+ COLUMN_NAME_TITLE+" = "+"'"+subjectName+"'";
-        FeedReaderDbHelperItems.delete(context, subjectName); // delete all items of this subject
+        FeedReaderDbHelperItems.deleteSubject(context, subjectName); // delete all items of this subject
 
         dbForSubject.execSQL(querySubject);
 
@@ -292,12 +290,26 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
 
         FeedReaderDbHelperItems.edit(context, newSubjectName, oldSubjectName); // edit all items of this subject
         dbForSubject.execSQL(query);
-
-
-
-
-
     }
 
+    public static void edit(Context context, String oldSubjectName, String newSubjectName) throws android.database.sqlite.SQLiteException{
+
+        // adding to database
+        // DataBase work
+        FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(context);
+
+        // Gets the data repository in write mode
+        SQLiteDatabase dbForSubject = dbHelperForSubject.getWritableDatabase();
+
+        String query =
+                "UPDATE "+TABLE_NAME+" SET "+
+                        COLUMN_NAME_TITLE+" = "+"'"+newSubjectName+"'"+
+                        " WHERE "+ COLUMN_NAME_TITLE+" = "+"'"+oldSubjectName+"'";
+
+
+        FeedReaderDbHelperItems.edit(context, newSubjectName, oldSubjectName); // edit all items of this subject
+        dbForSubject.execSQL(query);
+
+    }
 
 }

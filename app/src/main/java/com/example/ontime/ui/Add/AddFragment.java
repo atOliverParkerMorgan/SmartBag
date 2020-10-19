@@ -25,7 +25,6 @@ import com.example.ontime.Activities.Settings;
 import com.example.ontime.Adapter.Item;
 import com.example.ontime.Adapter.MyListAdapter;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems;
-import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperMyBag;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.example.ontime.R;
 
@@ -85,11 +84,11 @@ public class AddFragment extends Fragment {
         List<Item> inMyBag = new ArrayList<>();
         List<Item> itemsDataItemsToAdd = new ArrayList<>();
 
-        final List<String[]> myBagItems = FeedReaderDbHelperMyBag.getContent(getContext());
+        final List<String[]> myBagItems = FeedReaderDbHelperItems.getItemsInBag(getContext());
 
         //a
         for (String[] item : myBagItems) {
-            inMyBag.add(new Item(item[0], item[1]));
+            inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(getContext(), item[0])));
         }
         SharedPreferences preferencesWeekendOn = Objects.requireNonNull(Objects.requireNonNull(getActivity()).getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
         boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
@@ -113,7 +112,7 @@ public class AddFragment extends Fragment {
                         }
                     }
                     if (!found) {
-                        itemsDataItemsToAdd.add(new Item(item, subject));
+                        itemsDataItemsToAdd.add(new Item(item, subject,  FeedReaderDbHelperItems.isInBag(getContext(), item)));
                     }
                 }
 

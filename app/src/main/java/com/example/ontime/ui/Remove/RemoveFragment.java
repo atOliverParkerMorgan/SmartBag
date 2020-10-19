@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ontime.Activities.AddSubject;
 import com.example.ontime.Activities.Settings;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems;
-import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperMyBag;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.example.ontime.R;
 import com.example.ontime.Adapter.Item;
@@ -95,9 +94,9 @@ public class RemoveFragment extends Fragment {
         List<Item> itemsDataItemsToRemove = new ArrayList<>();
         if(doNotShow) {
             // adding all of my items in bag to list
-            final List<String[]> myBagItems = FeedReaderDbHelperMyBag.getContent(getContext());
+            final List<String[]> myBagItems = FeedReaderDbHelperItems.getItemsInBag(getContext());
             for (String[] item : myBagItems) {
-                inMyBag.add(new Item(item[0], item[1]));
+                inMyBag.add(new Item(item[0], item[1],  FeedReaderDbHelperItems.isInBag(getContext(), item[0])));
             }
 
 
@@ -121,7 +120,7 @@ public class RemoveFragment extends Fragment {
 
                     }
                     if (inBag) {
-                        itemsDataItemsToRemove.add(new Item(foundItem, subject));
+                        itemsDataItemsToRemove.add(new Item(foundItem, subject, FeedReaderDbHelperItems.isInBag(getContext(),foundItem)));
                     }
 
 

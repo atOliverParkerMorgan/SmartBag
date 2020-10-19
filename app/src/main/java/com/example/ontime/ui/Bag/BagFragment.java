@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ontime.Activities.AddSubject;
 import com.example.ontime.Adapter.Item;
 import com.example.ontime.Adapter.MyBagAdapter;
-import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperMyBag;
+import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.example.ontime.R;
 import com.example.ontime.Activities.Settings;
 
@@ -58,16 +58,16 @@ public class BagFragment extends Fragment {
         });
 
         // init database
-        final List<String[]> subjectNames = FeedReaderDbHelperMyBag.getContent(getContext());
+        final List<String[]> subjectNames = FeedReaderDbHelperItems.getItemsInBag(getContext());
         final RecyclerView ItemsInBagRecycleView = view.findViewById(R.id.RecycleViewYourBag);
         ItemsInBagRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
         List<Item> inMyBag = new ArrayList<>();
 
         // this is data for recycler view
 
-        final List<String[]> myBagItems = FeedReaderDbHelperMyBag.getContent(getContext());
+        final List<String[]> myBagItems = FeedReaderDbHelperItems.getItemsInBag(getContext());
         for (String[] item : myBagItems) {
-            inMyBag.add(new Item(item[0], item[1]));
+            inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(getContext(), item[0])));
         }
 
         // loop through all relevant subjects

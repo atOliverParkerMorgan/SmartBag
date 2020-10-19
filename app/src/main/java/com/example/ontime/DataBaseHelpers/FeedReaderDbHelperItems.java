@@ -13,6 +13,7 @@ import com.example.ontime.Adapter.Item;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems.FeedEntry.IS_IN_BAG;
 import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems.FeedEntry.TABLE_NAME;
 import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_FRIDAY;
 import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_MONDAY;
@@ -31,7 +32,8 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
             "CREATE TABLE " + TABLE_NAME + " (" +
                     FeedReaderDbHelperItems.FeedEntry._ID + " INTEGER PRIMARY KEY," +
                     FeedReaderDbHelperItems.FeedEntry.COLUMN_NAME_TITLE + " TEXT," +
-                    FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE + " TEXT)";
+                    FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE + " TEXT,"+
+                    FeedEntry.IS_IN_BAG + " TEXT)";
 
 
     private static final String SQL_DELETE_ENTRIES =
@@ -44,7 +46,7 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ENTRIES);
     }
-    public void delete(SQLiteDatabase db){
+    public void deleteSubject(SQLiteDatabase db){
         db.execSQL(SQL_DELETE_ENTRIES);
     }
 
@@ -62,6 +64,7 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
         public static final String TABLE_NAME = "items";
         public static final String COLUMN_NAME_TITLE = "name";
         public static final String COLUMN_SUBJECT_TITLE = "subject";
+        public static final String IS_IN_BAG = "inBag";
 
 
     }
@@ -107,9 +110,6 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
 
 
     public static boolean write(Context context, Intent intent, final List<Item> defaultItemsDataItemsToAdd){
-        if((boolean)intent.getSerializableExtra("putInToBag")){
-            FeedReaderDbHelperMyBag.write(context, defaultItemsDataItemsToAdd);
-        }
 
         // adding to database
         // DataBase work
@@ -124,7 +124,42 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
         for (Item item : defaultItemsDataItemsToAdd) {
             ContentValues valuesForItems = new ContentValues();
             valuesForItems.put(FeedEntry.COLUMN_NAME_TITLE, item.getItemName());
-            valuesForItems.put(FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE, item.getSubjectName());
+            valuesForItems.put(FeedEntry.COLUMN_SUBJECT_TITLE, item.getSubjectName());
+            if("null".equals(String.valueOf(intent.getSerializableExtra("putInToBag")))) {
+                valuesForItems.put(FeedEntry.IS_IN_BAG, String.valueOf(item.isInBag()));
+            }else{
+                valuesForItems.put(FeedEntry.IS_IN_BAG, String.valueOf(intent.getSerializableExtra("putInToBag")));
+            }
+            // Insert the new row, returning the primary key value of the new row
+            if (dbForItems.insert(TABLE_NAME, null, valuesForItems)<0){
+                return false;
+            }
+        }
+        // the method was successful
+        return true;
+
+    } public static boolean write(Context context, Intent intent, final List<Item> defaultItemsDataItemsToAdd, String subjectName){
+
+        // adding to database
+        // DataBase work
+        FeedReaderDbHelperItems dbHelperForItems = new FeedReaderDbHelperItems(context);
+        // Gets the data repository in write mode
+        SQLiteDatabase dbForItems = dbHelperForItems.getWritableDatabase();
+
+        // Create a new map of values, where column names are the keys
+
+        // adding data to table
+
+        for (Item item : defaultItemsDataItemsToAdd) {
+            item.setSubjectName(subjectName);
+            ContentValues valuesForItems = new ContentValues();
+            valuesForItems.put(FeedEntry.COLUMN_NAME_TITLE, item.getItemName());
+            valuesForItems.put(FeedEntry.COLUMN_SUBJECT_TITLE, item.getSubjectName());
+            if("null".equals(String.valueOf(intent.getSerializableExtra("putInToBag")))) {
+                valuesForItems.put(FeedEntry.IS_IN_BAG, String.valueOf(item.isInBag()));
+            }else{
+                valuesForItems.put(FeedEntry.IS_IN_BAG, String.valueOf(intent.getSerializableExtra("putInToBag")));
+            }
             // Insert the new row, returning the primary key value of the new row
             if (dbForItems.insert(TABLE_NAME, null, valuesForItems)<0){
                 return false;
@@ -135,13 +170,81 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
 
     }
 
+    public static boolean isInBag(Context context, String itemName){
+        FeedReaderDbHelperItems dbHelperForItem = new FeedReaderDbHelperItems(context);
+        SQLiteDatabase dbForItem = dbHelperForItem.getReadableDatabase();
+        String Query = "Select * from " + TABLE_NAME + " where " + IS_IN_BAG + " = " + "'true'"+ " AND "+ COLUMN_NAME_TITLE + " = " + "'"+itemName+"'";
+        Cursor cursor = dbForItem.rawQuery(Query, null);
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+
+    }
+
+    public static List<String[]> getItemsInBag(Context context){
+        FeedReaderDbHelperItems dbHelperForItem = new FeedReaderDbHelperItems(context);
+        SQLiteDatabase dbForItem = dbHelperForItem.getReadableDatabase();
+
+        // Define a projection that specifies which columns from the database
+        // you will actually use after this query.
+        final String[] projectionItem = {
+                BaseColumns._ID,
+                FeedEntry.COLUMN_NAME_TITLE,
+                FeedEntry.COLUMN_SUBJECT_TITLE
+        };
+        // subset is initialized in switch statement
+        String selectionItem = "SELECT * FROM "+ FeedEntry.TABLE_NAME+" WHERE "+FeedReaderDbHelperItems.FeedEntry.IS_IN_BAG+" = "+"'true'";
+
+        Cursor  cursorItem = dbForItem.rawQuery(selectionItem,null);
+
+        // get all the subjects that have today marked as true
+        List<String[]> subjectNames = new ArrayList<>();
+        while(cursorItem.moveToNext()) {
+            String item = cursorItem.getString(
+                    cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_TITLE));
+            String subject = cursorItem.getString(
+                    cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_SUBJECT_TITLE));
+            subjectNames.add(new String[]{item,subject});
+        }
+        cursorItem.close();
+
+        return subjectNames;
+    }
 
 
-    public static void delete(Context context, String subjectName) throws android.database.sqlite.SQLiteException{
+
+
+    public static void editBag(Context context, Item item, boolean add){
+        FeedReaderDbHelperItems dbHelperItems = new FeedReaderDbHelperItems(context);
+        SQLiteDatabase dbForItems = dbHelperItems.getWritableDatabase();
+        String queryItems =
+                "UPDATE "+ TABLE_NAME+" SET "+
+                        FeedReaderDbHelperItems.FeedEntry.IS_IN_BAG+" = "+"'"+add+"'"+
+                        " WHERE "+ FeedEntry.COLUMN_NAME_TITLE+" = "+"'"+item.getItemName()+"'";
+
+        dbForItems.execSQL(queryItems);
+    }
+
+
+
+    public static void deleteSubject(Context context, String subjectName) throws android.database.sqlite.SQLiteException{
         FeedReaderDbHelperItems dbHelperItems = new FeedReaderDbHelperItems(context);
         SQLiteDatabase dbForItems = dbHelperItems.getWritableDatabase();
         String queryItems =
                 " DELETE FROM "+ TABLE_NAME + " WHERE "+ FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE +" = "+"'"+subjectName+"'";
+
+        dbForItems.execSQL(queryItems);
+
+    }
+
+    public static void deleteItem(Context context, String itemName) throws android.database.sqlite.SQLiteException{
+        FeedReaderDbHelperItems dbHelperItems = new FeedReaderDbHelperItems(context);
+        SQLiteDatabase dbForItems = dbHelperItems.getWritableDatabase();
+        String queryItems =
+                " DELETE FROM "+ TABLE_NAME + " WHERE "+ FeedEntry.COLUMN_NAME_TITLE +" = "+"'"+itemName+"'";
 
         dbForItems.execSQL(queryItems);
 

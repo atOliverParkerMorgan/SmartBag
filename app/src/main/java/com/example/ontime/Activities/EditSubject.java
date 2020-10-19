@@ -1,5 +1,7 @@
 package com.example.ontime.Activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
@@ -21,7 +23,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ontime.Adapter.Item;
 import com.example.ontime.Adapter.MyListAdapter;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems;
-import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperMyBag;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.example.ontime.R;
 
@@ -38,7 +39,7 @@ public class EditSubject extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences preferences = Objects.requireNonNull(this.getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE));
-        boolean darkModeOn = preferences.getBoolean("Mode", false);
+        boolean darkModeOn = preferences.getBoolean("Mode", true);
         if (darkModeOn) {
             setTheme(R.style.DARK);
         } else {
@@ -71,8 +72,7 @@ public class EditSubject extends AppCompatActivity {
         }else{
             ConstraintLayout constraintLayout = findViewById(R.id.parent);
             ConstraintSet constraintSet = new ConstraintSet();
-            constraintSet.clone(constraintLayout);
-            constraintSet.connect(R.id.editItemsRecycleView,ConstraintSet.TOP,R.id.sundaySwitchEdit,ConstraintSet.BOTTOM,64);
+            constraintSet.connect(R.id.sundaySwitchEdit,ConstraintSet.BOTTOM,R.id.instructionsAddAndEdit,ConstraintSet.TOP,64);
             constraintSet.applyTo(constraintLayout);
 
         }
@@ -93,7 +93,7 @@ public class EditSubject extends AppCompatActivity {
         final List<Item> itemsDataItemsToEdit = new ArrayList<>();
         final List<String> itemNames = FeedReaderDbHelperItems.getContent(this, subject);
         for(String item: itemNames){
-            itemsDataItemsToEdit.add(new Item(item, subject));
+            itemsDataItemsToEdit.add(new Item(item, subject, FeedReaderDbHelperItems.isInBag(getApplicationContext(), item)));
         }
 
 
@@ -108,32 +108,30 @@ public class EditSubject extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    FeedReaderDbHelperItems.deleteSubject(v.getContext(), subject);
                     FeedReaderDbHelperSubjects.edit(v.getContext(), subject, title.getText().toString(),
                             mon.isChecked(), tue.isChecked(), wed.isChecked(), thu.isChecked(),
                             fri.isChecked(), sat.isChecked(), sun.isChecked());
                     // item logic
 
                     // get items pre edit
-                    List<String> oldList = FeedReaderDbHelperItems.getContent(v.getContext(), subject);
                     // -1 means an Error has occurred
-                    FeedReaderDbHelperItems.delete(v.getContext(), subject);
+                    FeedReaderDbHelperSubjects.edit(v.getContext(), subject, viewHolder.subjectName.getText().toString());
 
                     Intent i = new Intent(EditSubject.this, MainActivity.class);
                     i.putExtra("Fragment","overview");
 
-                    i.putExtra("putInToBag", false );
-                    if ( !FeedReaderDbHelperItems.write(v.getContext(),  i, mAdapterItemsToAdd.getItems())) {
-                        Toast.makeText(v.getContext(), "Annnn error as occurred in the database report this issue",
+                    i.putExtra("putInToBag", "null" );
+                    if ( !FeedReaderDbHelperItems.write(v.getContext(),  i, itemsDataItemsToEdit, viewHolder.subjectName.getText().toString())) {
+                        Toast.makeText(v.getContext(), "An error as occurred in the database report this issue",
                                 Toast.LENGTH_LONG).show();
                     }
-
-
 
                     startActivity(i);
 
                 }catch (android.database.sqlite.SQLiteException e){
                     System.err.println(e);
-                    Toast.makeText(v.getContext(), "An 2 error as occurred in the database report this issue",
+                    Toast.makeText(v.getContext(), "An error as occurred in the database report this issue",
                             Toast.LENGTH_LONG).show();
                 }
 
@@ -145,11 +143,69 @@ public class EditSubject extends AppCompatActivity {
         viewHolder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
+                alert.setTitle("Delete Subject");
+                alert.setMessage("Are you sure you want to delete "+subject+"?");
+                alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-                FeedReaderDbHelperSubjects.deleteSubject(subject, getApplicationContext());
-                Intent i = new Intent(EditSubject.this, MainActivity.class);
-                i.putExtra("Fragment","overview");
-                startActivity(i);
+                    public void onClick(DialogInterface dialog, int which) {
+                        FeedReaderDbHelperSubjects.deleteSubject(subject, getApplicationContext());
+                        Intent i = new Intent(EditSubject.this, MainActivity.class);
+                        i.putExtra("Fragment","overview");
+                        startActivity(i);
+                    }
+                });
+                alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // close dialog
+                        dialog.cancel();
+                    }
+                });
+                alert.show();
+
+
+
+            }
+        });
+
+
+        viewHolder.addItems.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                // getting the editText input
+                String text = viewHolder.itemName.getText().toString();
+                // the user has to input some text
+                if(text.equals("")){
+                    Toast.makeText(v.getContext(), "To add an item write some text into the text field (Textbook).",
+                            Toast.LENGTH_LONG).show();
+                }else {
+                    // also the item cannot already be in the recycle viewer
+                    boolean found = false;
+                    for(Item item:itemsDataItemsToEdit){
+                        if(item.getItemName().equals(viewHolder.itemName.getText().toString())){
+                            found = true;
+                            break;
+                        }
+                    }
+                    if(!found) {
+                        // this is data for recycler view
+                        itemsDataItemsToEdit.add(new Item(viewHolder.itemName.getText().toString(), subject, false));
+
+                        // create an adapter
+                        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToEdit, (byte) -10, findViewById(android.R.id.content), false, true);
+                        // set adapter
+                        viewHolder.editItemsRecycleView.setAdapter(mAdapterItemsToAdd);
+                        // set itemAdd animator to DefaultAnimator
+                        viewHolder.editItemsRecycleView.setItemAnimator(new DefaultItemAnimator());
+
+                        viewHolder.itemName.setText("");
+
+                    }else{
+                        Toast.makeText(v.getContext(), "You have already added this item.",
+                                Toast.LENGTH_LONG).show();
+                    }
+
+                }
 
             }
         });
@@ -207,13 +263,16 @@ public class EditSubject extends AppCompatActivity {
 //            };
 
     class ViewHolder {
+        EditText subjectName;
         EditText itemName;
         Button saveButton;
         Button deleteButton;
-
+        Button addItems;
         RecyclerView editItemsRecycleView;
 
         ViewHolder() {
+            addItems = findViewById(R.id.addItem);
+            subjectName = findViewById(R.id.editSubjectName);
             saveButton = findViewById(R.id.Save);
             deleteButton = findViewById(R.id.Delete);
             itemName = findViewById(R.id.editItem);

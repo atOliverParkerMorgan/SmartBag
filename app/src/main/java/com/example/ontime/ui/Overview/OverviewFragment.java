@@ -90,7 +90,7 @@ public class OverviewFragment extends Fragment {
 
             int addedRows = 0;
             for (List<String> list : FeedReaderDbHelperSubjects.getContent(getContext(), true)) {
-                final Item item = new Item("null", list.get(0));
+                final Item item = new Item("null", list.get(0), false);
 
                 // days of the week logic
 

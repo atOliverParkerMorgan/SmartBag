@@ -36,7 +36,7 @@ public class AddSubject extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences preferences = Objects.requireNonNull(this.getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE));
-        boolean darkModeOn = preferences.getBoolean("Mode", false);
+        boolean darkModeOn = preferences.getBoolean("Mode", true);
         if (darkModeOn) {
             setTheme(R.style.DARK);
         } else {

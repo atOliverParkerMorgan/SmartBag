@@ -11,7 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperMyBag;
+
+import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.example.ontime.R;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class MyBagAdapter extends RecyclerView.Adapter<MyBagAdapter.ViewHolder>{
                 }
             }
             for (int i = 0; i < indexToAdd.size(); i++) {
-                this.Items.add(indexToAdd.get(i) + i, new Item(subjectsToAdd.get(i), null));
+                this.Items.add(indexToAdd.get(i) + i, new Item(subjectsToAdd.get(i), null, false));
             }
         }
     }
@@ -71,7 +72,7 @@ public class MyBagAdapter extends RecyclerView.Adapter<MyBagAdapter.ViewHolder>{
             });
             holder.imageButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    if (FeedReaderDbHelperMyBag.delete(v.getContext(), Items.get(position))) {
+                        FeedReaderDbHelperItems.editBag(v.getContext(), Items.get(position), false);
                         Toast.makeText(v.getContext(), Items.get(position).getItemName() + " has been removed from your bag", Toast.LENGTH_LONG).show();
                         Items.remove(Items.get(position));  // remove the itemAdd from list
                         notifyItemRemoved(position); // notify the adapter about the removed itemAdd
@@ -88,12 +89,7 @@ public class MyBagAdapter extends RecyclerView.Adapter<MyBagAdapter.ViewHolder>{
                         notifyItemRangeChanged(position-1, Items.size());
 
 
-                    } else {
-                        Toast.makeText(v.getContext(), "Oops an error has occurred", Toast.LENGTH_LONG).show();
                     }
-
-
-                }
             });
         }
     }

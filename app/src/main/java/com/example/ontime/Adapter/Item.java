@@ -3,10 +3,12 @@ package com.example.ontime.Adapter;
 public class Item {
     private String itemName;
     private String subjectName;
+    private boolean isInBag;
 
-    public Item(String itemName, String subjectName) {
+    public Item(String itemName, String subjectName, boolean isInBag) {
         this.subjectName = subjectName;
         this.itemName = itemName;
+        this.isInBag = isInBag;
     }
 
     public String getSubjectName() {
@@ -32,7 +34,15 @@ public class Item {
         return initials.toString();
     }
 
+    public boolean isInBag() {
+        return isInBag;
+    }
+
     public void setItemName(String itemName) {
         this.itemName = itemName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 }
