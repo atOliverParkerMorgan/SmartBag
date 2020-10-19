@@ -1,6 +1,6 @@
 package com.example.ontime.Adapter;
 
-import android.graphics.Typeface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +12,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ontime.Activities.EditSubject;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.example.ontime.R;
 import java.util.ArrayList;
 import java.util.List;
-import static android.view.View.GONE;
 
 
 public class MyBagAdapter extends RecyclerView.Adapter<MyBagAdapter.ViewHolder>{
@@ -47,27 +47,23 @@ public class MyBagAdapter extends RecyclerView.Adapter<MyBagAdapter.ViewHolder>{
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View listItem;
-
-        listItem = layoutInflater.inflate(R.layout.item_default, parent, false);
-
-
-        return new ViewHolder(listItem);
+        if(viewType==0) return new ViewHolder(layoutInflater.inflate(R.layout.item_title, parent, false));
+        return new ViewHolder(layoutInflater.inflate(R.layout.item_default, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        if(Items.get(position).getSubjectName()==null){
+        if (holder.getItemViewType() == 0) {
             holder.textView.setText(Items.get(position).getItemName());
-            holder.textView.setTypeface(null, Typeface.BOLD_ITALIC);
-            holder.circle.setVisibility(GONE);
-            holder.imageButton.setVisibility(GONE);
         }else {
             holder.textView.setText(Items.get(position).getItemName());
             holder.circle.setText(Items.get(position).getNameInitialsOfSubject());
             holder.circle.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), Items.get(position).getSubjectName(), Toast.LENGTH_SHORT).show();
+                    // go back to main activity
+                    Intent i = new Intent( v.getContext(), EditSubject.class);
+                    i.putExtra("subjectName", Items.get(position).getSubjectName());
+                    v.getContext().startActivity(i);
                 }
             });
             holder.imageButton.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +94,14 @@ public class MyBagAdapter extends RecyclerView.Adapter<MyBagAdapter.ViewHolder>{
     @Override
     public int getItemCount() {
         return Items.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(Items.get(position).getSubjectName()==null){
+            return 0;
+        }
+        return 1;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

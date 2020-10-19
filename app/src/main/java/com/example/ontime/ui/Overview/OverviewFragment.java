@@ -51,7 +51,7 @@ public class OverviewFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_overview, parent, false);
         TableLayout table = view.findViewById(R.id.mainTable);
         // hide weekend
-        SharedPreferences preferencesWeekendOn = Objects.requireNonNull(Objects.requireNonNull(getActivity()).getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
+        SharedPreferences preferencesWeekendOn = Objects.requireNonNull(requireActivity().getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
         boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
         if(weekendOnBoolean){
             View v = view.findViewById(R.id.Sun);

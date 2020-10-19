@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "277863259947",
+    "firebase_url": "https://smartbag-e1965.firebaseio.com",
+    "project_id": "smartbag-e1965",
+    "storage_bucket": "smartbag-e1965.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:277863259947:android:ffb056a0cafe26c593ef6e",
+        "android_client_info": {
+          "package_name": "com.example.ontime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "277863259947-q0r1u8cte9v36lponriidknd6qfcmipq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ontime",
+            "certificate_hash": "b289e2581170587b76a3e63d53e93f5e7b063d02"
+          }
+        },
+        {
+          "client_id": "277863259947-ae822cd7cqgummbug73262noodokcse4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUrrbHz9FLFgZAF5PkImSxZ5JJv-hBDR4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "277863259947-ae822cd7cqgummbug73262noodokcse4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
