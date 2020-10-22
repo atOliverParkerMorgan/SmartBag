@@ -66,18 +66,18 @@ public class EditSubject extends AppCompatActivity {
         SharedPreferences preferencesWeekendOn = Objects.requireNonNull(this.getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
         boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
 
-        if(weekendOnBoolean){
+        if (weekendOnBoolean) {
             ((ViewManager) sat.getParent()).removeView(sat);
             ((ViewManager) sun.getParent()).removeView(sun);
-        }else{
+        } else {
             ConstraintLayout constraintLayout = findViewById(R.id.parent);
             ConstraintSet constraintSet = new ConstraintSet();
-            constraintSet.connect(R.id.sundaySwitchEdit,ConstraintSet.BOTTOM,R.id.instructionsAddAndEdit,ConstraintSet.TOP,64);
+            constraintSet.connect(R.id.sundaySwitchEdit, ConstraintSet.BOTTOM, R.id.instructionsAddAndEdit, ConstraintSet.TOP, 64);
             constraintSet.applyTo(constraintLayout);
 
         }
-        
-        Switch[] daysOfWeek = new Switch[]{mon,tue,wed,thu,fri,sat,sun};
+
+        Switch[] daysOfWeek = new Switch[]{mon, tue, wed, thu, fri, sat, sun};
         for (int i = 0; i < daysOfWeek.length; i++) {
             daysOfWeek[i].setChecked(daysOfTheWeek[i].equals("true"));
         }
@@ -88,11 +88,10 @@ public class EditSubject extends AppCompatActivity {
         viewHolder.editItemsRecycleView.setLayoutManager(new LinearLayoutManager(this));
 
 
-
         // loop through all relevant subjects
         final List<Item> itemsDataItemsToEdit = new ArrayList<>();
         final List<String> itemNames = FeedReaderDbHelperItems.getContent(this, subject);
-        for(String item: itemNames){
+        for (String item : itemNames) {
             itemsDataItemsToEdit.add(new Item(item, subject, FeedReaderDbHelperItems.isInBag(getApplicationContext(), item)));
         }
 
@@ -108,29 +107,51 @@ public class EditSubject extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    FeedReaderDbHelperItems.deleteSubject(v.getContext(), subject);
-                    FeedReaderDbHelperSubjects.edit(v.getContext(), subject, title.getText().toString(),
-                            mon.isChecked(), tue.isChecked(), wed.isChecked(), thu.isChecked(),
-                            fri.isChecked(), sat.isChecked(), sun.isChecked());
-                    // item logic
-
-                    // get items pre edit
-                    // -1 means an Error has occurred
-                    FeedReaderDbHelperSubjects.edit(v.getContext(), subject, viewHolder.subjectName.getText().toString());
-
-                    Intent i = new Intent(EditSubject.this, MainActivity.class);
-                    i.putExtra("Fragment","overview");
-
-                    i.putExtra("putInToBag", "null" );
-                    if ( !FeedReaderDbHelperItems.write(v.getContext(),  i, itemsDataItemsToEdit, viewHolder.subjectName.getText().toString())) {
-                        Toast.makeText(v.getContext(), "An error as occurred in the database report this issue",
+                    if(subject==null){
+                        Toast.makeText(v.getContext(), "An error occurred",
+                                Toast.LENGTH_LONG).show();
+                    }
+                    else if(subject.equals("")) {
+                        Toast.makeText(v.getContext(), "To add a subject write some text into the text field (Mathematics).",
+                                Toast.LENGTH_LONG).show();
+                    }
+                    else if(FeedReaderDbHelperItems.subjectExistsAtLeastOnce(getApplicationContext(), subject)){
+                        Toast.makeText(v.getContext(), "The subject "+subject+" already exists. Pick an unique name",
+                                Toast.LENGTH_LONG).show();
+                    }else if(subject.length()>25){
+                        Toast.makeText(v.getContext(), "The subject name is too long. The maximum length is 25 characters",
                                 Toast.LENGTH_LONG).show();
                     }
 
-                    startActivity(i);
+                    else if(!(mon.isChecked()||
+                            tue.isChecked()||wed.isChecked()||thu.isChecked()||
+                            fri.isChecked()||sat.isChecked()||sun.isChecked())){
+                        Toast.makeText(v.getContext(), "You have to choose at least one day of the week",
+                                Toast.LENGTH_LONG).show();
+                    }else {
+                        FeedReaderDbHelperItems.deleteSubject(v.getContext(), subject);
+                        FeedReaderDbHelperSubjects.edit(v.getContext(), subject, title.getText().toString(),
+                                mon.isChecked(), tue.isChecked(), wed.isChecked(), thu.isChecked(),
+                                fri.isChecked(), sat.isChecked(), sun.isChecked());
+                        // item logic
 
-                }catch (android.database.sqlite.SQLiteException e){
-                    System.err.println(e);
+                        // get items pre edit
+                        // -1 means an Error has occurred
+                        FeedReaderDbHelperSubjects.edit(v.getContext(), subject, viewHolder.subjectName.getText().toString());
+
+                        Intent i = new Intent(EditSubject.this, MainActivity.class);
+                        i.putExtra("Fragment", "overview");
+
+                        i.putExtra("putInToBag", "null");
+                        if (!FeedReaderDbHelperItems.write(v.getContext(), i, itemsDataItemsToEdit, viewHolder.subjectName.getText().toString())) {
+                            Toast.makeText(v.getContext(), "An error as occurred in the database report this issue",
+                                    Toast.LENGTH_LONG).show();
+                        }
+
+                        startActivity(i);
+                    }
+
+                } catch (android.database.sqlite.SQLiteException e) {
                     Toast.makeText(v.getContext(), "An error as occurred in the database report this issue",
                             Toast.LENGTH_LONG).show();
                 }
@@ -145,13 +166,13 @@ public class EditSubject extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
                 alert.setTitle("Delete Subject");
-                alert.setMessage("Are you sure you want to delete "+subject+"?");
+                alert.setMessage("Are you sure you want to delete " + subject + "?");
                 alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
                         FeedReaderDbHelperSubjects.deleteSubject(subject, getApplicationContext());
                         Intent i = new Intent(EditSubject.this, MainActivity.class);
-                        i.putExtra("Fragment","overview");
+                        i.putExtra("Fragment", "overview");
                         startActivity(i);
                     }
                 });
@@ -164,7 +185,6 @@ public class EditSubject extends AppCompatActivity {
                 alert.show();
 
 
-
             }
         });
 
@@ -175,19 +195,19 @@ public class EditSubject extends AppCompatActivity {
                 // getting the editText input
                 String text = viewHolder.itemName.getText().toString();
                 // the user has to input some text
-                if(text.equals("")){
+                if (text.equals("")) {
                     Toast.makeText(v.getContext(), "To add an item write some text into the text field (Textbook).",
                             Toast.LENGTH_LONG).show();
-                }else {
+                } else {
                     // also the item cannot already be in the recycle viewer
                     boolean found = false;
-                    for(Item item:itemsDataItemsToEdit){
-                        if(item.getItemName().equals(viewHolder.itemName.getText().toString())){
+                    for (Item item : itemsDataItemsToEdit) {
+                        if (item.getItemName().equals(viewHolder.itemName.getText().toString())) {
                             found = true;
                             break;
                         }
                     }
-                    if(!found) {
+                    if (!found) {
                         // this is data for recycler view
                         itemsDataItemsToEdit.add(new Item(viewHolder.itemName.getText().toString(), subject, false));
 
@@ -200,7 +220,7 @@ public class EditSubject extends AppCompatActivity {
 
                         viewHolder.itemName.setText("");
 
-                    }else{
+                    } else {
                         Toast.makeText(v.getContext(), "You have already added this item.",
                                 Toast.LENGTH_LONG).show();
                     }
@@ -209,58 +229,7 @@ public class EditSubject extends AppCompatActivity {
 
             }
         });
-//        BottomNavigationView navView = findViewById(R.id.nav_view);
-//        navView.setSelectedItemId(R.id.navigation_overview);
-//        navView.setOnNavigationItemSelectedListener(navListener);
-//        //I added this if statement to keep the selected fragment when rotating the device
-//        if (savedInstanceState == null && !firstViewOfActivity) {
-//            getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
-//                    new AddFragment()).commit();
-//        }
-
-
-
     }
-
-//    // navigation
-//    public BottomNavigationView.OnNavigationItemSelectedListener navListener =
-//            new BottomNavigationView.OnNavigationItemSelectedListener() {
-//                @Override
-//                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-//                    if(firstViewOfActivity){
-//                        // remove buttons
-//                        View v = (View) findViewById(R.id.Delete);
-//                        ((ViewManager)v.getParent()).removeView(v);
-//                        v = (View) findViewById(R.id.Save);
-//                        ((ViewManager)v.getParent()).removeView(v);
-//                        v = (View) findViewById(R.id.scrollView);
-//                        ((ViewManager)v.getParent()).removeView(v);
-//                    }
-//
-//                    firstViewOfActivity = false;
-//
-//
-//                    Fragment selectedFragment = null;
-//                    switch (menuItem.getItemId()){
-//                        case R.id.navigation_add:
-//                            selectedFragment = new AddFragment();
-//                            break;
-//                        case R.id.navigation_remove:
-//                            selectedFragment = new RemoveFragment();
-//                            break;
-//                        case R.id.navigation_bag:
-//                            selectedFragment = new BagFragment();
-//                            break;
-//                        case R.id.navigation_overview:
-//                            selectedFragment = new OverviewFragment();
-//                            break;
-//                    }
-//
-//
-//                    getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment, Objects.requireNonNull(selectedFragment)).commit();
-//                    return true;
-//                }
-//            };
 
     class ViewHolder {
         EditText subjectName;

@@ -51,7 +51,7 @@
         android:background="@drawable/rounded_textview_default"
         android:gravity="center"
         android:text="@string/none"
-        android:textColor="@android:color/white"
+        android:textColor="#FFFFFF"
         android:textSize="30sp" />
 
     <EditText

@@ -18,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems;
+import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.example.ontime.R;
 import com.example.ontime.ui.Add.AddFragment;
 import com.example.ontime.ui.Bag.BagFragment;
@@ -61,8 +63,15 @@ public class AddSubject extends AppCompatActivity {
                     Toast.makeText(v.getContext(), "To add a subject write some text into the text field (Mathematics).",
                             Toast.LENGTH_LONG).show();
                 }
+                else if(FeedReaderDbHelperItems.subjectExists(getApplicationContext(), s)){
+                    Toast.makeText(v.getContext(), "The subject "+s+" already exists. Pick an unique name",
+                    Toast.LENGTH_LONG).show();
+                }else if(s.length()>25){
+                    Toast.makeText(v.getContext(), "The subject name is too long. The maximum length is 25 characters",
+                            Toast.LENGTH_LONG).show();
+                }
 
-                else if(!(viewHolder.monday.isChecked()||viewHolder.monday.isChecked()||
+                else if(!(viewHolder.monday.isChecked()||
                         viewHolder.tuesday.isChecked()||viewHolder.wednesday.isChecked()||viewHolder.thursday.isChecked()||
                         viewHolder.friday.isChecked()||viewHolder.saturday.isChecked()||viewHolder.sunday.isChecked())){
                     Toast.makeText(v.getContext(), "You have to choose at least one day of the week",

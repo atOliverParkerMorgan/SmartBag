@@ -35,14 +35,15 @@
     <item>
         <shape android:shape="oval">
 
-            <solid android:color="#FF5806" />
+            <gradient
+                android:angle="45"
+                android:startColor="@color/colorPrimary"
+                android:endColor="#ff5e62"/>
 
             <size
                 android:height="66dp"
                 android:width="66dp" />
-            <stroke
-                android:width="2dp"
-                android:color="?attr/bgColor" />
+
 
         </shape>
     </item>

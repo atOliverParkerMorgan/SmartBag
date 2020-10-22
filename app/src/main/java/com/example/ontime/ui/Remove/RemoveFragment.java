@@ -43,7 +43,7 @@ public class RemoveFragment extends Fragment {
         // init database
         // get subject names that aren't for today
         final List<String> subjectNames = new ArrayList<>();
-        SharedPreferences preferencesWeekendOn = Objects.requireNonNull(Objects.requireNonNull(getActivity()).getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
+        SharedPreferences preferencesWeekendOn = Objects.requireNonNull(requireActivity().getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
         boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
         Calendar calendar = Calendar.getInstance();
         boolean doNotShow = !((weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Sa"))

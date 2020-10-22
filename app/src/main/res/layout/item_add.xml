@@ -23,7 +23,7 @@
         android:layout_marginBottom="1dp"
         android:background="?attr/bgColor"
         android:contentDescription="@string/delete_icon_description"
-        app:itemIconTint="@color/white"
+        app:itemIconTint="?attr/bgColor"
         app:srcCompat="?attr/ic_to_add_check"
         />
 
@@ -56,7 +56,7 @@
         android:background="@drawable/rounded_textview_add"
         android:gravity="center"
         android:text="@string/none"
-        android:textColor="@android:color/white"
+        android:textColor="?attr/bgColor"
         android:textSize="30sp" />
 
 </RelativeLayout>

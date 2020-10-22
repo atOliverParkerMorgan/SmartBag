@@ -1,9 +1,13 @@
 package com.example.ontime.ui.Overview;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Path;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,20 +18,29 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 import com.example.ontime.Activities.AddSubject;
 import com.example.ontime.Activities.EditSubject;
 import com.example.ontime.Activities.Settings;
 import com.example.ontime.Adapter.Item;
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.example.ontime.R;
-
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import java.io.File;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
+
 
 public class OverviewFragment extends Fragment {
+    StorageReference storageReference;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // get most subjects in a day
@@ -50,6 +63,8 @@ public class OverviewFragment extends Fragment {
         // create view
         final View view = inflater.inflate(R.layout.fragment_overview, parent, false);
         TableLayout table = view.findViewById(R.id.mainTable);
+        // views for button
+        Button shareBagButton = view.findViewById(R.id.shareBagButton);
         // hide weekend
         SharedPreferences preferencesWeekendOn = Objects.requireNonNull(requireActivity().getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
         boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
@@ -102,7 +117,7 @@ public class OverviewFragment extends Fragment {
                     button.setBackgroundResource(R.drawable.rounded_textview_default_borders);
                     button.setGravity(Gravity.CENTER);
                     button.setText(item.getNameInitialsOfSubject());
-                    button.setTextColor(Color.WHITE);
+                    button.setTextColor(getResources().getColor(android.R.color.white));
                     button.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
                     button.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
                     button.setTextSize(30);
@@ -144,7 +159,96 @@ public class OverviewFragment extends Fragment {
         }
         table.requestLayout();     // Not sure if this is needed.
 
+        // firebase logic
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+        // on pressing btnUpload uploadImage() is called
+        shareBagButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                uploadDatabase();
+            }
+        });
+
+
         return view;
     }
 
+
+    private void uploadDatabase()
+    {
+            String dbname = "Subject.db";
+            Uri file = Uri.fromFile(getContext().getDatabasePath(dbname));
+
+
+
+
+            // Code for showing progressDialog while uploading
+            final ProgressDialog progressDialog
+                    = new ProgressDialog(getContext());
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            // Defining the child of storageReference
+
+            // adding listeners on upload
+            // or failure of image
+            storageReference.child("databases/somecode.db").putFile(file)
+                    .addOnSuccessListener(
+                            new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+                                @Override
+                                public void onSuccess(
+                                        UploadTask.TaskSnapshot taskSnapshot)
+                                {
+
+                                    // Image uploaded successfully
+                                    // Dismiss dialog
+                                    progressDialog.dismiss();
+                                    Toast
+                                            .makeText(getContext(),
+                                                    "Your bag has been Uploaded!!",
+                                                    Toast.LENGTH_SHORT)
+                                            .show();
+                                }
+                            })
+
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e)
+                        {
+
+                            // Error, Image not uploaded
+                            progressDialog.dismiss();
+                            Toast
+                                    .makeText(getContext(),
+                                            "Failed " + e.getMessage(),
+                                            Toast.LENGTH_LONG)
+                                    .show();
+                            Log.d("errorrr", e.getMessage());
+                        }
+                    })
+                    .addOnProgressListener(
+                            new OnProgressListener<UploadTask.TaskSnapshot>() {
+
+                                // Progress Listener for loading
+                                // percentage on the dialog box
+                                @Override
+                                public void onProgress(
+                                        @NonNull UploadTask.TaskSnapshot taskSnapshot)
+                                {
+                                    double progress
+                                            = (100.0
+                                            * taskSnapshot.getBytesTransferred()
+                                            / taskSnapshot.getTotalByteCount());
+                                    progressDialog.setMessage(
+                                            "Uploaded "
+                                                    + (int)progress + "%");
+                                }
+                            });
+
+    }
 }
+
+

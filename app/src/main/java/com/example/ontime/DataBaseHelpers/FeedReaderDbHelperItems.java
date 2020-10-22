@@ -7,12 +7,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import com.example.ontime.Adapter.Item;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE;
 import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems.FeedEntry.IS_IN_BAG;
 import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems.FeedEntry.TABLE_NAME;
 import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_FRIDAY;
@@ -188,13 +190,6 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
         FeedReaderDbHelperItems dbHelperForItem = new FeedReaderDbHelperItems(context);
         SQLiteDatabase dbForItem = dbHelperForItem.getReadableDatabase();
 
-        // Define a projection that specifies which columns from the database
-        // you will actually use after this query.
-        final String[] projectionItem = {
-                BaseColumns._ID,
-                FeedEntry.COLUMN_NAME_TITLE,
-                FeedEntry.COLUMN_SUBJECT_TITLE
-        };
         // subset is initialized in switch statement
         String selectionItem = "SELECT * FROM "+ FeedEntry.TABLE_NAME+" WHERE "+FeedReaderDbHelperItems.FeedEntry.IS_IN_BAG+" = "+"'true'";
 
@@ -223,7 +218,8 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
         String queryItems =
                 "UPDATE "+ TABLE_NAME+" SET "+
                         FeedReaderDbHelperItems.FeedEntry.IS_IN_BAG+" = "+"'"+add+"'"+
-                        " WHERE "+ FeedEntry.COLUMN_NAME_TITLE+" = "+"'"+item.getItemName()+"'";
+                        " WHERE "+ FeedEntry.COLUMN_NAME_TITLE+" = "+"'"+item.getItemName()+"' AND "+
+                        FeedEntry.COLUMN_SUBJECT_TITLE+" = "+"'"+item.getSubjectName()+"'";
 
         dbForItems.execSQL(queryItems);
     }
@@ -259,6 +255,38 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
                         " WHERE "+ FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE+" = "+"'"+oldSubjectName+"'";
 
         dbForItems.execSQL(queryItems);
+    }
+    public static boolean subjectExists(Context context, String subjectName){
+        FeedReaderDbHelperItems dbHelperForItem = new FeedReaderDbHelperItems(context);
+        SQLiteDatabase dbForItem = dbHelperForItem.getReadableDatabase();
+        String Query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_SUBJECT_TITLE + " = " + "'"+subjectName+"';";
+        try(Cursor cursor = dbForItem.rawQuery(Query, null)) {
+            if (cursor.getCount() <= 0) {
+                cursor.close();
+                return false;
+            }
+            cursor.close();
+            return true;
+        }catch (android.database.sqlite.SQLiteException e){
+            Log.d("stop triping bruh", String.valueOf(e));
+            return false;
+        }
+    }
+    public static boolean subjectExistsAtLeastOnce(Context context, String subjectName){
+        FeedReaderDbHelperItems dbHelperForItem = new FeedReaderDbHelperItems(context);
+        SQLiteDatabase dbForItem = dbHelperForItem.getReadableDatabase();
+        String Query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_SUBJECT_TITLE + " = " + "'"+subjectName+"';";
+        try(Cursor cursor = dbForItem.rawQuery(Query, null)) {
+            if (cursor.getCount() <= 1) {
+                cursor.close();
+                return false;
+            }
+            cursor.close();
+            return true;
+        }catch (android.database.sqlite.SQLiteException e){
+            Log.d("stop triping bruh", String.valueOf(e));
+            return false;
+        }
     }
 
 }

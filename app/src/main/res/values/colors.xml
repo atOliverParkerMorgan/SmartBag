@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FF5806</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="black">#161716</color>
-    <color name="colorAccent">#ff9248</color>
-    <color name="green">#4CAF50</color>
-    <color name="red">#C0063E</color>
-    <color name="bgColor">#000000</color>
-    <color name="barColor">#000000</color>
+    <color name="colorPrimary">#F9AA33</color>
+    <color name="white">#4A6572</color>
+    <color name="black">#232F34</color>
+    <color name="colorAccent">#ff5e62</color>
+    <color name="bgColor" />
+    <color name="barColor" />
     </resources>

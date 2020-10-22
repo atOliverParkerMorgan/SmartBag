@@ -53,7 +53,7 @@
         android:background="@drawable/rounded_textview_remove"
         android:gravity="center"
         android:text="@string/none"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorPrimary"
         android:textSize="30sp" />
 
 </RelativeLayout>

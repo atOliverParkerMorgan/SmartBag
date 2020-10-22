@@ -136,74 +136,8 @@ public class AddItem extends AppCompatActivity {
             }
         });
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        navView.setSelectedItemId(R.id.navigation_bag);
-        navView.setOnNavigationItemSelectedListener(navListener);
-        // I added this if statement to keep the selected fragment when rotating the device
-        if (savedInstanceState == null && !firstViewOfActivity) {
-
-            getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
-                    new AddFragment()).commit();
-        }
-        // loop through all relevant subjects
-
     }
 
-    // navigation
-    public BottomNavigationView.OnNavigationItemSelectedListener navListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                    if(firstViewOfActivity){
-                        // remove button
-                        View v1 = findViewById(R.id.addItem);
-                        View v2 = findViewById(R.id.create);
-                        View v3 = findViewById(R.id.discard);
-                        View v4 = findViewById(R.id.imageButtonBack);
-                        if(v1!=null) {
-                            v1.setVisibility(View.GONE);
-                            ((ViewManager) v1.getParent()).removeView(v1);
-                        }
-                        if(v2!=null) {
-                            v2.setVisibility(View.GONE);
-                            ((ViewManager) v2.getParent()).removeView(v2);
-                        }
-                        if(v3!=null){
-                            v3.setVisibility(View.GONE);
-                            ((ViewManager) v3.getParent()).removeView(v3);
-                        }
-                        if(v4!=null){
-                            v4.setVisibility(View.GONE);
-                            ((ViewManager) v4.getParent()).removeView(v3);
-                        }
-                    }
-
-                    firstViewOfActivity = false;
-                    Fragment selectedFragment = null;
-                    switch (menuItem.getItemId()){
-                        case R.id.navigation_add:
-                            firstViewOfActivity = true;
-                            selectedFragment = new AddFragment();
-                            break;
-                        case R.id.navigation_remove:
-                            firstViewOfActivity = true;
-                            selectedFragment = new RemoveFragment();
-                            break;
-                        case R.id.navigation_bag:
-                            firstViewOfActivity = true;
-                            selectedFragment = new BagFragment();
-                            break;
-                        case R.id.navigation_overview:
-                            firstViewOfActivity = true;
-                            selectedFragment = new OverviewFragment();
-                            break;
-                    }
-
-                    assert selectedFragment != null;
-                    getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment, selectedFragment).commit();
-                    return true;
-                }
-            };
     public class ViewHolder{
         EditText itemName;
         Button addItems;

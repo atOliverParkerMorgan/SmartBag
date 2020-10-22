@@ -1,13 +1,8 @@
 package com.example.ontime.Activities;
 
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
-
 import com.example.ontime.R;
 import com.example.ontime.ui.Add.AddFragment;
 import com.example.ontime.ui.Bag.BagFragment;
@@ -24,16 +19,6 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity{
 
-    /** indicates how to behave if the service is killed */
-    int mStartMode;
-
-    /** interface for clients that bind */
-    IBinder mBinder;
-
-    /** indicates whether onRebind should be used */
-    boolean mAllowRebind;
-    private final String PREFS_NAME = "MyPrefsFile";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +33,7 @@ public class MainActivity extends AppCompatActivity{
         }
         setContentView(R.layout.activity_main);
 
+        String PREFS_NAME = "MyPrefsFile";
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 
 
@@ -119,5 +105,7 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onResume() {
-        super.onResume();}
+        super.onResume();
+    }
+
 }

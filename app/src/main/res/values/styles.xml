@@ -9,9 +9,10 @@
 
         <item name="textColor">#ffffff</item>
         <item name="metaTextColor">#aeaeae</item>
-        <item name="barColor">#424242</item>
-        <item name="bgColor">#201C1C</item>
+        <item name="barColor">@color/black</item>
+        <item name="bgColor">#344955</item>
 
+        <item name="ic_to_share">@drawable/ic_to_share_white</item>
         <item name="ic_to_edit_bag">@drawable/ic_to_edit_bag_white</item>
         <item name="ic_to_add_check">@drawable/ic_to_add_check_white</item>
         <item name="ic_to_add_clear">@drawable/ic_to_add_clear_white</item>
@@ -27,14 +28,15 @@
         <!-- Customize your theme here. -->
 
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorPrimaryDark">#F5F5F5</item>
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="textColor">#000000</item>
-        <item name="barColor">#F3F3F3</item>
+        <item name="barColor">#F5F5F5</item>
         <item name="metaTextColor">#606060</item>
-        <item name="bgColor">#ffffff</item>
+        <item name="bgColor">#FFFFFF</item>
 
+        <item name="ic_to_share">@drawable/ic_to_share</item>
         <item name="ic_to_edit_bag">@drawable/ic_to_edit_bag</item>
         <item name="ic_to_add_check">@drawable/ic_to_add_check</item>
         <item name="ic_to_add_clear">@drawable/ic_to_add_clear</item>

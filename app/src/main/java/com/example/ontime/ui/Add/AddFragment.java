@@ -90,7 +90,7 @@ public class AddFragment extends Fragment {
         for (String[] item : myBagItems) {
             inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(getContext(), item[0])));
         }
-        SharedPreferences preferencesWeekendOn = Objects.requireNonNull(Objects.requireNonNull(getActivity()).getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
+        SharedPreferences preferencesWeekendOn = Objects.requireNonNull(requireActivity().getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
         boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
         Calendar calendar = Calendar.getInstance();
         boolean doNotShow = !((weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Sa"))

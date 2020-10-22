@@ -7,11 +7,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems.FeedEntry.IS_IN_BAG;
 import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_FRIDAY;
 import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_MONDAY;
 import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_SATURDAY;
@@ -311,5 +313,4 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
         dbForSubject.execSQL(query);
 
     }
-
 }
