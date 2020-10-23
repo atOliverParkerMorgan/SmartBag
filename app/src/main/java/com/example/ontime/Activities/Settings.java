@@ -19,7 +19,6 @@ import com.example.ontime.ui.Overview.OverviewFragment;
 import com.example.ontime.ui.Remove.RemoveFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 
@@ -75,7 +74,7 @@ public class Settings extends AppCompatActivity {
         });
 
         Switch weekendOn = findViewById(R.id.deleteSundayAndSaturdaySwitch);
-        weekendOn.setChecked(weekendOnBoolean);
+        weekendOn.setChecked(!weekendOnBoolean);
         weekendOn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -86,7 +85,7 @@ public class Settings extends AppCompatActivity {
                 SharedPreferences.Editor edit = sp.edit();
 
                 //save the value same as putExtras using keyNamePair
-                edit.putBoolean("Mode", isChecked);
+                edit.putBoolean("Mode", !isChecked);
 
                 //when done save changes.
                 edit.apply();

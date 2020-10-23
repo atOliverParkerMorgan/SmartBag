@@ -65,7 +65,7 @@ public class RemoveFragment extends Fragment {
         }
 
         // image button logic add item
-        ImageButton imageButtonAddSubject = view.findViewById(R.id.addSubjectButton);
+        ImageButton imageButtonAddSubject = view.findViewById(R.id.addSubject);
         imageButtonAddSubject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,7 +130,7 @@ public class RemoveFragment extends Fragment {
         }
 
         // 3. create an adapter
-        MyListAdapter mAdapterItemsToRemove = new MyListAdapter(itemsDataItemsToRemove,(byte) 0, view, true, false);
+        MyListAdapter mAdapterItemsToRemove = new MyListAdapter(itemsDataItemsToRemove,(byte) 0, view, true, false, true);
         // 4. set adapter
         ItemsToRemoveRecycleView.setAdapter(mAdapterItemsToRemove);
         // 5. set item to remove animator to DefaultAnimator

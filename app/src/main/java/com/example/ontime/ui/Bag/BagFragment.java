@@ -36,7 +36,7 @@ public class BagFragment extends Fragment {
         noItems.setAlpha(1.0f);
 
         // image button logic add item
-        ImageButton imageButtonAddSubject = view.findViewById(R.id.addSubjectButton);
+        ImageButton imageButtonAddSubject = view.findViewById(R.id.addSubject);
         imageButtonAddSubject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

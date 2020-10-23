@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -59,7 +60,7 @@ public class AddFragment extends Fragment {
         // Toolbar
 
         // image button logic add item
-        ImageButton imageButtonAddSubject = view.findViewById(R.id.addSubjectButton);
+        ImageButton imageButtonAddSubject = view.findViewById(R.id.addSubject);
         imageButtonAddSubject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,14 +123,25 @@ public class AddFragment extends Fragment {
 
 
         // 3. create an adapter
-        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToAdd,(byte) 1,view, true, false);
+        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToAdd,(byte) 1,view, true, false, true);
         // 4. set adapter
         ItemsToAddRecycleView.setAdapter(mAdapterItemsToAdd);
         // 5. set itemAdd animator to DefaultAnimator
         ItemsToAddRecycleView.setItemAnimator(new DefaultItemAnimator());
 
+        Button showMonday = view.findViewById(R.id.showButton);
         //instructions logic
-        if(!doNotShow) noItems.setText(R.string.weekendText);
+        if(!doNotShow) {
+            noItems.setText("");
+            showMonday.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }else {
+            showMonday.setVisibility(View.GONE);
+        }
 
         if(itemsDataItemsToAdd.size()>0){
             noItems.setAlpha(0.0f);

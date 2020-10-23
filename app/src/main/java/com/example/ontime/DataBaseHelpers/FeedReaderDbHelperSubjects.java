@@ -239,6 +239,90 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
         return subjectNames;
     }
 
+    public static List<List<String>> getContent(Context context, String calendar){
+        FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(context);
+        SQLiteDatabase dbForSubject = dbHelperForSubject.getReadableDatabase();
+        List<List<String>> subjectNames = new ArrayList<>();
+
+
+            // Define a projection that specifies which columns from the database
+            // you will actually use after this query.
+            final String[] projectionSubject = {
+                    BaseColumns._ID,
+                    COLUMN_NAME_TITLE,
+                    FeedEntry.COLUMN_NAME_MONDAY,
+                    FeedEntry.COLUMN_NAME_TUESDAY,
+                    FeedEntry.COLUMN_NAME_WEDNESDAY,
+                    FeedEntry.COLUMN_NAME_THURSDAY,
+                    FeedEntry.COLUMN_NAME_FRIDAY,
+                    FeedEntry.COLUMN_NAME_SATURDAY,
+                    FeedEntry.COLUMN_NAME_SUNDAY
+            };
+
+            // subset is initialized in switch statement
+            String selectionSubject = null;
+            final String[] selectionArgsSubject = {"true"};
+
+
+
+            switch (calendar) {
+                case "Mo":
+                    selectionSubject = FeedEntry.COLUMN_NAME_MONDAY + " = ?";
+                    break;
+                case "Tu":
+                    selectionSubject = FeedEntry.COLUMN_NAME_TUESDAY + " = ?";
+                    break;
+                case "We":
+                    selectionSubject = FeedEntry.COLUMN_NAME_WEDNESDAY + " = ?";
+                    break;
+                case "Th":
+                    selectionSubject = FeedEntry.COLUMN_NAME_THURSDAY + " = ?";
+                    break;
+                case "Fr":
+                    selectionSubject = FeedEntry.COLUMN_NAME_FRIDAY + " = ?";
+                    break;
+                case "Sa":
+                    selectionSubject = FeedEntry.COLUMN_NAME_SATURDAY + " = ?";
+                    break;
+                case "Su":
+                    selectionSubject = FeedEntry.COLUMN_NAME_SUNDAY + " = ?";
+                    break;
+            }
+
+            // How you want the results sorted in the resulting Cursor
+            String sortOrderSubject =
+                    COLUMN_NAME_TITLE + " DESC";
+
+            Cursor cursorSubject = dbForSubject.query(
+                    TABLE_NAME,   // The table to query
+                    projectionSubject,             // The array of columns to return (pass null to get all)
+                    selectionSubject,              // The columns for the WHERE clause
+                    selectionArgsSubject,          // The values for the WHERE clause
+                    null,                   // don't group the rows
+                    null,                   // don't filter by row groups
+                    sortOrderSubject               // The sort order
+            );
+
+            // get all the subjects that have today marked as true
+            while (cursorSubject.moveToNext()) {
+                List<String> subject = new ArrayList<>();
+                subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(COLUMN_NAME_TITLE)));
+                subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_MONDAY)));
+                subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_TUESDAY)));
+                subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_WEDNESDAY)));
+                subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_THURSDAY)));
+                subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_FRIDAY)));
+                subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_SATURDAY)));
+                subject.add(cursorSubject.getString(cursorSubject.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_SUNDAY)));
+
+                subjectNames.add(subject);
+            }
+            cursorSubject.close();
+
+
+        return subjectNames;
+    }
+
     public static boolean write(Context context, Intent intent, String subject){
 
         // adding to database

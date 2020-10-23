@@ -3,16 +3,12 @@ package com.example.ontime.Activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,13 +17,7 @@ import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.example.ontime.Adapter.Item;
 import com.example.ontime.Adapter.MyListAdapter;
 import com.example.ontime.R;
-import com.example.ontime.ui.Add.AddFragment;
-import com.example.ontime.ui.Bag.BagFragment;
-import com.example.ontime.ui.Overview.OverviewFragment;
-import com.example.ontime.ui.Remove.RemoveFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class AddItem extends AppCompatActivity {
@@ -46,12 +36,13 @@ public class AddItem extends AppCompatActivity {
         setContentView(R.layout.activity_add_items);
         // Get subject from AddFragment
         final String subject = (String) getIntent().getSerializableExtra("Subject");
-        // Item List
-        final List<Item> defaultItemsDataItemsToAdd = new ArrayList<>();
 
         // create a view holder for this layout
         final ViewHolder viewHolder = new ViewHolder();
         viewHolder.addedItemsRecycleView.setLayoutManager(new LinearLayoutManager(this));
+
+        // create an adapter
+        final MyListAdapter mAdapterItemsToAdd = new MyListAdapter(new ArrayList<Item>(), (byte)-1, findViewById(android.R.id.content).getRootView(), false, false, false);
 
         // Add items this onclick listener add an item to the recycle viewer
         viewHolder.addItems.setOnClickListener(new View.OnClickListener() {
@@ -60,13 +51,15 @@ public class AddItem extends AppCompatActivity {
                 // getting the editText input
                 String text = viewHolder.itemName.getText().toString();
                 // the user has to input some text
+
+
                 if(text.equals("")){
                     Toast.makeText(v.getContext(), "To add an item write some text into the text field (Textbook).",
                             Toast.LENGTH_LONG).show();
                 }else {
                     // also the item cannot already be in the recycle viewer
                     boolean found = false;
-                    for(Item item: defaultItemsDataItemsToAdd){
+                    for(Item item: mAdapterItemsToAdd.getItems()){
                         if(item.getItemName().equals(viewHolder.itemName.getText().toString())){
                             found = true;
                             break;
@@ -74,11 +67,10 @@ public class AddItem extends AppCompatActivity {
                     }
                     if(!found) {
                         // this is data for recycler view
-                        defaultItemsDataItemsToAdd.add(new Item(viewHolder.itemName.getText().toString(), subject, FeedReaderDbHelperItems.isInBag(getApplicationContext(), viewHolder.itemName.getText().toString())));
-                        List<Item> itemsDataItemsToAdd = new ArrayList<>(defaultItemsDataItemsToAdd);
 
-                        // create an adapter
-                        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToAdd, (byte)-1, findViewById(android.R.id.content).getRootView(), false, false);
+                        mAdapterItemsToAdd.add(new Item(viewHolder.itemName.getText().toString(), subject, FeedReaderDbHelperItems.isInBag(getApplicationContext(), viewHolder.itemName.getText().toString())));
+
+
                         // set adapter
                         viewHolder.addedItemsRecycleView.setAdapter(mAdapterItemsToAdd);
                         // set itemAdd animator to DefaultAnimator
@@ -99,7 +91,7 @@ public class AddItem extends AppCompatActivity {
         viewHolder.create.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                if(defaultItemsDataItemsToAdd.size()==0) {
+                if( mAdapterItemsToAdd.getItems().size()==0) {
                     Toast.makeText(v.getContext(),"You must add at least one item",Toast.LENGTH_LONG).show();
                 }else {
 
@@ -107,7 +99,7 @@ public class AddItem extends AppCompatActivity {
                     // Insert the new row, returning the primary key value of the new row
 
                     // -1 means an Error has occurred
-                    if ( !FeedReaderDbHelperItems.write(v.getContext(),  getIntent(), defaultItemsDataItemsToAdd)|| !FeedReaderDbHelperSubjects.write(v.getContext(), getIntent(), subject)) {
+                    if ( !FeedReaderDbHelperItems.write(v.getContext(),  getIntent(),  mAdapterItemsToAdd.getItems())|| !FeedReaderDbHelperSubjects.write(v.getContext(), getIntent(), subject)) {
                         Toast.makeText(v.getContext(), "An error as occurred in the database report this issue",
                                 Toast.LENGTH_LONG).show();
                     }

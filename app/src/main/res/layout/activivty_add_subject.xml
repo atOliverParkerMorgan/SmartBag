@@ -162,12 +162,13 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:textColor="?attr/bgColor"
+        android:textColor="?attr/textColor"
         android:text="@string/proceed_to_add_items_button"
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Sunday" />
+        app:layout_constraintTop_toBottomOf="@+id/Sunday"
+        />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

@@ -97,7 +97,7 @@ public class EditSubject extends AppCompatActivity {
 
 
         // 3. create an adapter
-        final MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToEdit, (byte) -10, findViewById(android.R.id.content), false, true);
+        final MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToEdit, (byte) -10, findViewById(android.R.id.content), false, true, false);
         // 4. set adapter
         viewHolder.editItemsRecycleView.setAdapter(mAdapterItemsToAdd);
         // 5. set itemAdd animator to DefaultAnimator
@@ -115,8 +115,8 @@ public class EditSubject extends AppCompatActivity {
                         Toast.makeText(v.getContext(), "To add a subject write some text into the text field (Mathematics).",
                                 Toast.LENGTH_LONG).show();
                     }
-                    else if(FeedReaderDbHelperItems.subjectExistsAtLeastOnce(getApplicationContext(), subject)){
-                        Toast.makeText(v.getContext(), "The subject "+subject+" already exists. Pick an unique name",
+                    else if(FeedReaderDbHelperItems.subjectExists(getApplicationContext(), subject) && !subject.equals(viewHolder.subjectName.getText().toString())){
+                        Toast.makeText(v.getContext(), "The subject "+viewHolder.subjectName.getText().toString()+" already exists. Pick an unique name",
                                 Toast.LENGTH_LONG).show();
                     }else if(subject.length()>25){
                         Toast.makeText(v.getContext(), "The subject name is too long. The maximum length is 25 characters",
@@ -212,7 +212,7 @@ public class EditSubject extends AppCompatActivity {
                         itemsDataItemsToEdit.add(new Item(viewHolder.itemName.getText().toString(), subject, false));
 
                         // create an adapter
-                        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToEdit, (byte) -10, findViewById(android.R.id.content), false, true);
+                        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToEdit, (byte) -10, findViewById(android.R.id.content), false, true, false);
                         // set adapter
                         viewHolder.editItemsRecycleView.setAdapter(mAdapterItemsToAdd);
                         // set itemAdd animator to DefaultAnimator

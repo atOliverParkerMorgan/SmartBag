@@ -4,16 +4,15 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Path;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
@@ -33,16 +32,15 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import java.io.File;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 
 public class OverviewFragment extends Fragment {
     StorageReference storageReference;
-
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+
+
         // get most subjects in a day
         int max = Integer.MIN_VALUE;
         int current = 0;
@@ -57,11 +55,17 @@ public class OverviewFragment extends Fragment {
             }
             current = 0;
         }
-
-
+        boolean donNotShare = max==0;
+        max = Math.max(max, 4);
 
         // create view
         final View view = inflater.inflate(R.layout.fragment_overview, parent, false);
+
+        //bag code
+        final EditText code = view.findViewById(R.id.editTextNumberCode);
+
+
+
         TableLayout table = view.findViewById(R.id.mainTable);
         // views for button
         Button shareBagButton = view.findViewById(R.id.shareBagButton);
@@ -76,7 +80,7 @@ public class OverviewFragment extends Fragment {
         }
 
         // image button logic add item
-        ImageButton imageButtonAddSubject = view.findViewById(R.id.addSubjectButton);
+        ImageButton imageButtonAddSubject = view.findViewById(R.id.addSubject);
         imageButtonAddSubject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,6 +163,27 @@ public class OverviewFragment extends Fragment {
         }
         table.requestLayout();     // Not sure if this is needed.
 
+        Button addSubjectButton =  view.findViewById(R.id.showButton);
+        // hide share if there are zero items
+        if(donNotShare){
+            // hide table
+            table.setVisibility(View.GONE);
+            view.findViewById(R.id.Table).setVisibility(View.GONE);
+            // hide share button
+            shareBagButton.setVisibility(View.GONE);
+            addSubjectButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // setting add Subject first to falls to avoid error
+                    AddSubject.firstViewOfActivity = true;
+                    Intent intent = new Intent(getActivity(), AddSubject.class);
+                    startActivity(intent);
+                }
+            });
+        }else{
+            addSubjectButton.setVisibility(View.GONE);
+        }
+
         // firebase logic
         FirebaseStorage storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -179,7 +204,7 @@ public class OverviewFragment extends Fragment {
     private void uploadDatabase()
     {
             String dbname = "Subject.db";
-            Uri file = Uri.fromFile(getContext().getDatabasePath(dbname));
+            Uri file = Uri.fromFile(requireContext().getDatabasePath(dbname));
 
 
 
@@ -190,11 +215,18 @@ public class OverviewFragment extends Fragment {
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            // Defining the child of storageReference
 
+
+            // get name for database
+            // Math.random() * (max - min + 1) + min
+            StringBuilder name = new StringBuilder();
+            for (int i = 0; i < 4; i++) {
+                name.append((char) (Math.random() * ((int) 'Z' - (int) 'A' + 1) + (int)'A'));
+            }
             // adding listeners on upload
             // or failure of image
-            storageReference.child("databases/somecode.db").putFile(file)
+
+            storageReference.child("databases/"+"PASV"+".db").putFile(file)
                     .addOnSuccessListener(
                             new OnSuccessListener<UploadTask.TaskSnapshot>() {
 
@@ -226,7 +258,7 @@ public class OverviewFragment extends Fragment {
                                             "Failed " + e.getMessage(),
                                             Toast.LENGTH_LONG)
                                     .show();
-                            Log.d("errorrr", e.getMessage());
+
                         }
                     })
                     .addOnProgressListener(

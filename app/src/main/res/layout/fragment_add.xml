@@ -50,10 +50,26 @@
         android:layout_marginTop="16dp"
         android:text="@string/to_add_text_subtitle"
         android:textColor="?attr/textColor"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <Button
+        android:id="@+id/showButton"
+
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/weekendText"
+        android:textAllCaps="false"
+        android:textColor="?attr/textColor"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/instructionsAdd"
+        app:layout_constraintVertical_bias="0.45" />
 
     <TextView
         android:id="@+id/noItemsTextAdd"
@@ -79,7 +95,7 @@
         app:srcCompat="?attr/ic_to_settings" />
 
     <ImageButton
-        android:id="@+id/addSubjectButton"
+        android:id="@+id/addSubject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

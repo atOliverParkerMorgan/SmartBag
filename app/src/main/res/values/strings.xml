@@ -58,12 +58,17 @@
      <string name="settings_title">Settings</string>
      <string name="settings">Settings</string>
      <string name="dark_mode">Enable dark mode</string>
-    <string name="doNotShowSaturdaySunday">Do not show Saturday and Sunday</string>
+    <string name="doNotShowSaturdaySunday">Show Saturday and Sunday</string>
 
      <string name="editItemSwitchInstructions"><b>Edit when you need this subject</b></string>
      <string name="deleteEdit">Delete</string>
      <string name="saveChangesEdit">Save</string>
-     <string name="weekendText">enjoy your weekend 🙂</string>
+     <string name="weekendText">CLICK TO SHOW ITEMS FOR MONDAY</string>
      <string name="editSubjectItemHint">Add and Edit Items</string>
      <string name="uploadBagYourBag">Share your bag</string>
+
+     <string name="loadBag">Load Another Bag</string>
+     <string name="loadButton">Load</string>
+     <string name="yourBag">Your Bag Overview</string>
+     <string name="addSubjectButtonText">You don\'t have any subjects. Click to add some!</string>
  </resources>

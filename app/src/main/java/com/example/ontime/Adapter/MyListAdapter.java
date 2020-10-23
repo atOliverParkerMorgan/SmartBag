@@ -33,12 +33,14 @@ import static android.view.View.GONE;
     private View view;
     private boolean editTextBoolean;
     private boolean showSubjectTitle;
+    boolean goToEditSubject;
 
     // RecyclerView recyclerView;
-    public MyListAdapter(List<Item> listdata, byte add, View view, boolean showSubjectTitle, boolean editTextBoolean) {
+    public MyListAdapter(List<Item> listdata, byte add, View view, boolean showSubjectTitle, boolean editTextBoolean, boolean goToEditSubject) {
         this.add = add;
         this.Items = listdata;
         this.editTextBoolean = editTextBoolean;
+        this.goToEditSubject = goToEditSubject;
         this.showSubjectTitle = showSubjectTitle;
         List<Integer> indexToAdd = new ArrayList<>();
         List<String> subjectsToAdd = new ArrayList<>();
@@ -132,14 +134,22 @@ import static android.view.View.GONE;
 
              holder.textView.setText(Items.get(position).getItemName());
              holder.circle.setText(Items.get(position).getNameInitialsOfSubject());
-             holder.circle.setOnClickListener(new View.OnClickListener() {
-                 public void onClick(View v) {
-                     // go back to main activity
-                     Intent i = new Intent( v.getContext(), EditSubject.class);
-                     i.putExtra("subjectName", Items.get(position).getSubjectName());
-                     v.getContext().startActivity(i);
-                 }
-             });
+             if(goToEditSubject) {
+                 holder.circle.setOnClickListener(new View.OnClickListener() {
+                     public void onClick(View v) {
+                         // go back to main activity
+                         Intent i = new Intent(v.getContext(), EditSubject.class);
+                         i.putExtra("subjectName", Items.get(position).getSubjectName());
+                         v.getContext().startActivity(i);
+                     }
+                 });
+             }else{
+                 holder.circle.setOnClickListener(new View.OnClickListener() {
+                     public void onClick(View v) {
+                         Toast.makeText(v.getContext(), Items.get(position).getSubjectName(), Toast.LENGTH_LONG).show();
+                     }
+                 });
+             }
              holder.imageButton.setOnClickListener(new View.OnClickListener() {
                  public void onClick(final View v) {
                      if (add == 1) {
@@ -168,7 +178,14 @@ import static android.view.View.GONE;
                              TextView instructions = view.findViewById(R.id.instructionsAdd);
                              instructions.setAlpha(0.0f);
                          }
-                     } else if (add == 0) {
+                     }
+                     else if(add==-1){
+                         Items.remove(Items.get(position));  // remove the itemAdd from list
+                         notifyItemRemoved(position); // notify the adapter about the removed itemAdd
+                         notifyItemRangeChanged(position, Items.size());
+                     }
+
+                     else if (add == 0) {
                          FeedReaderDbHelperItems.editBag(v.getContext(), Items.get(position), false);
                          Toast.makeText(v.getContext(), Items.get(position).getItemName() + " has been removed from your bag", Toast.LENGTH_LONG).show();
                          Items.remove(Items.get(position));  // remove the itemAdd from list
@@ -243,6 +260,10 @@ import static android.view.View.GONE;
          return Items;
      }
 
+     public void add(Item item) {
+        Items.add(item);
+     }
+
      @Override
      public int getItemViewType(int position) {
          if(Items.get(position).getSubjectName()==null){
@@ -273,5 +294,6 @@ import static android.view.View.GONE;
             relativeLayout = itemView.findViewById(R.id.relativeLayout);
         }
     }
+
 
 }  

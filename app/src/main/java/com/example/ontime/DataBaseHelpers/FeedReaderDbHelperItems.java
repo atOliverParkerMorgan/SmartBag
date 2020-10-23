@@ -272,21 +272,5 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
             return false;
         }
     }
-    public static boolean subjectExistsAtLeastOnce(Context context, String subjectName){
-        FeedReaderDbHelperItems dbHelperForItem = new FeedReaderDbHelperItems(context);
-        SQLiteDatabase dbForItem = dbHelperForItem.getReadableDatabase();
-        String Query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_SUBJECT_TITLE + " = " + "'"+subjectName+"';";
-        try(Cursor cursor = dbForItem.rawQuery(Query, null)) {
-            if (cursor.getCount() <= 1) {
-                cursor.close();
-                return false;
-            }
-            cursor.close();
-            return true;
-        }catch (android.database.sqlite.SQLiteException e){
-            Log.d("stop triping bruh", String.valueOf(e));
-            return false;
-        }
-    }
 
 }

@@ -7,19 +7,6 @@
     android:background="?attr/bgColor"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/shareBagButton"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/button_borders_bigbutton"
-        android:text="@string/uploadBagYourBag"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Table" />
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="409dp"
@@ -46,128 +33,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
-    <TableLayout
-        android:id="@+id/Table"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
-
-        <TableRow android:background="@drawable/borders">
-
-            <TextView
-                android:id="@+id/Mon"
-                android:layout_height="66dp"
-                android:gravity="center"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:text="@string/mondayShort"
-                android:textColor="?attr/textColor"
-                android:textSize="18sp" />
-        </TableRow>
-
-        <TableRow android:background="@drawable/borders">
-
-            <TextView
-                android:id="@+id/Tue"
-                android:layout_height="66dp"
-                android:gravity="center"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:text="@string/tuesdayShort"
-                android:textColor="?attr/textColor"
-                android:textSize="18sp" />
-        </TableRow>
-
-        <TableRow android:background="@drawable/borders">
-
-            <TextView
-                android:id="@+id/Wed"
-                android:layout_height="66dp"
-                android:gravity="center"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:text="@string/wednesdayShort"
-                android:textColor="?attr/textColor"
-                android:textSize="18sp" />
-        </TableRow>
-
-        <TableRow android:background="@drawable/borders">
-
-            <TextView
-                android:id="@+id/Thu"
-                android:layout_height="66dp"
-                android:gravity="center"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:text="@string/thursdayShort"
-                android:textColor="?attr/textColor"
-                android:textSize="18sp" />
-        </TableRow>
-
-        <TableRow android:background="@drawable/borders">
-
-            <TextView
-                android:id="@+id/Fri"
-                android:layout_height="66dp"
-                android:gravity="center"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:text="@string/fridayShort"
-                android:textColor="?attr/textColor"
-                android:textSize="18sp" />
-        </TableRow>
-
-        <TableRow android:background="@drawable/borders">
-
-            <TextView
-                android:id="@+id/Sat"
-                android:layout_height="66dp"
-                android:gravity="center"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:text="@string/saturdayShort"
-                android:textColor="?attr/textColor"
-                android:textSize="18sp" />
-        </TableRow>
-
-        <TableRow android:background="@drawable/borders">
-
-            <TextView
-                android:id="@+id/Sun"
-                android:layout_height="66dp"
-                android:gravity="center"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:text="@string/sundayShort"
-                android:textColor="?attr/textColor"
-                android:textSize="18sp" />
-        </TableRow>
-    </TableLayout>
-
-
-    <HorizontalScrollView
-        android:id="@+id/horizontalView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:scrollbars="horizontal"
-        android:textColor="?attr/textColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/Table"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
-
-
-        <TableLayout
-            android:id="@+id/mainTable"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-
-        </TableLayout>
-    </HorizontalScrollView>
-
     <ImageButton
         android:id="@+id/settingsButton"
         android:layout_width="wrap_content"
@@ -181,7 +46,7 @@
         app:srcCompat="?attr/ic_to_settings" />
 
     <ImageButton
-        android:id="@+id/addSubjectButton"
+        android:id="@+id/addSubject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -189,8 +54,250 @@
         android:background="?attr/barColor"
         app:layout_constraintEnd_toStartOf="@+id/settingsButton"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?attr/ic_to_add_subject"
-        android:contentDescription="TODO" />
+        app:srcCompat="?attr/ic_to_add_subject" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:background="?attr/bgColor"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="1.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp">
+
+            <TextView
+                android:id="@+id/myBagInstructions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="64dp"
+                android:text="@string/yourBag"
+                android:textColor="?attr/textColor"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view" />
+
+            <Button
+                android:id="@+id/shareBagButton"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/button_borders_bigbutton"
+                android:text="@string/uploadBagYourBag"
+                android:textColor="?attr/textColor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Table" />
+
+
+            <TableLayout
+                android:id="@+id/Table"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/myBagInstructions">
+
+                <TableRow android:background="@drawable/borders">
+
+                    <TextView
+                        android:id="@+id/Mon"
+                        android:layout_height="66dp"
+                        android:gravity="center"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="@string/mondayShort"
+                        android:textColor="?attr/textColor"
+                        android:textSize="18sp" />
+                </TableRow>
+
+                <TableRow android:background="@drawable/borders">
+
+                    <TextView
+                        android:id="@+id/Tue"
+                        android:layout_height="66dp"
+                        android:gravity="center"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="@string/tuesdayShort"
+                        android:textColor="?attr/textColor"
+                        android:textSize="18sp" />
+                </TableRow>
+
+                <TableRow android:background="@drawable/borders">
+
+                    <TextView
+                        android:id="@+id/Wed"
+                        android:layout_height="66dp"
+                        android:gravity="center"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="@string/wednesdayShort"
+                        android:textColor="?attr/textColor"
+                        android:textSize="18sp" />
+                </TableRow>
+
+                <TableRow android:background="@drawable/borders">
+
+                    <TextView
+                        android:id="@+id/Thu"
+                        android:layout_height="66dp"
+                        android:gravity="center"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="@string/thursdayShort"
+                        android:textColor="?attr/textColor"
+                        android:textSize="18sp" />
+                </TableRow>
+
+                <TableRow android:background="@drawable/borders">
+
+                    <TextView
+                        android:id="@+id/Fri"
+                        android:layout_height="66dp"
+                        android:gravity="center"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="@string/fridayShort"
+                        android:textColor="?attr/textColor"
+                        android:textSize="18sp" />
+                </TableRow>
+
+                <TableRow android:background="@drawable/borders">
+
+                    <TextView
+                        android:id="@+id/Sat"
+                        android:layout_height="66dp"
+                        android:gravity="center"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="@string/saturdayShort"
+                        android:textColor="?attr/textColor"
+                        android:textSize="18sp" />
+                </TableRow>
+
+                <TableRow android:background="@drawable/borders">
+
+                    <TextView
+                        android:id="@+id/Sun"
+                        android:layout_height="66dp"
+                        android:gravity="center"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="@string/sundayShort"
+                        android:textColor="?attr/textColor"
+                        android:textSize="18sp" />
+                </TableRow>
+            </TableLayout>
+
+
+            <HorizontalScrollView
+                android:id="@+id/horizontalView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:scrollbars="horizontal"
+                android:textColor="?attr/textColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/Table"
+                app:layout_constraintTop_toBottomOf="@+id/myBagInstructions">
+
+
+                <TableLayout
+                    android:id="@+id/mainTable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+
+                </TableLayout>
+            </HorizontalScrollView>
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="24dp"
+                android:background="?attr/textColor"
+                app:layout_constraintTop_toBottomOf="@+id/editTextNumberCode" />
+
+
+            <EditText
+                android:id="@+id/editTextNumberCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:ems="5"
+                android:fadingEdge="vertical"
+                android:inputType="textMultiLine|textCapCharacters"
+                android:maxEms="5"
+                android:maxLength="4"
+                android:maxLines="1"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.17"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/loadBagInstructions" />
+
+            <TextView
+                android:id="@+id/loadBagInstructions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/loadBag"
+                android:textColor="?attr/textColor"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/buttonLoad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/button_borders_load"
+                android:text="@string/loadButton"
+                app:layout_constraintBottom_toBottomOf="@+id/view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/editTextNumberCode"
+                app:layout_constraintTop_toBottomOf="@+id/loadBagInstructions" />
+
+            <Button
+                android:id="@+id/showButton"
+
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/addSubjectButtonText"
+                android:textAllCaps="false"
+                android:textColor="?attr/textColor"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.494"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/myBagInstructions"
+                app:layout_constraintVertical_bias="0.454" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
