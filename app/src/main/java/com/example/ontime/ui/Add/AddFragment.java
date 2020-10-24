@@ -1,6 +1,8 @@
 package com.example.ontime.ui.Add;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,8 +12,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,30 +37,114 @@ import com.example.ontime.R;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Objects;
 
 public class AddFragment extends Fragment {
-
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
 
         // create view
-        final View view = inflater.inflate(R.layout.fragment_add, parent, false);
+        final View mainView = inflater.inflate(R.layout.fragment_add, parent, false);
+
+
+        // Spinner logic
+        final SharedPreferences preferences = requireActivity().getSharedPreferences("Spinner", android.content.Context.MODE_PRIVATE);
+        int spinnerIndex = preferences.getInt("Mode", 0);
+
+        // show weekend
+        SharedPreferences preferencesWeekendOn = requireActivity().getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE);
+        boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
+        Calendar calendar = Calendar.getInstance();
+        final boolean doNotShow = !((weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Sa"))
+                ||(weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Su")));
+
+        Spinner spinner = (Spinner) mainView.findViewById(R.id.daySpinner);
+        ArrayAdapter<CharSequence> adapter;
+
+        boolean tomorrowOff = false;
+        if(weekendOnBoolean && calendar.getTime().toString().substring(0,2).equals("Sa")){
+            // Create an ArrayAdapter using the string array and a default spinner layout
+            adapter = ArrayAdapter.createFromResource(requireContext(),
+                    R.array.daySpinnerWithoutWeekendAndTomorrow, android.R.layout.simple_spinner_item);
+            tomorrowOff = true;
+        }else if(weekendOnBoolean){
+            adapter = ArrayAdapter.createFromResource(requireContext(),
+                    R.array.daySpinnerWithoutWeekend, android.R.layout.simple_spinner_item);
+        }else {
+            adapter = ArrayAdapter.createFromResource(requireContext(),
+                    R.array.daySpinner, android.R.layout.simple_spinner_item);
+        }
+
+
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+        spinner.setSelection(spinnerIndex);
+
+        final boolean finalTomorrowOff = tomorrowOff;
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
+            {
+                SharedPreferences.Editor edit = preferences.edit();
+
+                //save the value same as putExtras using keyNamePair
+                edit.putInt("Mode", pos);
+                //when done save changes.
+                edit.apply();
+                // reload recyclerViewer
+                loadRecyclerViewer(getContext(), pos, mainView, getActivity(), doNotShow, finalTomorrowOff);
+
+            }
+
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+
+            }
+        });
+
+
+
+
+
+        return mainView;
+    }
+
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        // TODO Add your menu entries here
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem fav;
+        fav = menu.add("add");
+        fav.setIcon(R.drawable.ic_to_add);
+
+    }
+
+    private static void loadRecyclerViewer(final Context context, int spinnerIndex, View view, final Activity activity, boolean doNotShow, boolean tomorrowOff){
         // no items
         TextView noItems = view.findViewById(R.id.noItemsTextAdd);
         noItems.setAlpha(1.0f);
 
+        List<List<String>> subjectsAccordingToSpinner;
+        if(spinnerIndex == 0) {
+            subjectsAccordingToSpinner = FeedReaderDbHelperSubjects.getContent(context, false);
+        }else if(spinnerIndex == 1 && !tomorrowOff){
+            subjectsAccordingToSpinner = FeedReaderDbHelperSubjects.getContent(context, -1);
+        }else {
+            if(tomorrowOff) subjectsAccordingToSpinner = FeedReaderDbHelperSubjects.getContent(context, spinnerIndex+1);
+            else subjectsAccordingToSpinner = FeedReaderDbHelperSubjects.getContent(context, spinnerIndex);
+        }
+
         // init database
         final List<String> subjectNames = new ArrayList<>();
-        for (List<String> list: FeedReaderDbHelperSubjects.getContent(getContext(), false)) {
-           subjectNames.add(list.get(0));
+        for (List<String> list: subjectsAccordingToSpinner) {
+            subjectNames.add(list.get(0));
         }
 
 
         final RecyclerView ItemsToAddRecycleView = view.findViewById(R.id.ItemsToAdd);
-        ItemsToAddRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        ItemsToAddRecycleView.setLayoutManager(new LinearLayoutManager(activity));
 
         // Toolbar
 
@@ -66,8 +155,8 @@ public class AddFragment extends Fragment {
             public void onClick(View v) {
                 // setting add Subject first to falls to avoid error
                 AddSubject.firstViewOfActivity = true;
-                Intent intent = new Intent(getActivity(), AddSubject.class);
-                startActivity(intent);
+                Intent intent = new Intent(activity, AddSubject.class);
+                context.startActivity(intent);
             }
         });
 
@@ -76,8 +165,8 @@ public class AddFragment extends Fragment {
         imageButtonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), Settings.class);
-                startActivity(intent);
+                Intent intent = new Intent(activity, Settings.class);
+                context.startActivity(intent);
             }
         });
 
@@ -85,23 +174,18 @@ public class AddFragment extends Fragment {
         List<Item> inMyBag = new ArrayList<>();
         List<Item> itemsDataItemsToAdd = new ArrayList<>();
 
-        final List<String[]> myBagItems = FeedReaderDbHelperItems.getItemsInBag(getContext());
+        final List<String[]> myBagItems = FeedReaderDbHelperItems.getItemsInBag(context);
 
         //a
         for (String[] item : myBagItems) {
-            inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(getContext(), item[0])));
+            inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(context, item[0])));
         }
-        SharedPreferences preferencesWeekendOn = Objects.requireNonNull(requireActivity().getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
-        boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
-        Calendar calendar = Calendar.getInstance();
-        boolean doNotShow = !((weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Sa"))
-                ||(weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Su")));
 
-        if(doNotShow) {
+        if(doNotShow || spinnerIndex != 0) {
             // loop through all relevant subjects
             for (String subject : subjectNames) {
 
-                final List<String> itemNames = FeedReaderDbHelperItems.getContent(getContext(), subject);
+                final List<String> itemNames = FeedReaderDbHelperItems.getContent(context, subject);
                 for (String item : itemNames) {
 
                     // checking if item isn't already in bag
@@ -113,7 +197,7 @@ public class AddFragment extends Fragment {
                         }
                     }
                     if (!found) {
-                        itemsDataItemsToAdd.add(new Item(item, subject,  FeedReaderDbHelperItems.isInBag(getContext(), item)));
+                        itemsDataItemsToAdd.add(new Item(item, subject,  FeedReaderDbHelperItems.isInBag(context, item)));
                     }
                 }
 
@@ -129,37 +213,11 @@ public class AddFragment extends Fragment {
         // 5. set itemAdd animator to DefaultAnimator
         ItemsToAddRecycleView.setItemAnimator(new DefaultItemAnimator());
 
-        Button showMonday = view.findViewById(R.id.showButton);
-        //instructions logic
-        if(!doNotShow) {
-            noItems.setText("");
-            showMonday.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-        }else {
-            showMonday.setVisibility(View.GONE);
-        }
-
         if(itemsDataItemsToAdd.size()>0){
             noItems.setAlpha(0.0f);
-        }else{
-            TextView instructions = view.findViewById(R.id.instructionsAdd);
-            instructions.setAlpha(0.0f);
+
+        }else {
+            noItems.setText(R.string.noItemsInAdd);
         }
-
-        return view;
     }
-
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // TODO Add your menu entries here
-        super.onCreateOptionsMenu(menu, inflater);
-        MenuItem fav;
-        fav = menu.add("add");
-        fav.setIcon(R.drawable.ic_to_add);
-
-    }
-
 }

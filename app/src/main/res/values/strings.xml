@@ -70,5 +70,37 @@
      <string name="loadBag">Load Another Bag</string>
      <string name="loadButton">Load</string>
      <string name="yourBag">Your Bag Overview</string>
-     <string name="addSubjectButtonText">You don\'t have any subjects. Click to add some!</string>
+     <string name="theItemsAreDue">These items are due for:</string>
+     <string name="addSubjectButtonText">You haven\'t added any items yet. Click to add!</string>
+
+     <string-array name="daySpinner">
+         <item>Today</item>
+         <item>Tomorrow</item>
+         <item>Monday</item>
+         <item>Tuesday</item>
+         <item>Wednesday</item>
+         <item>Thursday</item>
+         <item>Friday</item>
+         <item>Saturday</item>
+         <item>Sunday</item>
+     </string-array>
+
+     <string-array name="daySpinnerWithoutWeekend">
+         <item>Today</item>
+         <item>Tomorrow</item>
+         <item>Monday</item>
+         <item>Tuesday</item>
+         <item>Wednesday</item>
+         <item>Thursday</item>
+         <item>Friday</item>
+     </string-array>
+     <string-array name="daySpinnerWithoutWeekendAndTomorrow">
+         <item>Today</item>
+         <item>Monday</item>
+         <item>Tuesday</item>
+         <item>Wednesday</item>
+         <item>Thursday</item>
+         <item>Friday</item>
+     </string-array>
+     <string name="Loading">Loading…</string>
  </resources>

@@ -239,7 +239,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
         return subjectNames;
     }
 
-    public static List<List<String>> getContent(Context context, String calendar){
+    public static List<List<String>> getContent(Context context, int calendar){ // overloading method fo getting subjects for specific days
         FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(context);
         SQLiteDatabase dbForSubject = dbHelperForSubject.getReadableDatabase();
         List<List<String>> subjectNames = new ArrayList<>();
@@ -264,29 +264,57 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
             final String[] selectionArgsSubject = {"true"};
 
 
+            if(calendar==-1){ // -1 is tomorrow
+                Calendar calendarDay = Calendar.getInstance();
 
-            switch (calendar) {
-                case "Mo":
-                    selectionSubject = FeedEntry.COLUMN_NAME_MONDAY + " = ?";
-                    break;
-                case "Tu":
-                    selectionSubject = FeedEntry.COLUMN_NAME_TUESDAY + " = ?";
-                    break;
-                case "We":
-                    selectionSubject = FeedEntry.COLUMN_NAME_WEDNESDAY + " = ?";
-                    break;
-                case "Th":
-                    selectionSubject = FeedEntry.COLUMN_NAME_THURSDAY + " = ?";
-                    break;
-                case "Fr":
-                    selectionSubject = FeedEntry.COLUMN_NAME_FRIDAY + " = ?";
-                    break;
-                case "Sa":
-                    selectionSubject = FeedEntry.COLUMN_NAME_SATURDAY + " = ?";
-                    break;
-                case "Su":
-                    selectionSubject = FeedEntry.COLUMN_NAME_SUNDAY + " = ?";
-                    break;
+                switch (calendarDay.getTime().toString().substring(0, 2)) {
+                    case "Mo":
+                        selectionSubject = FeedEntry.COLUMN_NAME_TUESDAY + " = ?";
+                        break;
+                    case "Tu":
+                        selectionSubject = FeedEntry.COLUMN_NAME_WEDNESDAY + " = ?";
+                        break;
+                    case "We":
+                        selectionSubject = FeedEntry.COLUMN_NAME_THURSDAY + " = ?";
+                        break;
+                    case "Th":
+                        selectionSubject = FeedEntry.COLUMN_NAME_FRIDAY + " = ?";
+                        break;
+                    case "Fr":
+                        selectionSubject = FeedEntry.COLUMN_NAME_SATURDAY + " = ?";
+                        break;
+                    case "Sa":
+                        selectionSubject = FeedEntry.COLUMN_NAME_SUNDAY + " = ?";
+                        break;
+                    case "Su":
+                        selectionSubject = FeedEntry.COLUMN_NAME_MONDAY + " = ?";
+                        break;
+                }
+            }
+            else {
+                switch (calendar) {
+                    case 2:
+                        selectionSubject = FeedEntry.COLUMN_NAME_MONDAY + " = ?";
+                        break;
+                    case 3:
+                        selectionSubject = FeedEntry.COLUMN_NAME_TUESDAY + " = ?";
+                        break;
+                    case 4:
+                        selectionSubject = FeedEntry.COLUMN_NAME_WEDNESDAY + " = ?";
+                        break;
+                    case 5:
+                        selectionSubject = FeedEntry.COLUMN_NAME_THURSDAY + " = ?";
+                        break;
+                    case 6:
+                        selectionSubject = FeedEntry.COLUMN_NAME_FRIDAY + " = ?";
+                        break;
+                    case 7:
+                        selectionSubject = FeedEntry.COLUMN_NAME_SATURDAY + " = ?";
+                        break;
+                    case 8:
+                        selectionSubject = FeedEntry.COLUMN_NAME_SUNDAY + " = ?";
+                        break;
+                }
             }
 
             // How you want the results sorted in the resulting Cursor

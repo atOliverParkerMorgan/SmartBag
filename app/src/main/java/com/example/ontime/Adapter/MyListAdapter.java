@@ -146,7 +146,7 @@ import static android.view.View.GONE;
              }else{
                  holder.circle.setOnClickListener(new View.OnClickListener() {
                      public void onClick(View v) {
-                         Toast.makeText(v.getContext(), Items.get(position).getSubjectName(), Toast.LENGTH_LONG).show();
+                         Toast.makeText(v.getContext(), Items.get(position).getSubjectName(), Toast.LENGTH_SHORT).show();
                      }
                  });
              }
@@ -154,7 +154,7 @@ import static android.view.View.GONE;
                  public void onClick(final View v) {
                      if (add == 1) {
                          FeedReaderDbHelperItems.editBag(v.getContext(), Items.get(position), true);
-                         Toast.makeText(v.getContext(), Items.get(position).getItemName() + " has been added to your bag", Toast.LENGTH_LONG).show();
+                         Toast.makeText(v.getContext(), Items.get(position).getItemName() + " has been added to your bag", Toast.LENGTH_SHORT).show();
                          Items.remove(Items.get(position));  // remove the itemAdd from list
                          notifyItemRemoved(position); // notify the adapter about the removed itemAdd
                          notifyItemRangeChanged(position, Items.size());
@@ -174,10 +174,11 @@ import static android.view.View.GONE;
                          noItems.setAlpha(1.0f);
                          if (Items.size() > 0) {
                              noItems.setAlpha(0.0f);
-                         } else {
-                             TextView instructions = view.findViewById(R.id.instructionsAdd);
-                             instructions.setAlpha(0.0f);
+                         }else {
+                             Items.size();
+                             noItems.setText(R.string.noItemsInAdd);
                          }
+
                      }
                      else if(add==-1){
                          Items.remove(Items.get(position));  // remove the itemAdd from list
@@ -187,7 +188,7 @@ import static android.view.View.GONE;
 
                      else if (add == 0) {
                          FeedReaderDbHelperItems.editBag(v.getContext(), Items.get(position), false);
-                         Toast.makeText(v.getContext(), Items.get(position).getItemName() + " has been removed from your bag", Toast.LENGTH_LONG).show();
+                         Toast.makeText(v.getContext(), Items.get(position).getItemName() + " has been removed from your bag", Toast.LENGTH_SHORT).show();
                          Items.remove(Items.get(position));  // remove the itemAdd from list
                          notifyItemRemoved(position); // notify the adapter about the removed itemAdd
                          notifyItemRangeChanged(position, Items.size());
@@ -207,9 +208,9 @@ import static android.view.View.GONE;
                          noItems.setAlpha(1.0f);
                          if (Items.size() > 0) {
                              noItems.setAlpha(0.0f);
-                         } else {
-                             TextView instructions = view.findViewById(R.id.instructionsRemove);
-                             instructions.setAlpha(0.0f);
+                         }else {
+                             Items.size();
+                             noItems.setText(R.string.noItemsInRemove);
                          }
 
                      } else if (add == -10) {
@@ -221,7 +222,7 @@ import static android.view.View.GONE;
                              public void onClick(DialogInterface dialog, int which) {
                                  // continue with delete
                                  FeedReaderDbHelperItems.deleteItem(v.getContext(), Items.get(position).getItemName());
-                                 Toast.makeText(v.getContext(), Items.get(position).getItemName() + " has been removed from your bag", Toast.LENGTH_LONG).show();
+                                 Toast.makeText(v.getContext(), Items.get(position).getItemName() + " has been removed from your bag", Toast.LENGTH_SHORT).show();
                                  Items.remove(Items.get(position));  // remove the itemAdd from list
                                  notifyItemRemoved(position); // notify the adapter about the removed itemAdd
                                  notifyItemRangeChanged(position, Items.size());

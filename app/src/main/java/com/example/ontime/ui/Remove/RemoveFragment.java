@@ -1,12 +1,17 @@
 package com.example.ontime.ui.Remove;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -34,25 +39,85 @@ public class RemoveFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // create view
-        final View view = inflater.inflate(R.layout.fragment_remove, parent, false);
+        final View mainView = inflater.inflate(R.layout.fragment_remove, parent, false);
 
+        // Spinner logic
+        final SharedPreferences preferences = requireActivity().getSharedPreferences("Spinner", android.content.Context.MODE_PRIVATE);
+        int spinnerIndex = preferences.getInt("Mode", 0);
+
+        // show weekend
+        SharedPreferences preferencesWeekendOn = requireActivity().getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE);
+        boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
+        Calendar calendar = Calendar.getInstance();
+        final boolean doNotShow = !((weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Sa"))
+                ||(weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Su")));
+
+        boolean tomorrowOff = false;
+        Spinner spinner = (Spinner) mainView.findViewById(R.id.daySpinner);
+        ArrayAdapter<CharSequence> adapter;
+        if(weekendOnBoolean && calendar.getTime().toString().substring(0,2).equals("Sa")){
+            // Create an ArrayAdapter using the string array and a default spinner layout
+            adapter = ArrayAdapter.createFromResource(requireContext(),
+                    R.array.daySpinnerWithoutWeekendAndTomorrow, android.R.layout.simple_spinner_item);
+            tomorrowOff = true;
+        }else if(weekendOnBoolean){
+            adapter = ArrayAdapter.createFromResource(requireContext(),
+                    R.array.daySpinnerWithoutWeekend, android.R.layout.simple_spinner_item);
+        }else {
+            adapter = ArrayAdapter.createFromResource(requireContext(),
+                    R.array.daySpinner, android.R.layout.simple_spinner_item);
+        }
+
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setSelection(spinnerIndex);
+
+        final boolean finalTomorrowOff = tomorrowOff;
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
+            {
+                SharedPreferences.Editor edit = preferences.edit();
+
+                //save the value same as putExtras using keyNamePair
+                edit.putInt("Mode", pos);
+                //when done save changes.
+                edit.apply();
+                loadRecyclerViewer(getContext(), pos, mainView, getActivity(), doNotShow, finalTomorrowOff);
+            }
+
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+
+            }
+        });
+
+
+        return mainView;
+    }
+
+    private static void loadRecyclerViewer(final Context context, int spinnerIndex, View view, final Activity activity, boolean doNotShow, boolean tomorrowOff) {
         // no items
         TextView noItems = view.findViewById(R.id.noItemsTextRemove);
         noItems.setAlpha(1.0f);
 
-        // init database
+        List<List<String>> subjectsAccordingToSpinner;
+        if(spinnerIndex == 0) {
+            subjectsAccordingToSpinner = FeedReaderDbHelperSubjects.getContent(context, false);
+        }else if(spinnerIndex == 1 && !tomorrowOff){
+            subjectsAccordingToSpinner = FeedReaderDbHelperSubjects.getContent(context, -1);
+        }else {
+            if(tomorrowOff) subjectsAccordingToSpinner = FeedReaderDbHelperSubjects.getContent(context, spinnerIndex+1);
+            else subjectsAccordingToSpinner = FeedReaderDbHelperSubjects.getContent(context, spinnerIndex);
+        }
+
         // get subject names that aren't for today
         final List<String> subjectNames = new ArrayList<>();
-        SharedPreferences preferencesWeekendOn = Objects.requireNonNull(requireActivity().getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
-        boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
-        Calendar calendar = Calendar.getInstance();
-        boolean doNotShow = !((weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Sa"))
-                ||(weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Su")));
-
-        if(doNotShow) {
-            for (List<String> list : FeedReaderDbHelperSubjects.getContent(getContext(), true)) {
+        if(doNotShow || spinnerIndex!=0) {
+            for (List<String> list : FeedReaderDbHelperSubjects.getContent(context, true)) {
                 boolean found = false;
-                for (List<String> list2 : FeedReaderDbHelperSubjects.getContent(getContext(), false)) {
+                for (List<String> list2 : subjectsAccordingToSpinner) {
                     if (list.equals(list2)) {
                         found = true;
                         break;
@@ -64,6 +129,7 @@ public class RemoveFragment extends Fragment {
             }
         }
 
+
         // image button logic add item
         ImageButton imageButtonAddSubject = view.findViewById(R.id.addSubject);
         imageButtonAddSubject.setOnClickListener(new View.OnClickListener() {
@@ -71,8 +137,8 @@ public class RemoveFragment extends Fragment {
             public void onClick(View v) {
                 // setting add Subject first to falls to avoid error
                 AddSubject.firstViewOfActivity = true;
-                Intent intent = new Intent(getActivity(), AddSubject.class);
-                startActivity(intent);
+                Intent intent = new Intent(activity, AddSubject.class);
+                context.startActivity(intent);
             }
         });
 
@@ -81,22 +147,25 @@ public class RemoveFragment extends Fragment {
         imageButtonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), Settings.class);
-                startActivity(intent);
+                Intent intent = new Intent(activity, Settings.class);
+                context.startActivity(intent);
             }
         });
 
+
+
+
         final RecyclerView ItemsToRemoveRecycleView = view.findViewById(R.id.ItemsToRemove);
-        ItemsToRemoveRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        ItemsToRemoveRecycleView.setLayoutManager(new LinearLayoutManager(activity));
 
         // this is data for recycler view
         List<Item> inMyBag = new ArrayList<>();
         List<Item> itemsDataItemsToRemove = new ArrayList<>();
-        if(doNotShow) {
+        if(doNotShow || spinnerIndex != 0) {
             // adding all of my items in bag to list
-            final List<String[]> myBagItems = FeedReaderDbHelperItems.getItemsInBag(getContext());
+            final List<String[]> myBagItems = FeedReaderDbHelperItems.getItemsInBag(context);
             for (String[] item : myBagItems) {
-                inMyBag.add(new Item(item[0], item[1],  FeedReaderDbHelperItems.isInBag(getContext(), item[0])));
+                inMyBag.add(new Item(item[0], item[1],  FeedReaderDbHelperItems.isInBag(context, item[0])));
             }
 
 
@@ -105,7 +174,7 @@ public class RemoveFragment extends Fragment {
             for (String subject : subjectNames) {
 
                 // get the items that i need for today
-                final List<String> itemsNotForToday = FeedReaderDbHelperItems.getContent(getContext(), subject);
+                final List<String> itemsNotForToday = FeedReaderDbHelperItems.getContent(context, subject);
                 for (Item itemInBag : inMyBag) {
 
                     boolean inBag = false;
@@ -120,7 +189,7 @@ public class RemoveFragment extends Fragment {
 
                     }
                     if (inBag) {
-                        itemsDataItemsToRemove.add(new Item(foundItem, subject, FeedReaderDbHelperItems.isInBag(getContext(),foundItem)));
+                        itemsDataItemsToRemove.add(new Item(foundItem, subject, FeedReaderDbHelperItems.isInBag(context,foundItem)));
                     }
 
 
@@ -136,16 +205,10 @@ public class RemoveFragment extends Fragment {
         // 5. set item to remove animator to DefaultAnimator
         ItemsToRemoveRecycleView.setItemAnimator(new DefaultItemAnimator());
 
-        //instructions logic
-        if(!doNotShow) noItems.setText(R.string.weekendText);
         if(itemsDataItemsToRemove.size()>0){
             noItems.setAlpha(0.0f);
         }else{
-            TextView instructions = view.findViewById(R.id.instructionsRemove);
-            instructions.setAlpha(0.0f);
-
+            noItems.setText(R.string.noItemsInRemove);
         }
-
-        return view;
     }
 }

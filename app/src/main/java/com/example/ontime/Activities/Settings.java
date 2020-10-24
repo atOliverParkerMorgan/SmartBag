@@ -30,7 +30,7 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // create view
 
-        SharedPreferences preferencesDarkMode = Objects.requireNonNull(this.getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE));
+        final SharedPreferences preferencesDarkMode = Objects.requireNonNull(this.getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE));
         boolean darkModeOn = preferencesDarkMode.getBoolean("Mode", true);
 
         SharedPreferences preferencesWeekendOn = Objects.requireNonNull(this.getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
@@ -80,7 +80,16 @@ public class Settings extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 //declare the shardPreferences variable..
                 SharedPreferences sp = Objects.requireNonNull(getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
+                // if due is set to Saturday or Sunday and do not show Weekend is checked set due to Today.
+                if(!isChecked) {
+                    SharedPreferences preferencesDue = getSharedPreferences("Spinner", android.content.Context.MODE_PRIVATE);
+                    if(preferencesDue.getInt("Mode", 0)== 8 || preferencesDue.getInt("Mode", 0)==7 ) {
+                        SharedPreferences.Editor editDue = preferencesDue.edit();
 
+                        editDue.putInt("Mode", 0);
+                        editDue.apply();
+                    }
+                }
                 // to save data you have to call the editor
                 SharedPreferences.Editor edit = sp.edit();
 
