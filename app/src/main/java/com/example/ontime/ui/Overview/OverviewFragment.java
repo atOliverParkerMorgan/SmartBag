@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +15,11 @@ import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -38,6 +41,10 @@ import java.util.Objects;
 
 public class OverviewFragment extends Fragment {
     StorageReference storageReference;
+    ProgressBar progressBar;
+    TextView codeText;
+    TextView codeTextInstructions;
+    Button shareBagButton;
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
 
 
@@ -61,14 +68,28 @@ public class OverviewFragment extends Fragment {
         // create view
         final View view = inflater.inflate(R.layout.fragment_overview, parent, false);
 
+        progressBar = view.findViewById(R.id.progress_bar);
+        codeText = view.findViewById(R.id.codeText);
+        codeTextInstructions = view.findViewById(R.id.codeTextInstructions);
+        shareBagButton = view.findViewById(R.id.shareBagButton);
+
+        // get code if already stored
+        SharedPreferences preferences = requireContext().getSharedPreferences("Code", android.content.Context.MODE_PRIVATE);
+        String codeName = preferences.getString("Mode", "");
+
+        if(codeName!=null && !codeName.equals("")) {
+            codeText.setText(codeName);
+            codeTextInstructions.setText(R.string.codeNameInstructions);
+            shareBagButton.setText(R.string.updateBag);
+        }
+
         //bag code
-        final EditText code = view.findViewById(R.id.editTextNumberCode);
+        final EditText code = view.findViewById(R.id.editTextCode);
 
 
 
         TableLayout table = view.findViewById(R.id.mainTable);
-        // views for button
-        Button shareBagButton = view.findViewById(R.id.shareBagButton);
+
         // hide weekend
         SharedPreferences preferencesWeekendOn = Objects.requireNonNull(requireActivity().getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
         boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
@@ -203,30 +224,41 @@ public class OverviewFragment extends Fragment {
 
     private void uploadDatabase()
     {
-            String dbname = "Subject.db";
-            Uri file = Uri.fromFile(requireContext().getDatabasePath(dbname));
+            // get Subject database
+            String dbnameSubjects = "Subject.db";
+            Uri databaseSubjects = Uri.fromFile(requireContext().getDatabasePath(dbnameSubjects));
+
+            // get Items database
+            String dbnameItems = "Items.db";
+            Uri databaseItems = Uri.fromFile(requireContext().getDatabasePath(dbnameItems));
+
+            // get code if already stored
+            SharedPreferences preferences = requireContext().getSharedPreferences("Code", android.content.Context.MODE_PRIVATE);
+            String codeName = preferences.getString("Mode", "");
+
+            if(codeName==null || codeName.equals("")) {
+                // get a UNIQUE name for database
+                // Math.random() * (max - min + 1) + min
+                StringBuilder name = new StringBuilder();
+                for (int i = 0; i < 6; i++) {
+                    name.append((char) (Math.random() * ((int) 'Z' - (int) 'A' + 1) + (int) 'A'));
+                }
+                codeName = name.toString();
+                // saving new code to shared preferences
+
+                SharedPreferences.Editor edit = preferences.edit();
+
+                edit.putString("Mode", codeName);
 
 
+                edit.apply();
 
 
-            // Code for showing progressDialog while uploading
-            final ProgressDialog progressDialog
-                    = new ProgressDialog(getContext());
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
-
-
-
-            // get name for database
-            // Math.random() * (max - min + 1) + min
-            StringBuilder name = new StringBuilder();
-            for (int i = 0; i < 4; i++) {
-                name.append((char) (Math.random() * ((int) 'Z' - (int) 'A' + 1) + (int)'A'));
             }
             // adding listeners on upload
             // or failure of image
 
-            storageReference.child("databases/"+"PASV"+".db").putFile(file)
+            storageReference.child("subjects/"+codeName+".db").putFile(databaseSubjects)
                     .addOnSuccessListener(
                             new OnSuccessListener<UploadTask.TaskSnapshot>() {
 
@@ -234,15 +266,6 @@ public class OverviewFragment extends Fragment {
                                 public void onSuccess(
                                         UploadTask.TaskSnapshot taskSnapshot)
                                 {
-
-                                    // Image uploaded successfully
-                                    // Dismiss dialog
-                                    progressDialog.dismiss();
-                                    Toast
-                                            .makeText(getContext(),
-                                                    "Your bag has been Uploaded!!",
-                                                    Toast.LENGTH_SHORT)
-                                            .show();
                                 }
                             })
 
@@ -250,14 +273,7 @@ public class OverviewFragment extends Fragment {
                         @Override
                         public void onFailure(@NonNull Exception e)
                         {
-
-                            // Error, Image not uploaded
-                            progressDialog.dismiss();
-                            Toast
-                                    .makeText(getContext(),
-                                            "Failed " + e.getMessage(),
-                                            Toast.LENGTH_LONG)
-                                    .show();
+                            Toast.makeText(getContext(), "Error, check your internet connection.", Toast.LENGTH_LONG).show();
 
                         }
                     })
@@ -270,15 +286,60 @@ public class OverviewFragment extends Fragment {
                                 public void onProgress(
                                         @NonNull UploadTask.TaskSnapshot taskSnapshot)
                                 {
-                                    double progress
-                                            = (100.0
-                                            * taskSnapshot.getBytesTransferred()
-                                            / taskSnapshot.getTotalByteCount());
-                                    progressDialog.setMessage(
-                                            "Uploaded "
-                                                    + (int)progress + "%");
+                                    double progress = (50.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                                    progressBar.setProgress((int) progress);
                                 }
                             });
+
+        final String finalCodeName = codeName;
+        storageReference.child("items/"+codeName+".db").putFile(databaseItems)
+                .addOnSuccessListener(
+                        new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+                            @Override
+                            public void onSuccess(
+                                    UploadTask.TaskSnapshot taskSnapshot)
+                            {
+                                // stay in place for half a second after completion
+                                Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        progressBar.setProgress(0);
+                                    }
+                                }, 1500);
+
+                                codeText.setText( finalCodeName);
+                                codeTextInstructions.setText(R.string.codeNameInstructions);
+                                shareBagButton.setText(R.string.updateBag);
+
+
+                                Toast.makeText(getContext(), "Success, your bag has been uploaded.", Toast.LENGTH_LONG).show();
+                            }
+                        })
+
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e)
+                    {
+
+                        Toast.makeText(getContext(), "Error, check your internet connection.", Toast.LENGTH_LONG).show();
+
+                    }
+                })
+                .addOnProgressListener(
+                        new OnProgressListener<UploadTask.TaskSnapshot>() {
+
+                            // Progress Listener for loading
+                            // percentage on the dialog box
+                            @Override
+                            public void onProgress(
+                                    @NonNull UploadTask.TaskSnapshot taskSnapshot)
+                            {
+                                double progress = 50.0+(50.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                                progressBar.setProgress((int) progress);
+                            }
+                        });
 
     }
 }

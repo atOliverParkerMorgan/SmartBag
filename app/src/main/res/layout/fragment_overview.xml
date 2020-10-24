@@ -67,7 +67,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/parent"
@@ -98,11 +98,11 @@
                 android:layout_marginBottom="32dp"
                 android:background="@drawable/button_borders_bigbutton"
                 android:text="@string/uploadBagYourBag"
-                android:textColor="?attr/textColor"
+                android:textColor="#ffffff"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Table" />
+                app:layout_constraintTop_toBottomOf="@+id/codeTextInstructions" />
 
 
             <TableLayout
@@ -233,11 +233,11 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="24dp"
                 android:background="?attr/textColor"
-                app:layout_constraintTop_toBottomOf="@+id/editTextNumberCode" />
+                app:layout_constraintTop_toBottomOf="@+id/editTextCode" />
 
 
             <EditText
-                android:id="@+id/editTextNumberCode"
+                android:id="@+id/editTextCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
@@ -245,7 +245,7 @@
                 android:fadingEdge="vertical"
                 android:inputType="textMultiLine|textCapCharacters"
                 android:maxEms="5"
-                android:maxLength="4"
+                android:maxLength="6"
                 android:maxLines="1"
                 android:textAlignment="center"
                 android:textSize="24sp"
@@ -275,9 +275,10 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/button_borders_load"
                 android:text="@string/loadButton"
+                android:textColor="#ffffff"
                 app:layout_constraintBottom_toBottomOf="@+id/view"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/editTextNumberCode"
+                app:layout_constraintStart_toEndOf="@+id/editTextCode"
                 app:layout_constraintTop_toBottomOf="@+id/loadBagInstructions" />
 
             <Button
@@ -296,6 +297,48 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/myBagInstructions"
                 app:layout_constraintVertical_bias="0.454" />
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="76dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Table" />
+
+            <TextView
+                android:id="@+id/codeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/progress_bar" />
+
+            <TextView
+                android:id="@+id/codeTextInstructions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/progress_bar" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="132dp" />
+
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 

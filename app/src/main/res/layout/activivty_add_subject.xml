@@ -162,7 +162,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:textColor="?attr/textColor"
+        android:textColor="#ffffff"
         android:text="@string/proceed_to_add_items_button"
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"

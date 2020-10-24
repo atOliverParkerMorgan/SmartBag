@@ -65,7 +65,7 @@
      <string name="saveChangesEdit">Save</string>
      <string name="weekendText">CLICK TO SHOW ITEMS FOR MONDAY</string>
      <string name="editSubjectItemHint">Add and Edit Items</string>
-     <string name="uploadBagYourBag">Share your bag</string>
+     <string name="uploadBagYourBag">upload your bag</string>
 
      <string name="loadBag">Load Another Bag</string>
      <string name="loadButton">Load</string>
@@ -103,4 +103,6 @@
          <item>Friday</item>
      </string-array>
      <string name="Loading">Loading…</string>
+     <string name="codeNameInstructions"><font size="14">Your code for sharing your bag: </font></string>
+     <string name="updateBag">UPDATE YOUR BAG</string>
  </resources>
