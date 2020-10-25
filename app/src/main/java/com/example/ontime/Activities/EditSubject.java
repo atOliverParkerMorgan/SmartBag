@@ -32,9 +32,6 @@ import java.util.Objects;
 
 public class EditSubject extends AppCompatActivity {
 
-    public static boolean firstViewOfActivity = true;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
