@@ -73,7 +73,7 @@ public class BagFragment extends Fragment {
         // loop through all relevant subjects
 
         // create an adapter
-        MyBagAdapter mAdapterItemsToAdd = new MyBagAdapter(inMyBag, true);
+        MyBagAdapter mAdapterItemsToAdd = new MyBagAdapter(inMyBag, true, getActivity());
         // set adapter
         ItemsInBagRecycleView.setAdapter(mAdapterItemsToAdd);
         // set itemAdd animator to DefaultAnimator

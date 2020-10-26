@@ -1,5 +1,6 @@
 package com.example.ontime.Activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -22,7 +23,8 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
+        //getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,new IntroductionFragment()).commit();
 
         SharedPreferences preferences = Objects.requireNonNull(this.getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE));
         boolean darkModeOn = preferences.getBoolean("Mode", true);

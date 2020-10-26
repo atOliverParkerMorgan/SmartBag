@@ -2,7 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.ontime">
 
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+
     <application
+
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
@@ -11,6 +19,7 @@
         android:supportsRtl="true"
         android:configChanges="uiMode"
         android:theme="@style/DARK">
+
         <activity
             android:name=".Activities.MainActivity"
             android:configChanges="orientation"
@@ -18,8 +27,8 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"
+                    />
             </intent-filter>
         </activity>
         <activity
@@ -32,8 +41,13 @@
             android:name=".Activities.EditSubject" >
         </activity>
         <activity
-            android:name=".Activities.Settings" >
+            android:name=".Activities.Settings">
         </activity>
+        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-8154771690714775~9428727911"/>
+
     </application>
 
 </manifest>

@@ -88,7 +88,7 @@
      <string-array name="daySpinnerWithoutWeekend">
          <item>Today</item>
          <item>Tomorrow</item>
-         <item>Monday</item>
+         <item>Monday</item>00
          <item>Tuesday</item>
          <item>Wednesday</item>
          <item>Thursday</item>
@@ -105,4 +105,9 @@
      <string name="Loading">Loading…</string>
      <string name="codeNameInstructions"><font size="14">Your code for sharing your bag: </font></string>
      <string name="updateBag">UPDATE YOUR BAG</string>
+     <string name="code">CODE</string>
+
+     <!-- Tutorial -->
+     <string name="title_single_shot">Test</string>
+     <string name="switchInstructions">Which days of the week do you want this subject in your bag?</string>
  </resources>

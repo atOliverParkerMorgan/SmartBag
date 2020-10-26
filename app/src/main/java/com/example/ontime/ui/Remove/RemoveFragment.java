@@ -199,7 +199,7 @@ public class RemoveFragment extends Fragment {
         }
 
         // 3. create an adapter
-        MyListAdapter mAdapterItemsToRemove = new MyListAdapter(itemsDataItemsToRemove,(byte) 0, view, true, false, true);
+        MyListAdapter mAdapterItemsToRemove = new MyListAdapter(itemsDataItemsToRemove,(byte) 0, view, true, false, true, activity);
         // 4. set adapter
         ItemsToRemoveRecycleView.setAdapter(mAdapterItemsToRemove);
         // 5. set item to remove animator to DefaultAnimator

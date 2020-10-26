@@ -1,5 +1,6 @@
  package com.example.ontime.Adapter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +25,9 @@ import com.example.ontime.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+
 import static android.view.View.GONE;
 
 
@@ -34,14 +38,16 @@ import static android.view.View.GONE;
     private boolean editTextBoolean;
     private boolean showSubjectTitle;
     boolean goToEditSubject;
+    private Activity mainActivity;
 
     // RecyclerView recyclerView;
-    public MyListAdapter(List<Item> listdata, byte add, View view, boolean showSubjectTitle, boolean editTextBoolean, boolean goToEditSubject) {
+    public MyListAdapter(List<Item> listdata, byte add, View view, boolean showSubjectTitle, boolean editTextBoolean, boolean goToEditSubject, Activity mainActivity) {
         this.add = add;
         this.Items = listdata;
         this.editTextBoolean = editTextBoolean;
         this.goToEditSubject = goToEditSubject;
         this.showSubjectTitle = showSubjectTitle;
+        this.mainActivity = mainActivity;
         List<Integer> indexToAdd = new ArrayList<>();
         List<String> subjectsToAdd = new ArrayList<>();
         if(showSubjectTitle) {
@@ -128,6 +134,29 @@ import static android.view.View.GONE;
                      }
                  });
 
+             }else{
+                 // tutorial
+                 if(add==1 && position == 1){ // only for the first element
+                     // tutorial for add recycler
+                     ShowcaseConfig config = new ShowcaseConfig();
+                     config.setDelay(200); // half second between each showcase view
+                     MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mainActivity, "recyclerViewerTutorialAdd");
+                     sequence.setConfig(config);
+                     sequence.addSequenceItem(holder.circle,
+                             "Click the icon edit this subject", "NEXT");
+                     sequence.addSequenceItem(holder.imageButton,
+                             "Click here to add this item to your bag", "GOT IT");
+                     sequence.start();
+                 }else if(add==0 && position == 1){
+                     // tutorial for add recycler
+                     ShowcaseConfig config = new ShowcaseConfig();
+                     config.setDelay(200); // half second between each showcase view
+                     MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mainActivity, "recyclerViewerTutorialRemove");
+                     sequence.setConfig(config);
+                     sequence.addSequenceItem(holder.imageButton,
+                             "Click here to remove this item from your bag", "GOT IT");
+                     sequence.start();
+                 }
              }
 
 
@@ -153,6 +182,7 @@ import static android.view.View.GONE;
              holder.imageButton.setOnClickListener(new View.OnClickListener() {
                  public void onClick(final View v) {
                      if (add == 1) {
+
                          FeedReaderDbHelperItems.editBag(v.getContext(), Items.get(position), true);
                          Toast.makeText(v.getContext(), Items.get(position).getItemName() + " has been added to your bag", Toast.LENGTH_SHORT).show();
                          Items.remove(Items.get(position));  // remove the itemAdd from list
@@ -187,6 +217,7 @@ import static android.view.View.GONE;
                      }
 
                      else if (add == 0) {
+
                          FeedReaderDbHelperItems.editBag(v.getContext(), Items.get(position), false);
                          Toast.makeText(v.getContext(), Items.get(position).getItemName() + " has been removed from your bag", Toast.LENGTH_SHORT).show();
                          Items.remove(Items.get(position));  // remove the itemAdd from list
@@ -236,17 +267,6 @@ import static android.view.View.GONE;
                          });
                          alert.show();
 
-
-                         // instruction logic
-    //                        TextView noItems = view.findViewById(R.id.noItemsTextRemove);
-    //                        noItems.setAlpha(1.0f);
-    //                        if (Items.size() > 0) {
-    //                            noItems.setAlpha(0.0f);
-    //                        } else {
-    //                            TextView instructions = view.findViewById(R.id.instructionsRemove);
-    //                            instructions.setAlpha(0.0f);
-    //                        }
-
                      }
 
 
@@ -279,7 +299,7 @@ import static android.view.View.GONE;
         return Items.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageButton imageButton;
         TextView textView;
         Button circle;

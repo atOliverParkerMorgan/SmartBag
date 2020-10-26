@@ -94,7 +94,7 @@ public class EditSubject extends AppCompatActivity {
 
 
         // 3. create an adapter
-        final MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToEdit, (byte) -10, findViewById(android.R.id.content), false, true, false);
+        final MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToEdit, (byte) -10, findViewById(android.R.id.content), false, true, false, this);
         // 4. set adapter
         viewHolder.editItemsRecycleView.setAdapter(mAdapterItemsToAdd);
         // 5. set itemAdd animator to DefaultAnimator
@@ -209,7 +209,7 @@ public class EditSubject extends AppCompatActivity {
                         itemsDataItemsToEdit.add(new Item(viewHolder.itemName.getText().toString(), subject, false));
 
                         // create an adapter
-                        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToEdit, (byte) -10, findViewById(android.R.id.content), false, true, false);
+                        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToEdit, (byte) -10, findViewById(android.R.id.content), false, true, false, EditSubject.this);
                         // set adapter
                         viewHolder.editItemsRecycleView.setAdapter(mAdapterItemsToAdd);
                         // set itemAdd animator to DefaultAnimator

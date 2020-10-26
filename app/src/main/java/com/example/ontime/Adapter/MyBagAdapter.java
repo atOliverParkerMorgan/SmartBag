@@ -1,5 +1,6 @@
 package com.example.ontime.Adapter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +19,17 @@ import com.example.ontime.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+
 
 public class MyBagAdapter extends RecyclerView.Adapter<MyBagAdapter.ViewHolder>{
     private List<Item> Items;
+    private Activity mainActivity;
 
     // RecyclerView recyclerView;
-    public MyBagAdapter(List<Item> listdata, boolean showSubjectTitle) {
+    public MyBagAdapter(List<Item> listdata, boolean showSubjectTitle, Activity mainActivity) {
+        this.mainActivity = mainActivity;
 
         this.Items = listdata;
         List<Integer> indexToAdd = new ArrayList<>();
@@ -56,6 +62,17 @@ public class MyBagAdapter extends RecyclerView.Adapter<MyBagAdapter.ViewHolder>{
         if (holder.getItemViewType() == 0) {
             holder.textView.setText(Items.get(position).getItemName());
         }else {
+            // tutorial
+            if(position == 1) {
+                ShowcaseConfig config = new ShowcaseConfig();
+                config.setDelay(200); // half second between each showcase view
+                MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mainActivity, "recyclerViewerTutorialRemoveFromBag");
+                sequence.setConfig(config);
+                sequence.addSequenceItem(holder.imageButton,
+                        "Click here to remove this item from your bag", "GOT IT");
+                sequence.start();
+            }
+
             holder.textView.setText(Items.get(position).getItemName());
             holder.circle.setText(Items.get(position).getNameInitialsOfSubject());
             holder.circle.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +85,7 @@ public class MyBagAdapter extends RecyclerView.Adapter<MyBagAdapter.ViewHolder>{
             });
             holder.imageButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    // logic
                         FeedReaderDbHelperItems.editBag(v.getContext(), Items.get(position), false);
                         Toast.makeText(v.getContext(), Items.get(position).getItemName() + " has been removed from your bag", Toast.LENGTH_SHORT).show();
                         Items.remove(Items.get(position));  // remove the itemAdd from list

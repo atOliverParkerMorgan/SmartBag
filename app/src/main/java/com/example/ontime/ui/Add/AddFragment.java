@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,6 +38,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+
 public class AddFragment extends Fragment {
 
     @Nullable
@@ -46,13 +51,33 @@ public class AddFragment extends Fragment {
         // create view
         final View mainView = inflater.inflate(R.layout.fragment_add, parent, false);
 
+        // tutorial
+        final String SHOWCASE_ID = "firstTutorial1";
+        // sequence example
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(200); // half second between each showcase view
+
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), SHOWCASE_ID);
+
+        sequence.setConfig(config);
+
+        sequence.addSequenceItem(mainView.findViewById(R.id.daySpinner),
+                "Click here to select which day do you want to prepare your bag for", "NEXT");
+
+        sequence.addSequenceItem(mainView.findViewById(R.id.addSubject),
+                "Click here to add a new subject", "GOT IT");
+
+
+        sequence.start();
+
+
 
         // Spinner logic
-        final SharedPreferences preferences = requireActivity().getSharedPreferences("Spinner", android.content.Context.MODE_PRIVATE);
+        final SharedPreferences preferences = requireActivity().getSharedPreferences("Spinner", Context.MODE_PRIVATE);
         int spinnerIndex = preferences.getInt("Mode", 0);
 
         // show weekend
-        SharedPreferences preferencesWeekendOn = requireActivity().getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE);
+        SharedPreferences preferencesWeekendOn = requireActivity().getSharedPreferences("WeekendOn", Context.MODE_PRIVATE);
         boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
         Calendar calendar = Calendar.getInstance();
         final boolean doNotShow = !((weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Sa"))
@@ -206,7 +231,7 @@ public class AddFragment extends Fragment {
 
 
         // 3. create an adapter
-        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToAdd,(byte) 1,view, true, false, true);
+        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToAdd,(byte) 1,view, true, false, true, activity);
         // 4. set adapter
         ItemsToAddRecycleView.setAdapter(mAdapterItemsToAdd);
         // 5. set itemAdd animator to DefaultAnimator
@@ -218,5 +243,6 @@ public class AddFragment extends Fragment {
         }else {
             noItems.setText(R.string.noItemsInAdd);
         }
+
     }
 }

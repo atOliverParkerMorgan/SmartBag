@@ -42,7 +42,7 @@ public class AddItem extends AppCompatActivity {
         viewHolder.addedItemsRecycleView.setLayoutManager(new LinearLayoutManager(this));
 
         // create an adapter
-        final MyListAdapter mAdapterItemsToAdd = new MyListAdapter(new ArrayList<Item>(), (byte)-1, findViewById(android.R.id.content).getRootView(), false, false, false);
+        final MyListAdapter mAdapterItemsToAdd = new MyListAdapter(new ArrayList<Item>(), (byte)-1, findViewById(android.R.id.content).getRootView(), false, false, false,this );
 
         // Add items this onclick listener add an item to the recycle viewer
         viewHolder.addItems.setOnClickListener(new View.OnClickListener() {

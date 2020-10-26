@@ -25,6 +25,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Objects;
 
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+
 
 public class AddSubject extends AppCompatActivity {
     public static boolean firstViewOfActivity = true;
@@ -32,6 +35,7 @@ public class AddSubject extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         SharedPreferences preferences = Objects.requireNonNull(this.getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE));
         boolean darkModeOn = preferences.getBoolean("Mode", true);
         if (darkModeOn) {
@@ -42,6 +46,7 @@ public class AddSubject extends AppCompatActivity {
         setContentView(R.layout.activivty_add_subject);
 
         final ViewHolder viewHolder = new ViewHolder();
+
         // hide weekend
         SharedPreferences preferencesWeekendOn = Objects.requireNonNull(this.getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
         boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
@@ -99,6 +104,7 @@ public class AddSubject extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
                     new AddFragment()).commit();
         }
+
 
     }
 
