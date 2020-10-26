@@ -7,13 +7,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems.FeedEntry.IS_IN_BAG;
 import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_FRIDAY;
 import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_MONDAY;
 import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_SATURDAY;
@@ -49,9 +47,6 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
 
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ENTRIES);
-    }
-    public void delete(SQLiteDatabase db){
-        db.execSQL(SQL_DELETE_ENTRIES);
     }
 
     public static void deleteSubject(String subjectName, Context context) throws android.database.sqlite.SQLiteException{

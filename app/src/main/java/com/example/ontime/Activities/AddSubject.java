@@ -25,9 +25,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Objects;
 
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
-import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
-
 
 public class AddSubject extends AppCompatActivity {
     public static boolean firstViewOfActivity = true;

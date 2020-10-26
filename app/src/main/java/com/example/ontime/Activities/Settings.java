@@ -23,7 +23,7 @@ import java.util.Objects;
 
 
 
-public class Settings extends AppCompatActivity {
+public class Settings extends AppCompatActivity{
     private static boolean firstViewOfActivity = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

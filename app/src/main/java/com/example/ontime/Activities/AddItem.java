@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class AddItem extends AppCompatActivity {
-    public static boolean firstViewOfActivity = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

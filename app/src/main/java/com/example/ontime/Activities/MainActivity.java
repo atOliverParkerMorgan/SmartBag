@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,new IntroductionFragment()).commit();
 
+        startActivity(new Intent(this, IntroActivity.class));
         SharedPreferences preferences = Objects.requireNonNull(this.getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE));
         boolean darkModeOn = preferences.getBoolean("Mode", true);
         if (darkModeOn) {
@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity{
             // record the fact that the app has been started at least once
             settings.edit().putBoolean("my_first_time", false).apply();
         }
-
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener);

@@ -58,7 +58,7 @@ public class BagFragment extends Fragment {
         });
 
         // init database
-        final List<String[]> subjectNames = FeedReaderDbHelperItems.getItemsInBag(getContext());
+
         final RecyclerView ItemsInBagRecycleView = view.findViewById(R.id.RecycleViewYourBag);
         ItemsInBagRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
         List<Item> inMyBag = new ArrayList<>();

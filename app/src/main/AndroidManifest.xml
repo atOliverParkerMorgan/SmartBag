@@ -48,6 +48,8 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-8154771690714775~9428727911"/>
 
+        <activity android:name=".Activities.IntroActivity"
+            android:label="My Custom AppIntro" />
     </application>
 
 </manifest>

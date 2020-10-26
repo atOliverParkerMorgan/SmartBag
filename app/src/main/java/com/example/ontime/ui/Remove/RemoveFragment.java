@@ -31,7 +31,6 @@ import com.example.ontime.Adapter.MyListAdapter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Objects;
 
 public class RemoveFragment extends Fragment {
 

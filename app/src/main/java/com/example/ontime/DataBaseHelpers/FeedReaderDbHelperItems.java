@@ -17,14 +17,8 @@ import java.util.List;
 import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE;
 import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems.FeedEntry.IS_IN_BAG;
 import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems.FeedEntry.TABLE_NAME;
-import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_FRIDAY;
-import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_MONDAY;
-import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_SATURDAY;
-import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_SUNDAY;
-import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_THURSDAY;
 import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_TITLE;
-import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_TUESDAY;
-import static com.example.ontime.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_WEDNESDAY;
+
 
 public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
@@ -47,9 +41,6 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
 
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ENTRIES);
-    }
-    public void deleteSubject(SQLiteDatabase db){
-        db.execSQL(SQL_DELETE_ENTRIES);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
