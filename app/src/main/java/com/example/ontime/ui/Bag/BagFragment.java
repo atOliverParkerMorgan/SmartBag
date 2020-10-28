@@ -85,6 +85,7 @@ public class BagFragment extends Fragment {
         }else{
             TextView instructions = view.findViewById(R.id.instructions_bag);
             instructions.setAlpha(0.0f);
+            view.findViewById(R.id.view).setVisibility(View.INVISIBLE);
         }
 
         return view;

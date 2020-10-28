@@ -20,12 +20,20 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity{
 
-
+    public static int userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        startActivity(new Intent(this, IntroActivity.class));
+        SharedPreferences userPreferences = Objects.requireNonNull(this.getSharedPreferences("userId", android.content.Context.MODE_PRIVATE));
+        userId = userPreferences.getInt("key", (int) System.currentTimeMillis());
+
+         if(userPreferences.getBoolean("first", true)) {
+             startActivity(new Intent(this, IntroActivity.class));
+             SharedPreferences.Editor edit = userPreferences.edit();
+             edit.putBoolean("first", false);
+             edit.apply();
+         }
         SharedPreferences preferences = Objects.requireNonNull(this.getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE));
         boolean darkModeOn = preferences.getBoolean("Mode", true);
         if (darkModeOn) {

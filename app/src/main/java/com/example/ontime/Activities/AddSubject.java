@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 
 import com.example.ontime.DataBaseHelpers.FeedReaderDbHelperItems;
@@ -51,6 +53,12 @@ public class AddSubject extends AppCompatActivity {
         if(weekendOnBoolean){
             ((ViewManager) viewHolder.saturday.getParent()).removeView(viewHolder.saturday);
             ((ViewManager) viewHolder.sunday.getParent()).removeView(viewHolder.sunday);
+
+            ConstraintLayout constraintLayout = findViewById(R.id.parent);
+            ConstraintSet constraintSet = new ConstraintSet();
+            constraintSet.clone(constraintLayout);
+            constraintSet.connect(R.id.add_items,ConstraintSet.TOP,R.id.Friday,ConstraintSet.BOTTOM,64);
+            constraintSet.applyTo(constraintLayout);
         }
 
         viewHolder.addItems.setOnClickListener(new View.OnClickListener() {

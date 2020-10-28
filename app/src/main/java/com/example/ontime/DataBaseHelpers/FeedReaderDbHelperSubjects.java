@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
+import com.example.ontime.Activities.MainActivity;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -46,6 +48,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
     }
 
     public void onCreate(SQLiteDatabase db) {
+//        db.execSQL("PRAGMA schema.user_version = "+MainActivity.userId);
         db.execSQL(SQL_CREATE_ENTRIES);
     }
 

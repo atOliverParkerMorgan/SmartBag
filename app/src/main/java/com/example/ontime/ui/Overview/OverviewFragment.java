@@ -453,6 +453,8 @@ public class OverviewFragment extends Fragment {
             // hide share button
             shareBagButton.setVisibility(View.GONE);
             addSubjectButton.setVisibility(View.VISIBLE);
+            view.findViewById(R.id.codeTextInstructions).setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.codeText).setVisibility(View.INVISIBLE);
             addSubjectButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
