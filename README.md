@@ -1,7 +1,6 @@
 <p align="center">
  <img width="150" src="https://raw.githubusercontent.com/atOliverParkerMorgan/SmartBag/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" alt="Aplication logo"/>
 </p>
-<hr>
 <h1 align="center">Smart Bag</h1>
 
 <div align="center">
