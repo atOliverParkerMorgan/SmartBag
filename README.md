@@ -1,7 +1,7 @@
 <p align="center">
  <img width="150" src="https://raw.githubusercontent.com/atOliverParkerMorgan/SmartBag/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" alt="Aplication logo"/>
 </p>
-
+<hr>
 <h1 align="center">Smart Bag</h1>
 
 <div align="center">
@@ -12,7 +12,7 @@
 </div>
 <br>
 <br>
-<hr>
+
 
 ## What can it do?
 The apps main function is to calculate the texbooks & workbooks that you have to put in and take out of your bag in order for it to be ready. The items are sorted into these categories:
