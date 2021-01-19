@@ -46,10 +46,14 @@
      <string name="item_hint">Textbook</string>
      <string name="subjects_hint">Add a subject name (i.e. History)</string>
      <string name="noItemsInAdd">There aren\'t any items to add</string>
+     <string name="schoolSearch">Search for school</string>
      <string name="noItemsInRemove">There aren\'t any items to remove</string>
      <string name="noItemsInBag">There aren\'t any items in your bag</string>
      <string name="instructionsEditBag">edit items</string>
 
+     <string name="search">Search…</string>
+     <string name="connection_failed">Could not connect to server</string>
+     <string name="loading_schools_info">Loading schools info…</string>
      <string name="discard_button">discard</string>
      <string name="create_button">create</string>
      <string name="add_button">add</string>
@@ -57,8 +61,11 @@
 
      <string name="settings_title">Settings</string>
      <string name="settings">Settings</string>
+     <string name="login">LOGIN</string>
+     <string name="back">BACK</string>
      <string name="dark_mode">Enable dark mode</string>
     <string name="doNotShowSaturdaySunday">Show Saturday and Sunday</string>
+     <string name="loginTitle">Log in</string>
 
      <string name="editItemSwitchInstructions"><b>Edit when you need this subject</b></string>
      <string name="deleteEdit">Delete</string>
@@ -71,6 +78,7 @@
      <string name="loadButton">Load</string>
      <string name="yourBag">Your Bag Overview</string>
      <string name="theItemsAreDue">Items for:</string>
+     <string name="bakalari">Synch with Bakaláři</string>
      <string name="addSubjectButtonText">You haven\'t added any items yet. Click to add!</string>
 
      <string-array name="daySpinner">

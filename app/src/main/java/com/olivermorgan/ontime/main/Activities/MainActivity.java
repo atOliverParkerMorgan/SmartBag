@@ -1,5 +1,6 @@
 package com.olivermorgan.ontime.main.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -87,32 +88,30 @@ public class MainActivity extends AppCompatActivity{
 
     }
     // navigation
+    @SuppressLint("NonConstantResourceId")
     public BottomNavigationView.OnNavigationItemSelectedListener navListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+            menuItem -> {
 
-                    Fragment selectedFragment = null;
-                    switch (menuItem.getItemId()){
-                        case R.id.navigation_add:
-                            selectedFragment = new AddFragment();
-                            break;
-                        case R.id.navigation_remove:
-                            selectedFragment = new RemoveFragment();
-                            break;
-                        case R.id.navigation_bag:
-                            selectedFragment = new BagFragment();
-                            break;
-                        case R.id.navigation_overview:
-                            selectedFragment = new OverviewFragment();
-                            break;
-                    }
-
-                    assert selectedFragment != null;
-                    getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment, selectedFragment).commit();
-                    return true;
+                Fragment selectedFragment = null;
+                switch (menuItem.getItemId()){
+                    case R.id.navigation_add:
+                        selectedFragment = new AddFragment();
+                        break;
+                    case R.id.navigation_remove:
+                        selectedFragment = new RemoveFragment();
+                        break;
+                    case R.id.navigation_bag:
+                        selectedFragment = new BagFragment();
+                        break;
+                    case R.id.navigation_overview:
+                        selectedFragment = new OverviewFragment();
+                        break;
                 }
-    };
+
+                assert selectedFragment != null;
+                getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment, selectedFragment).commit();
+                return true;
+            };
 
     @Override
     protected void onResume() {

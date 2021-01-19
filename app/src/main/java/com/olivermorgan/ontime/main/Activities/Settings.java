@@ -1,11 +1,15 @@
 package com.olivermorgan.ontime.main.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +31,7 @@ import java.util.Objects;
 
 public class Settings extends AppCompatActivity{
     private static boolean firstViewOfActivity = true;
+    TextView title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +39,7 @@ public class Settings extends AppCompatActivity{
 
         final SharedPreferences preferencesDarkMode = Objects.requireNonNull(this.getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE));
         boolean darkModeOn = preferencesDarkMode.getBoolean("Mode", true);
+
 
         SharedPreferences preferencesWeekendOn = Objects.requireNonNull(this.getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
         boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
@@ -45,7 +51,11 @@ public class Settings extends AppCompatActivity{
         }
         setContentView(R.layout.activity_settings);
 
-        Switch darkMode = findViewById(R.id.darkModeSwitch);
+        ImageView login = findViewById(R.id.bakalariLoginButton);
+        login.setOnClickListener(v -> startActivity(new Intent(Settings.this, Login.class)));
+        title = findViewById(R.id.LoginTitle);
+
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch darkMode = findViewById(R.id.darkModeSwitch);
         darkMode.setChecked(darkModeOn);
         darkMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -131,6 +141,7 @@ public class Settings extends AppCompatActivity{
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    title.setVisibility(View.GONE);
                     firstViewOfActivity = false;
                     Fragment selectedFragment = null;
                     switch (menuItem.getItemId()){
