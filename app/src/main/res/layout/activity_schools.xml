@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.SchoolsListActivity">
+    tools:context=".Activities.SchoolsListActivity"
+    android:background="?attr/bgColor">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentSchools"
         android:name="com.olivermorgan.ontime.main.ui.SchoolList.SchoolsListFragment"
         android:layout_width="0dp"

@@ -21,6 +21,14 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences preferences = Objects.requireNonNull(this.getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE));
+        boolean darkModeOn = preferences.getBoolean("Mode", true);
+        if (darkModeOn) {
+            setTheme(R.style.DARK);
+        } else {
+            setTheme(R.style.LIGHT);
+        }
         setContentView(R.layout.actvity_bakalari_login);
 
         final SharedPreferences userPreferences = Objects.requireNonNull(this.getSharedPreferences("login", android.content.Context.MODE_PRIVATE));
@@ -62,7 +70,14 @@ public class Login extends AppCompatActivity {
             }
         });
 
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final SharedPreferences userPreferences = Objects.requireNonNull(this.getSharedPreferences("login", android.content.Context.MODE_PRIVATE));
 
+        final EditText serverAddress = findViewById(R.id.serverAddress);
+        serverAddress.setText(userPreferences.getString("serverAddress",  ""));
     }
 }
