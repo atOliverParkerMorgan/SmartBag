@@ -17,6 +17,7 @@ import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.Adapter.MyListAdapter;
 import com.olivermorgan.ontime.main.R;
+import com.olivermorgan.ontime.main.SharedPrefs;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -27,8 +28,7 @@ public class AddItem extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences preferences = Objects.requireNonNull(this.getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE));
-        boolean darkModeOn = preferences.getBoolean("Mode", true);
+        boolean darkModeOn = SharedPrefs.getDarkMode(this);
         if (darkModeOn) {
             setTheme(R.style.DARK);
         } else {

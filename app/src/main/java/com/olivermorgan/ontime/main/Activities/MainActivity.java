@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.olivermorgan.ontime.main.R;
+import com.olivermorgan.ontime.main.SharedPrefs;
 import com.olivermorgan.ontime.main.ui.Add.AddFragment;
 import com.olivermorgan.ontime.main.ui.Bag.BagFragment;
 import com.olivermorgan.ontime.main.ui.Overview.OverviewFragment;
@@ -37,8 +38,7 @@ public class MainActivity extends AppCompatActivity{
              edit.putBoolean("first", false);
              edit.apply();
          }
-        SharedPreferences preferences = Objects.requireNonNull(this.getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE));
-        boolean darkModeOn = preferences.getBoolean("Mode", true);
+        boolean darkModeOn = SharedPrefs.getDarkMode(this);
         if (darkModeOn) {
             setTheme(R.style.DARK);
         } else {

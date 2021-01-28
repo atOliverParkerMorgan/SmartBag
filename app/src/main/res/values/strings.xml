@@ -25,6 +25,8 @@
      <string name="to_remove_text_subtitle">remove these items from your bag</string>
      <string name="to_in_bag">Your bag</string>
      <string name="to_in_bag_instructions">these items are in your bag</string>
+     <string name="cant_connect">Can\'t connect</string>
+     <string name="user_connected">You are connected!!</string>
 
 
      <string name="monday">Monday</string>

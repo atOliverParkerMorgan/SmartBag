@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 
 import com.olivermorgan.ontime.main.R;
+import com.olivermorgan.ontime.main.SharedPrefs;
 import com.olivermorgan.ontime.main.ui.Add.AddFragment;
 import com.olivermorgan.ontime.main.ui.Bag.BagFragment;
 import com.olivermorgan.ontime.main.ui.Overview.OverviewFragment;
@@ -37,9 +38,7 @@ public class Settings extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         // create view
 
-        final SharedPreferences preferencesDarkMode = Objects.requireNonNull(this.getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE));
-        boolean darkModeOn = preferencesDarkMode.getBoolean("Mode", true);
-
+        boolean darkModeOn = SharedPrefs.getDarkMode(this);
 
         SharedPreferences preferencesWeekendOn = Objects.requireNonNull(this.getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
         boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
@@ -52,7 +51,7 @@ public class Settings extends AppCompatActivity{
         setContentView(R.layout.activity_settings);
 
         ImageView login = findViewById(R.id.bakalariLoginButton);
-        login.setOnClickListener(v -> startActivity(new Intent(Settings.this, Login.class)));
+        login.setOnClickListener(v -> startActivity(new Intent(Settings.this, LoginActivity.class)));
         title = findViewById(R.id.LoginTitle);
 
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch darkMode = findViewById(R.id.darkModeSwitch);
