@@ -3,7 +3,6 @@ package com.olivermorgan.ontime.main.ui.Overview;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -38,6 +37,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.olivermorgan.ontime.main.R;
+import com.olivermorgan.ontime.main.SharedPrefs;
 
 
 import java.util.List;
@@ -78,8 +78,7 @@ public class OverviewFragment extends Fragment {
         final TableLayout table = view.findViewById(R.id.mainTable);
 
         // hide weekend
-        SharedPreferences preferencesWeekendOn = Objects.requireNonNull(requireActivity().getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
-        final boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
+        boolean weekendOnBoolean = SharedPrefs.getBoolean(getContext(), SharedPrefs.WEEKEND_ON);
         if(weekendOnBoolean){
             View v = view.findViewById(R.id.Sun);
             ((ViewManager)v.getParent()).removeView(v);
@@ -89,8 +88,7 @@ public class OverviewFragment extends Fragment {
 
 
         // get code if already stored
-        SharedPreferences preferences = requireContext().getSharedPreferences("Code", android.content.Context.MODE_PRIVATE);
-        String codeName = preferences.getString("Mode", "");
+        String codeName = SharedPrefs.getString(getContext(), SharedPrefs.CODE);
 
         if(codeName!=null && !codeName.equals("")) {
             codeText.setText(codeName);
@@ -244,8 +242,7 @@ public class OverviewFragment extends Fragment {
             Uri databaseItems = Uri.fromFile(requireContext().getDatabasePath(dbnameItems));
 
             // get code if already stored
-            SharedPreferences preferences = requireContext().getSharedPreferences("Code", android.content.Context.MODE_PRIVATE);
-            String codeName = preferences.getString("Mode", "");
+            String codeName =  SharedPrefs.getString(getContext(), SharedPrefs.CODE);
 
             if(codeName==null || codeName.equals("")) {
                 // get a UNIQUE name for database
@@ -255,16 +252,7 @@ public class OverviewFragment extends Fragment {
                     name.append((char) (Math.random() * ((int) 'Z' - (int) 'A' + 1) + (int) 'A'));
                 }
                 codeName = name.toString();
-                // saving new code to shared preferences
-
-                SharedPreferences.Editor edit = preferences.edit();
-
-                edit.putString("Mode", codeName);
-
-
-                edit.apply();
-
-
+                SharedPrefs.setString(getContext(), SharedPrefs.CODE, codeName);
             }
             // adding listeners on upload
             // or failure of image

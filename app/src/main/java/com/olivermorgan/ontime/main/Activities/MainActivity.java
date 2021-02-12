@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.olivermorgan.ontime.main.BakalariAPI.Login;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
 import com.olivermorgan.ontime.main.ui.Add.AddFragment;
@@ -22,16 +25,23 @@ import androidx.fragment.app.Fragment;
 import java.io.Serializable;
 import java.util.Objects;
 
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
+
 public class MainActivity extends AppCompatActivity{
 
-    public static int userId;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         SharedPreferences userPreferences = Objects.requireNonNull(this.getSharedPreferences("userId", android.content.Context.MODE_PRIVATE));
-        userId = userPreferences.getInt("key", (int) System.currentTimeMillis());
-
          if(userPreferences.getBoolean("first", true)) {
              startActivity(new Intent(this, IntroActivity.class));
              SharedPreferences.Editor edit = userPreferences.edit();
@@ -46,16 +56,6 @@ public class MainActivity extends AppCompatActivity{
         }
         setContentView(R.layout.activity_main);
 
-        String PREFS_NAME = "MyPrefsFile";
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-
-
-        if (settings.getBoolean("my_first_time", true)) {
-
-
-            // record the fact that the app has been started at least once
-            settings.edit().putBoolean("my_first_time", false).apply();
-        }
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener);
@@ -117,5 +117,8 @@ public class MainActivity extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
     }
+
+
+
 
 }

@@ -2,11 +2,9 @@ package com.olivermorgan.ontime.main.Activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -40,8 +38,7 @@ public class Settings extends AppCompatActivity{
 
         boolean darkModeOn = SharedPrefs.getDarkMode(this);
 
-        SharedPreferences preferencesWeekendOn = Objects.requireNonNull(this.getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
-        boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
+        boolean weekendOnBoolean = SharedPrefs.getBoolean(this,SharedPrefs.WEEKEND_ON);
 
         if (darkModeOn) {
             setTheme(R.style.DARK);
@@ -56,71 +53,44 @@ public class Settings extends AppCompatActivity{
 
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch darkMode = findViewById(R.id.darkModeSwitch);
         darkMode.setChecked(darkModeOn);
-        darkMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //declare the shardPreferences variable..
-                SharedPreferences sp = Objects.requireNonNull(getSharedPreferences("DarkMode", android.content.Context.MODE_PRIVATE));
+        darkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
-                // to save data you have to call the editor
-                SharedPreferences.Editor edit = sp.edit();
+            SharedPrefs.setBoolean(getApplicationContext(), SharedPrefs.DARK_MODE, isChecked);
 
-                //save the value same as putExtras using keyNamePair
-                edit.putBoolean("Mode", isChecked);
+            if (isChecked) {
+                Toast.makeText(getApplicationContext(), "Dark mode is on", Toast.LENGTH_SHORT).show();
 
-                //when done save changes.
-                edit.apply();
+            } else {
+                Toast.makeText(getApplicationContext(),"Light mode is on", Toast.LENGTH_SHORT).show();
 
-                if (isChecked) {
-                    Toast.makeText(getApplicationContext(), "Dark mode is on", Toast.LENGTH_SHORT).show();
-
-                } else {
-                    Toast.makeText(getApplicationContext(),"Light mode is on", Toast.LENGTH_SHORT).show();
-
-                }
-                Intent intent = new Intent(getApplicationContext(), Settings.class);
-                startActivity(intent);
-                finish();
             }
+            Intent intent = new Intent(getApplicationContext(), Settings.class);
+            startActivity(intent);
+            finish();
         });
 
-        Switch weekendOn = findViewById(R.id.deleteSundayAndSaturdaySwitch);
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch weekendOn = findViewById(R.id.deleteSundayAndSaturdaySwitch);
         weekendOn.setChecked(!weekendOnBoolean);
-        weekendOn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //declare the shardPreferences variable..
-                SharedPreferences sp = Objects.requireNonNull(getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
-                // if due is set to Saturday or Sunday and do not show Weekend is checked set due to Today.
-                if(!isChecked) {
-                    SharedPreferences preferencesDue = getSharedPreferences("Spinner", android.content.Context.MODE_PRIVATE);
-                    if(preferencesDue.getInt("Mode", 0)== 8 || preferencesDue.getInt("Mode", 0)==7 ) {
-                        SharedPreferences.Editor editDue = preferencesDue.edit();
+        weekendOn.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            //declare the shardPreferences variable..
+            // if due is set to Saturday or Sunday and do not show Weekend is checked set due to Today.
+            if(!isChecked) {
 
-                        editDue.putInt("Mode", 0);
-                        editDue.apply();
-                    }
+                if(SharedPrefs.getInt(getApplicationContext(), SharedPrefs.SPINNER)== 8 || SharedPrefs.getInt(getApplicationContext(), SharedPrefs.SPINNER)== 7 ) {
+                    SharedPrefs.setInt(getApplicationContext(), SharedPrefs.SPINNER, 0);
                 }
-                // to save data you have to call the editor
-                SharedPreferences.Editor edit = sp.edit();
-
-                //save the value same as putExtras using keyNamePair
-                edit.putBoolean("Mode", !isChecked);
-
-                //when done save changes.
-                edit.apply();
-
-                if (isChecked) {
-                    Toast.makeText(getApplicationContext(), "Do not show Weekend on", Toast.LENGTH_SHORT).show();
-
-                } else {
-                    Toast.makeText(getApplicationContext(),"Do not show Weekend off", Toast.LENGTH_SHORT).show();
-
-                }
-                Intent intent = new Intent(getApplicationContext(), Settings.class);
-                startActivity(intent);
-                finish();
             }
+            SharedPrefs.setBoolean(getApplicationContext(),SharedPrefs.WEEKEND_ON, !isChecked);
+
+
+            if (isChecked) {
+                Toast.makeText(getApplicationContext(), R.string.willShowWeek, Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(getApplicationContext(),R.string.willShowWeekNot, Toast.LENGTH_SHORT).show();
+
+            }
+            weekendOn.setChecked(!SharedPrefs.getBoolean(this,SharedPrefs.WEEKEND_ON));
         });
 
 

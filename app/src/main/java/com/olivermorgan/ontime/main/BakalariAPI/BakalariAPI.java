@@ -3,20 +3,22 @@ package com.olivermorgan.ontime.main.BakalariAPI;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
+
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.POST;
 
 public interface BakalariAPI {
-   // @GET("login.aspx?&pm=ukoly")
-    //Call<HomeworkList> getHomework(@Query("hx") String token);
 
-    @Headers({"accept: text/json"})
-    @GET("if/2/gethx/{username}")
-    Call<TokenData> getTokenData(@Path("username") String username);
+    @FormUrlEncoded
+    @POST("api/login")
+    Call<LoginResponse> firstLogin(@Field("client_id") String clientId, @Field("grant_type") String grantType, @Field("username") String username, @Field("password") String password);
 
-    @Headers({"accept: text/json"})
-    @GET("if/2/login")
-    Call<LoginData> getLoginData(@Header("Authorization") String auth);
+    @FormUrlEncoded
+    @POST("api/login")
+    Call<LoginResponse> refreshLogin(@Field("client_id") String clientId, @Field("grant_type") String grantType, @Field("refresh_token") String refreshToken);
+
+    @GET("api/3/user")
+    Call<UserResponse> getUser();
+
 }

@@ -61,8 +61,7 @@ public class EditSubject extends AppCompatActivity {
         final Switch sun = findViewById(R.id.sundaySwitchEdit);
 
         // hide weekend
-        SharedPreferences preferencesWeekendOn = Objects.requireNonNull(this.getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
-        boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
+        boolean weekendOnBoolean = SharedPrefs.getBoolean(this, SharedPrefs.WEEKEND_ON);
 
         if (weekendOnBoolean) {
             ((ViewManager) sat.getParent()).removeView(sat);

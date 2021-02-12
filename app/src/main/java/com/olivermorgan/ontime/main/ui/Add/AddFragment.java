@@ -4,7 +4,6 @@ package com.olivermorgan.ontime.main.ui.Add;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,6 +31,7 @@ import com.olivermorgan.ontime.main.Adapter.MyListAdapter;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.olivermorgan.ontime.main.R;
+import com.olivermorgan.ontime.main.SharedPrefs;
 
 
 import java.util.ArrayList;
@@ -72,12 +72,11 @@ public class AddFragment extends Fragment {
 
 
         // Spinner logic
-        final SharedPreferences preferences = requireActivity().getSharedPreferences("Spinner", Context.MODE_PRIVATE);
-        int spinnerIndex = preferences.getInt("Mode", 0);
+        int spinnerIndex = SharedPrefs.getInt(getContext(), SharedPrefs.SPINNER);
 
         // show weekend
-        SharedPreferences preferencesWeekendOn = requireActivity().getSharedPreferences("WeekendOn", Context.MODE_PRIVATE);
-        boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
+
+        boolean weekendOnBoolean = SharedPrefs.getBoolean(getContext(), SharedPrefs.WEEKEND_ON);
         Calendar calendar = Calendar.getInstance();
         final boolean doNotShow = !((weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Sa"))
                 ||(weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Su")));
@@ -111,12 +110,7 @@ public class AddFragment extends Fragment {
         {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
             {
-                SharedPreferences.Editor edit = preferences.edit();
-
-                //save the value same as putExtras using keyNamePair
-                edit.putInt("Mode", pos);
-                //when done save changes.
-                edit.apply();
+                SharedPrefs.setInt(getContext(), SharedPrefs.SPINNER, pos);
                 // reload recyclerViewer
                 loadRecyclerViewer(getContext(), pos, mainView, getActivity(), doNotShow, finalTomorrowOff);
 

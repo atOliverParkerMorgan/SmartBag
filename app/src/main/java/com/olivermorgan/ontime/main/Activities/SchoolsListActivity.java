@@ -36,10 +36,8 @@ public class SchoolsListActivity extends AppCompatActivity {
         fragment = (SchoolsListFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentSchools);
         if (fragment != null) {
             fragment.setOnItemClickListener(url -> {
-                final SharedPreferences userPreferences = Objects.requireNonNull(this.getSharedPreferences("login", android.content.Context.MODE_PRIVATE));
-                @SuppressLint("CommitPrefEdits") SharedPreferences.Editor edit = userPreferences.edit();
-                edit.putString("serverAddress", url);
-                edit.apply();
+
+                SharedPrefs.setString(this, SharedPrefs.URL, url);
                 setResult(RESULT_OK, new Intent());
                 finish();
             });

@@ -48,8 +48,8 @@ public class AddSubject extends AppCompatActivity {
         final ViewHolder viewHolder = new ViewHolder();
 
         // hide weekend
-        SharedPreferences preferencesWeekendOn = Objects.requireNonNull(this.getSharedPreferences("WeekendOn", android.content.Context.MODE_PRIVATE));
-        boolean weekendOnBoolean = preferencesWeekendOn.getBoolean("Mode", true);
+
+        boolean weekendOnBoolean = SharedPrefs.getBoolean(this, SharedPrefs.WEEKEND_ON);
 
         if(weekendOnBoolean){
             ((ViewManager) viewHolder.saturday.getParent()).removeView(viewHolder.saturday);
