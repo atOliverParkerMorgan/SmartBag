@@ -1,7 +1,6 @@
 package com.olivermorgan.ontime.main.ui.Overview;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -28,20 +27,13 @@ import com.olivermorgan.ontime.main.Activities.EditSubject;
 import com.olivermorgan.ontime.main.Activities.Settings;
 import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
+
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
-
-
 import java.util.List;
-import java.util.Objects;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
@@ -111,106 +103,67 @@ public class OverviewFragment extends Fragment {
         String dbnameItems = "Items.db";
         final Uri databaseItems = Uri.fromFile(requireContext().getDatabasePath(dbnameItems));
 
-        load.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(code.getText().toString().length()!=6 || !isStringUpperCase(code.getText().toString())){
-                    Toast.makeText(getContext(),"Invalid code, must contain six upper-case letters.", Toast.LENGTH_LONG).show();
-                }else {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
-                    alert.setTitle("Download bag: " + code.getText().toString());
-                    alert.setMessage("Are you sure you want to download another bag? " +
-                            "This is will override all existing subjects and items.");
-                    alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // for subject
-                            StorageReference subjectRef = storageReference.child("subjects/" + code.getText().toString() + ".db");
-                            subjectRef.getFile(databaseSubjects).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception exception) {
-                                    // Handle any errors
-                                    Toast.makeText(getContext(), "Error, your code is incorrect or you don't have an internet connection.", Toast.LENGTH_LONG).show();
-                                }
-                            }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
-                                @Override
-                                public void onProgress(@NonNull FileDownloadTask.TaskSnapshot snapshot) {
-                                    double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                                    progressBar.setProgress((int) progress);
-                                }
-                            });
-
-                            // for items
-                            StorageReference itemRef = storageReference.child("items/" + code.getText().toString() + ".db");
-                            itemRef.getFile(databaseItems).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                    Toast.makeText(getContext(), "You have successfully update your bag with the code: " + code.getText().toString(), Toast.LENGTH_LONG).show();
-                                    updateTable(weekendOnBoolean, table,  view);
-                                    Handler handler = new Handler();
-                                    handler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            progressBar.setProgress(0);
-                                        }
-                                    }, 1500);
-
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception exception) {
-                                    Toast.makeText(getContext(), "Error, your code is incorrect or you don't have an internet connection.", Toast.LENGTH_LONG).show();
-                                }
-                            }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
-                                @Override
-                                public void onProgress(@NonNull FileDownloadTask.TaskSnapshot snapshot) {
-                                    double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                                    progressBar.setProgress((int) progress);
-                                }
-                            });
-
-
-                        }
-
+        load.setOnClickListener(v -> {
+            if(code.getText().toString().length()!=6 || !isStringUpperCase(code.getText().toString())){
+                Toast.makeText(getContext(),"Invalid code, must contain six upper-case letters.", Toast.LENGTH_LONG).show();
+            }else {
+                AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
+                alert.setTitle("Download bag: " + code.getText().toString());
+                alert.setMessage("Are you sure you want to download another bag? " +
+                        "This is will override all existing subjects and items.");
+                alert.setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    // for subject
+                    StorageReference subjectRef = storageReference.child("subjects/" + code.getText().toString() + ".db");
+                    subjectRef.getFile(databaseSubjects).addOnSuccessListener(taskSnapshot -> {
+                    }).addOnFailureListener(exception -> {
+                        // Handle any errors
+                        Toast.makeText(getContext(), "Error, your code is incorrect or you don't have an internet connection.", Toast.LENGTH_LONG).show();
+                    }).addOnProgressListener(snapshot -> {
+                        double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                        progressBar.setProgress((int) progress);
                     });
-                    alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // close dialog
-                            dialog.cancel();
-                        }
+
+                    // for items
+                    StorageReference itemRef = storageReference.child("items/" + code.getText().toString() + ".db");
+                    itemRef.getFile(databaseItems).addOnSuccessListener(taskSnapshot -> {
+                        Toast.makeText(getContext(), "You have successfully update your bag with the code: " + code.getText().toString(), Toast.LENGTH_LONG).show();
+                        updateTable(weekendOnBoolean, table,  view);
+                        Handler handler = new Handler();
+                        handler.postDelayed(() -> progressBar.setProgress(0), 1500);
+
+                    }).addOnFailureListener(exception -> Toast.makeText(getContext(), "Error, your code is incorrect or you don't have an internet connection.", Toast.LENGTH_LONG).show()).addOnProgressListener(snapshot -> {
+                        double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                        progressBar.setProgress((int) progress);
                     });
-                    alert.show();
-                }
 
 
-
-
+                });
+                alert.setNegativeButton(android.R.string.no, (dialog, which) -> {
+                    // close dialog
+                    dialog.cancel();
+                });
+                alert.show();
             }
+
+
+
+
         });
 
         // image button logic add item
         ImageButton imageButtonAddSubject = view.findViewById(R.id.addSubject);
-        imageButtonAddSubject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // setting add Subject first to falls to avoid error
-                AddSubject.firstViewOfActivity = true;
-                Intent intent = new Intent(getActivity(), AddSubject.class);
-                startActivity(intent);
-            }
+        imageButtonAddSubject.setOnClickListener(v -> {
+            // setting add Subject first to falls to avoid error
+            AddSubject.firstViewOfActivity = true;
+            Intent intent = new Intent(getActivity(), AddSubject.class);
+            startActivity(intent);
         });
 
         // image button logic settings
         ImageButton imageButtonSettings = view.findViewById(R.id.settingsButton);
-        imageButtonSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), Settings.class);
-                startActivity(intent);
-            }
+        imageButtonSettings.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), Settings.class);
+            startActivity(intent);
         });
 
 
@@ -218,13 +171,7 @@ public class OverviewFragment extends Fragment {
 
 
         // on pressing btnUpload uploadImage() is called
-        shareBagButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                uploadDatabase();
-            }
-        });
+        shareBagButton.setOnClickListener(v -> uploadDatabase());
 
 
         return view;
@@ -257,87 +204,43 @@ public class OverviewFragment extends Fragment {
             // adding listeners on upload
             // or failure of image
 
-            storageReference.child("subjects/"+codeName+".db").putFile(databaseSubjects)
+        // Progress Listener for loading
+// percentage on the dialog box
+        storageReference.child("subjects/"+codeName+".db").putFile(databaseSubjects)
                     .addOnSuccessListener(
-                            new OnSuccessListener<UploadTask.TaskSnapshot>() {
-
-                                @Override
-                                public void onSuccess(
-                                        UploadTask.TaskSnapshot taskSnapshot)
-                                {
-                                }
+                            taskSnapshot -> {
                             })
 
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e)
-                        {
-                            Toast.makeText(getContext(), "Error, check your internet connection.", Toast.LENGTH_LONG).show();
-
-                        }
-                    })
+                    .addOnFailureListener(e -> Toast.makeText(getContext(), "Error, check your internet connection.", Toast.LENGTH_LONG).show())
                     .addOnProgressListener(
-                            new OnProgressListener<UploadTask.TaskSnapshot>() {
-
-                                // Progress Listener for loading
-                                // percentage on the dialog box
-                                @Override
-                                public void onProgress(
-                                        @NonNull UploadTask.TaskSnapshot taskSnapshot)
-                                {
-                                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                                    progressBar.setProgress((int) progress);
-                                }
+                            taskSnapshot -> {
+                                double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                                progressBar.setProgress((int) progress);
                             });
 
         final String finalCodeName = codeName;
+        // Progress Listener for loading
+// percentage on the dialog box
         storageReference.child("items/"+codeName+".db").putFile(databaseItems)
                 .addOnSuccessListener(
-                        new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        taskSnapshot -> {
+                            // stay in place for half a second after completion
+                            Handler handler = new Handler();
+                            handler.postDelayed(() -> progressBar.setProgress(0), 1500);
 
-                            @Override
-                            public void onSuccess(
-                                    UploadTask.TaskSnapshot taskSnapshot)
-                            {
-                                // stay in place for half a second after completion
-                                Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        progressBar.setProgress(0);
-                                    }
-                                }, 1500);
-
-                                codeText.setText( finalCodeName);
-                                codeTextInstructions.setText(R.string.codeNameInstructions);
-                                shareBagButton.setText(R.string.updateBag);
+                            codeText.setText( finalCodeName);
+                            codeTextInstructions.setText(R.string.codeNameInstructions);
+                            shareBagButton.setText(R.string.updateBag);
 
 
-                                Toast.makeText(getContext(), "Success, your bag has been uploaded.", Toast.LENGTH_LONG).show();
-                            }
+                            Toast.makeText(getContext(), "Success, your bag has been uploaded.", Toast.LENGTH_LONG).show();
                         })
 
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e)
-                    {
-
-                        Toast.makeText(getContext(), "Error, check your internet connection.", Toast.LENGTH_LONG).show();
-
-                    }
-                })
+                .addOnFailureListener(e -> Toast.makeText(getContext(), "Error, check your internet connection.", Toast.LENGTH_LONG).show())
                 .addOnProgressListener(
-                        new OnProgressListener<UploadTask.TaskSnapshot>() {
-
-                            // Progress Listener for loading
-                            // percentage on the dialog box
-                            @Override
-                            public void onProgress(
-                                    @NonNull UploadTask.TaskSnapshot taskSnapshot)
-                            {
-                                double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                                progressBar.setProgress((int) progress);
-                            }
+                        taskSnapshot -> {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                            progressBar.setProgress((int) progress);
                         });
 
     }
@@ -391,7 +294,7 @@ public class OverviewFragment extends Fragment {
 
                     button.setMinimumWidth(0);
                     button.setMinimumHeight(0);
-                    button.setBackgroundResource(R.drawable.rounded_textview_default_borders);
+                    button.setBackgroundResource(R.drawable.rounded_textview_padding);
                     button.setGravity(Gravity.CENTER);
                     button.setText(item.getNameInitialsOfSubject());
                     button.setTextColor(getResources().getColor(android.R.color.white));
@@ -399,14 +302,11 @@ public class OverviewFragment extends Fragment {
                     button.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
                     button.setTextSize(30);
 
-                    button.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            // go back to main activity
-                            Intent i = new Intent( getActivity(), EditSubject.class);
-                            i.putExtra("subjectName", item.getSubjectName());
-                            startActivity(i);
-                        }
+                    button.setOnClickListener(v -> {
+                        // go back to main activity
+                        Intent i1 = new Intent( getActivity(), EditSubject.class);
+                        i1.putExtra("subjectName", item.getSubjectName());
+                        startActivity(i1);
                     });
 
                     row.addView(button);
@@ -446,14 +346,11 @@ public class OverviewFragment extends Fragment {
             addSubjectButton.setVisibility(View.VISIBLE);
             view.findViewById(R.id.codeTextInstructions).setVisibility(View.INVISIBLE);
             view.findViewById(R.id.codeText).setVisibility(View.INVISIBLE);
-            addSubjectButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // setting add Subject first to falls to avoid error
-                    AddSubject.firstViewOfActivity = true;
-                    Intent intent = new Intent(getActivity(), AddSubject.class);
-                    startActivity(intent);
-                }
+            addSubjectButton.setOnClickListener(v -> {
+                // setting add Subject first to falls to avoid error
+                AddSubject.firstViewOfActivity = true;
+                Intent intent = new Intent(getActivity(), AddSubject.class);
+                startActivity(intent);
             });
         }else{
             addSubjectButton.setVisibility(View.GONE);
