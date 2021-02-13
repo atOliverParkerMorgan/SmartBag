@@ -79,4 +79,10 @@
     <string name="user_logged_in">Uživatel %1$s je přihlášen.</string>
     <string name="willShowWeek">bude se zobrazovat Sobota a Neděle</string>
     <string name="willShowWeekNot">NeBude se zobrazovat Sobota a Neděle</string>
+    <string name="success">ÚSPĚCH</string>
+    <string name="subTextSuccess">úspěšně jste se přihlásili do vášeho účtu</string>
+    <string name="unexpected_response">Jejda něco se pokazilo</string>
+    <string name="invalid_login">Jejda špatně jste zadali uživatelské jméno nebo heslo</string>
+    <string name="sever_unreachable">Nelze se spojit se srveru. Zkontrolujte školní adresu.</string>
+    <string name="disabled_servises">Služby, které tato aplikace potřebuje nejsou k dispozici</string>
 </resources>

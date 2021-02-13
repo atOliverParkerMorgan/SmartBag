@@ -123,5 +123,10 @@
      <string name="user_logged_in">User %1$s is now logged in.</string>
      <string name="willShowWeek">Will show items for Saturday and Sunday</string>
      <string name="willShowWeekNot">Will show not items for Saturday and Sunday</string>
-
+     <string name="success">SUCCESS</string>
+     <string name="subTextSuccess">You have successfully logged into your Bakaláři account</string>
+     <string name="unexpected_response">Oops something went wrong. We got an unexpected response.</string>
+     <string name="invalid_login">Oops your username or password is incorrect</string>
+     <string name="sever_unreachable">The servers are unreachable. Check your school address.</string>
+     <string name="disabled_servises">The servises this app needs are unavailable</string>
  </resources>

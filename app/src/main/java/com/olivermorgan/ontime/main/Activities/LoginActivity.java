@@ -87,6 +87,11 @@ public class LoginActivity extends AppCompatActivity {
         back.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, Settings.class)));
 
         login.setOnClickListener(v -> {
+            progressBar.setVisibility(View.VISIBLE);
+            login.setVisibility(View.INVISIBLE);
+            back.setVisibility(View.INVISIBLE);
+            login.setClickable(false);
+            back.setClickable(false);
 
             // save user input
            final String passwordText = password.getText().toString();
@@ -101,31 +106,31 @@ public class LoginActivity extends AppCompatActivity {
 
            loginLogic.getLogin().login(urlTextValidated,usernameText,passwordText, (code) -> {
                 if (code == Login.SUCCESS) {
-                    Intent intent = new Intent(this, MainActivity.class);
+                    Intent intent = new Intent(this, SuccessfulLogin.class);
                     startActivity(intent);
                     finish();
+                    overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
                     return;
                 }
                 login.setEnabled(true);
                 progressBar.setVisibility(View.GONE);
                 if (code == Login.WRONG_LOGIN) {
-                    //usernameText.setError(" ");
-                    //passwordText.setError(getText(R.string.invalid_login));
-                    Toast.makeText(this, "Error Invalid Login",Toast.LENGTH_LONG).show();
+                    resetButton(progressBar,login, back);
+                    username.setError(getText(R.string.invalid_login));
+                    password.setError(getText(R.string.invalid_login));
                 }
                 if (code == Login.SERVER_UNREACHABLE) {
-                   // twMessage.setText(R.string.unreachable);
-                   // tilURL.setError(" ");
-                    Toast.makeText(this, "Error 1",Toast.LENGTH_LONG).show();
+                    resetButton(progressBar,login, back);
+                    serverAddress.setError(getText(R.string.sever_unreachable));
                 }
                 if (code == Login.UNEXPECTER_RESPONSE) {
-                   // tilURL.setError(getText(R.string.unexpected_response));
-                    Toast.makeText(this, "Error 2",Toast.LENGTH_LONG).show();
+                    resetButton(progressBar,login, back);
+                    serverAddress.setError(getText(R.string.unexpected_response));
                 }
                 if (code == Login.ROZVRH_DISABLED) {
-                  //  tilURL.setError(" ");
-                   // twMessage.setText(R.string.schedule_disabled);
-                    Toast.makeText(this, "Error 3",Toast.LENGTH_LONG).show();
+                    resetButton(progressBar,login, back);
+                    serverAddress.setError(getText(R.string.disabled_servises));
+
                 }
 
             });
@@ -135,12 +140,13 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
-    public void resetLoginView(ProgressBar progressBar, Button login, Button back){
+
+    public void resetButton(ProgressBar progressBar, Button login, Button back){
         progressBar.setVisibility(View.INVISIBLE);
-        login.setClickable(true);
-        back.setClickable(true);
         login.setVisibility(View.VISIBLE);
         back.setVisibility(View.VISIBLE);
+        login.setClickable(true);
+        back.setClickable(true);
     }
 
 }

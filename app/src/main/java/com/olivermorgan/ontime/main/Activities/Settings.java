@@ -66,7 +66,6 @@ public class Settings extends AppCompatActivity{
             }
             Intent intent = new Intent(getApplicationContext(), Settings.class);
             startActivity(intent);
-            finish();
         });
 
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch weekendOn = findViewById(R.id.deleteSundayAndSaturdaySwitch);
