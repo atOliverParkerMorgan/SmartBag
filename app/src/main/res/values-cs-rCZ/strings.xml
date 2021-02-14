@@ -85,4 +85,5 @@
     <string name="invalid_login">Jejda špatně jste zadali uživatelské jméno nebo heslo</string>
     <string name="sever_unreachable">Nelze se spojit se srveru. Zkontrolujte školní adresu.</string>
     <string name="disabled_servises">Služby, které tato aplikace potřebuje nejsou k dispozici</string>
+    <string name="LATER">POZDĚJI</string>
 </resources>

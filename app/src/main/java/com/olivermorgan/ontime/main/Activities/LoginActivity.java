@@ -58,7 +58,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (getIntent().getStringExtra("buttonName").equals(getText(R.string.LATER).toString())){
+            SharedPrefs.setBoolean(getApplicationContext(), SharedPrefs.DARK_MODE, true);
+        }
         boolean darkModeOn = SharedPrefs.getDarkMode(this);
         if (darkModeOn) {
             setTheme(R.style.DARK);
@@ -79,12 +81,21 @@ public class LoginActivity extends AppCompatActivity {
 
 
         final Button login = findViewById(R.id.buttonLogin);
+
         Button back = findViewById(R.id.buttonBack);
+
+        if (getIntent().getStringExtra("buttonName").equals(getText(R.string.LATER).toString())) {
+            back.setText(getText(R.string.LATER).toString());
+            back.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, MainActivity.class)));
+        } else {
+            back.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, Settings.class)));
+        }
+
         Button searchSchool = findViewById(R.id.buttonSearchSchools);
 
         searchSchool.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, SchoolsListActivity.class)));
 
-        back.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, Settings.class)));
+
 
         login.setOnClickListener(v -> {
             progressBar.setVisibility(View.VISIBLE);

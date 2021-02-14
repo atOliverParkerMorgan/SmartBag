@@ -271,6 +271,7 @@ public class OverviewFragment extends Fragment {
             row.setPadding(0,0,0,0);
 
             int addedRows = 0;
+            final boolean isDarkMode = SharedPrefs.getDarkMode(getContext());
             for (List<String> list : FeedReaderDbHelperSubjects.getContent(getContext(), true)) {
                 final Item item = new Item("null", list.get(0), false);
 
@@ -297,7 +298,12 @@ public class OverviewFragment extends Fragment {
                     button.setBackgroundResource(R.drawable.rounded_textview_padding);
                     button.setGravity(Gravity.CENTER);
                     button.setText(item.getNameInitialsOfSubject());
-                    button.setTextColor(getResources().getColor(android.R.color.white));
+                    if(isDarkMode){
+                        button.setTextColor(getResources().getColor(android.R.color.white));
+                    }else {
+                        button.setTextColor(getResources().getColor(android.R.color.black));
+                    }
+
                     button.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
                     button.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
                     button.setTextSize(30);

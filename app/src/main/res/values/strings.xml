@@ -129,4 +129,5 @@
      <string name="invalid_login">Oops your username or password is incorrect</string>
      <string name="sever_unreachable">The servers are unreachable. Check your school address.</string>
      <string name="disabled_servises">The servises this app needs are unavailable</string>
+     <string name="LATER">LATER</string>
  </resources>

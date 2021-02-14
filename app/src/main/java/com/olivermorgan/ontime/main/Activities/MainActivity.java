@@ -42,11 +42,16 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         SharedPreferences userPreferences = Objects.requireNonNull(this.getSharedPreferences("userId", android.content.Context.MODE_PRIVATE));
+
+
+
          if(userPreferences.getBoolean("first", true)) {
+             overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
              startActivity(new Intent(this, IntroActivity.class));
              SharedPreferences.Editor edit = userPreferences.edit();
              edit.putBoolean("first", false);
              edit.apply();
+
          }
         boolean darkModeOn = SharedPrefs.getDarkMode(this);
         if (darkModeOn) {

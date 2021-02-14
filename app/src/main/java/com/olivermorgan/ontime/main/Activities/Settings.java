@@ -48,7 +48,11 @@ public class Settings extends AppCompatActivity{
         setContentView(R.layout.activity_settings);
 
         ImageView login = findViewById(R.id.bakalariLoginButton);
-        login.setOnClickListener(v -> startActivity(new Intent(Settings.this, LoginActivity.class)));
+        login.setOnClickListener(v ->{
+                Intent i = new Intent(Settings.this, LoginActivity.class);
+                i.putExtra("buttonName",getText(R.string.app_intro_next_button));
+                startActivity(i);
+                });
         title = findViewById(R.id.LoginTitle);
 
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch darkMode = findViewById(R.id.darkModeSwitch);
@@ -66,6 +70,8 @@ public class Settings extends AppCompatActivity{
             }
             Intent intent = new Intent(getApplicationContext(), Settings.class);
             startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
         });
 
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch weekendOn = findViewById(R.id.deleteSundayAndSaturdaySwitch);

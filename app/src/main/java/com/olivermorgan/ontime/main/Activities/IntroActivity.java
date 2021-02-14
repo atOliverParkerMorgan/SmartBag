@@ -1,4 +1,5 @@
 package com.olivermorgan.ontime.main.Activities;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -45,12 +46,18 @@ public class IntroActivity extends AppIntro {
     @Override
     protected void onSkipPressed(Fragment currentFragment) {
         super.onSkipPressed(currentFragment);
+        Intent i = new Intent(this, LoginActivity.class);
+        i.putExtra("buttonName", getText(R.string.LATER).toString());
+        startActivity(i);
         finish();
     }
 
     @Override
     protected void onDonePressed(Fragment currentFragment) {
         super.onDonePressed(currentFragment);
+        Intent i = new Intent(this, LoginActivity.class);
+        i.putExtra("buttonName", getText(R.string.LATER).toString());
+        startActivity(i);
         finish();
     }
 }

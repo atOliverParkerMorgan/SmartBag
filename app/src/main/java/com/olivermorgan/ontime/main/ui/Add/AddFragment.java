@@ -4,6 +4,7 @@ package com.olivermorgan.ontime.main.ui.Add;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.olivermorgan.ontime.main.Activities.AddSubject;
+import com.olivermorgan.ontime.main.Activities.LoginActivity;
 import com.olivermorgan.ontime.main.Activities.Settings;
 import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.Adapter.MyListAdapter;
@@ -37,6 +39,7 @@ import com.olivermorgan.ontime.main.SharedPrefs;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
@@ -49,7 +52,7 @@ public class AddFragment extends Fragment {
 
         // create view
         final View mainView = inflater.inflate(R.layout.fragment_add, parent, false);
-
+        SharedPreferences userPreferences = requireActivity().getSharedPreferences("userId", android.content.Context.MODE_PRIVATE);
         // tutorial
         final String SHOWCASE_ID = "firstTutorial1";
         // sequence example
