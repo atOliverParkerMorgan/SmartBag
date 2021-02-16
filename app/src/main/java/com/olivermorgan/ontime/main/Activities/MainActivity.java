@@ -1,10 +1,13 @@
 package com.olivermorgan.ontime.main.Activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import androidx.appcompat.widget.Toolbar;
 
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,6 +35,7 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
+
 
 public class MainActivity extends AppCompatActivity{
 
@@ -123,6 +127,13 @@ public class MainActivity extends AppCompatActivity{
         super.onResume();
     }
 
+    private Login login = null;
+    public Login getLogin() {
+        if (login == null){
+            login = new Login(this.getApplicationContext());
+        }
+        return login;
+    }
 
 
 

@@ -26,8 +26,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.olivermorgan.ontime.main.Activities.AddSubject;
-import com.olivermorgan.ontime.main.Activities.LoginActivity;
-import com.olivermorgan.ontime.main.Activities.Settings;
+import com.olivermorgan.ontime.main.Activities.MainActivity;
+import com.olivermorgan.ontime.main.Activities.SettingsActivity;
 import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.Adapter.MyListAdapter;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperItems;
@@ -39,7 +39,6 @@ import com.olivermorgan.ontime.main.SharedPrefs;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Objects;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
@@ -72,8 +71,6 @@ public class AddFragment extends Fragment {
 
         sequence.start();
 
-
-
         // Spinner logic
         int spinnerIndex = SharedPrefs.getInt(getContext(), SharedPrefs.SPINNER);
 
@@ -81,14 +78,14 @@ public class AddFragment extends Fragment {
 
         boolean weekendOnBoolean = SharedPrefs.getBoolean(getContext(), SharedPrefs.WEEKEND_ON);
         Calendar calendar = Calendar.getInstance();
-        final boolean doNotShow = !((weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Sa"))
-                ||(weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Su")));
+        final boolean doNotShow = !((weekendOnBoolean&& calendar.getTime().toString().startsWith("Sa"))
+                ||(weekendOnBoolean&& calendar.getTime().toString().startsWith("Su")));
 
         Spinner spinner = (Spinner) mainView.findViewById(R.id.daySpinner);
         ArrayAdapter<CharSequence> adapter;
 
         boolean tomorrowOff = false;
-        if(weekendOnBoolean && calendar.getTime().toString().substring(0,2).equals("Sa")){
+        if(weekendOnBoolean && calendar.getTime().toString().startsWith("Sa")){
             // Create an ArrayAdapter using the string array and a default spinner layout
             adapter = ArrayAdapter.createFromResource(requireContext(),
                     R.array.daySpinnerWithoutWeekendAndTomorrow, android.R.layout.simple_spinner_item);
@@ -185,7 +182,7 @@ public class AddFragment extends Fragment {
         imageButtonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, Settings.class);
+                Intent intent = new Intent(activity, SettingsActivity.class);
                 context.startActivity(intent);
             }
         });

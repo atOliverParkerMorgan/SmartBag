@@ -1,46 +1,18 @@
 package com.olivermorgan.ontime.main.Activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.olivermorgan.ontime.main.BakalariAPI.BakalariAPI;
 import com.olivermorgan.ontime.main.BakalariAPI.Login;
-import com.olivermorgan.ontime.main.BakalariAPI.LoginResponse;
-import com.olivermorgan.ontime.main.BakalariAPI.UserResponse;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
-
-import org.joda.time.LocalDateTime;
-import org.joda.time.format.ISODateTimeFormat;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Objects;
-
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
     final static String TAG = "Baka";
@@ -88,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
             back.setText(getText(R.string.LATER).toString());
             back.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, MainActivity.class)));
         } else {
-            back.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, Settings.class)));
+            back.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, SettingsActivity.class)));
         }
 
         Button searchSchool = findViewById(R.id.buttonSearchSchools);
@@ -117,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
 
            loginLogic.getLogin().login(urlTextValidated,usernameText,passwordText, (code) -> {
                 if (code == Login.SUCCESS) {
-                    Intent intent = new Intent(this, SuccessfulLogin.class);
+                    Intent intent = new Intent(this, SuccessfulLoginActivity.class);
                     startActivity(intent);
                     finish();
                     overridePendingTransition(R.anim.fade_out, R.anim.fade_in);

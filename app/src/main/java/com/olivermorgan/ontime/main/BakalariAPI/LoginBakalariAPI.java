@@ -1,3 +1,4 @@
+// taken from https://github.com/vitSkalicky/lepsi-rozvrh/
 package com.olivermorgan.ontime.main.BakalariAPI;
 
 
@@ -8,7 +9,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
-public interface BakalariAPI {
+public interface LoginBakalariAPI {
 
     @FormUrlEncoded
     @POST("api/login")

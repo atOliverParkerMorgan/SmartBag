@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 
+import com.olivermorgan.ontime.main.BakalariAPI.Login;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
 import com.olivermorgan.ontime.main.ui.Add.AddFragment;
@@ -28,9 +29,10 @@ import java.util.Objects;
 
 
 
-public class Settings extends AppCompatActivity{
+public class SettingsActivity extends AppCompatActivity{
     private static boolean firstViewOfActivity = true;
     TextView title;
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,14 +48,28 @@ public class Settings extends AppCompatActivity{
             setTheme(R.style.LIGHT);
         }
         setContentView(R.layout.activity_settings);
-
-        ImageView login = findViewById(R.id.bakalariLoginButton);
-        login.setOnClickListener(v ->{
-                Intent i = new Intent(Settings.this, LoginActivity.class);
-                i.putExtra("buttonName",getText(R.string.app_intro_next_button));
-                startActivity(i);
-                });
         title = findViewById(R.id.LoginTitle);
+        // is logged in
+        ImageView loginButton = findViewById(R.id.bakalariLoginButton);
+        Login login = new Login(this);
+        if(login.isLoggedIn()){
+            TextView name = findViewById(R.id.bakalari);
+            name.setText(SharedPrefs.getString(this, SharedPrefs.NAME));
+            loginButton.setImageResource(R.drawable.ic_log_out);
+            loginButton.setOnClickListener(v ->{
+                login.logout();
+                restart();
+            });
+
+
+        }else {
+
+            loginButton.setOnClickListener(v -> {
+                Intent i = new Intent(SettingsActivity.this, LoginActivity.class);
+                i.putExtra("buttonName", getText(R.string.app_intro_next_button));
+                startActivity(i);
+            });
+        }
 
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch darkMode = findViewById(R.id.darkModeSwitch);
         darkMode.setChecked(darkModeOn);
@@ -68,10 +84,9 @@ public class Settings extends AppCompatActivity{
                 Toast.makeText(getApplicationContext(),"Light mode is on", Toast.LENGTH_SHORT).show();
 
             }
-            Intent intent = new Intent(getApplicationContext(), Settings.class);
-            startActivity(intent);
-            finish();
-            overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
+            restart();
+
+
         });
 
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch weekendOn = findViewById(R.id.deleteSundayAndSaturdaySwitch);
@@ -147,5 +162,12 @@ public class Settings extends AppCompatActivity{
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private void restart(){
+        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
     }
 }

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.olivermorgan.ontime.main.R;
 
-public class SuccessfulLogin extends AppCompatActivity {
+public class SuccessfulLoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +20,5 @@ public class SuccessfulLogin extends AppCompatActivity {
             finish();
             overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
         });
-
     }
 }

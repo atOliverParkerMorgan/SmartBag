@@ -1,17 +1,14 @@
+// taken from https://github.com/vitSkalicky/lepsi-rozvrh/
 package com.olivermorgan.ontime.main.BakalariAPI;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.olivermorgan.ontime.main.Activities.LoginActivity;
-import com.olivermorgan.ontime.main.Activities.MainActivity;
-import com.olivermorgan.ontime.main.R;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.RozvrhCache;
 import com.olivermorgan.ontime.main.SharedPrefs;
 
 import org.joda.time.LocalDateTime;
@@ -76,7 +73,7 @@ public class Login {
                 return;
             }
 
-            BakalariAPI apiInterface = retrofit.create(BakalariAPI.class);
+            LoginBakalariAPI apiInterface = retrofit.create(LoginBakalariAPI.class);
 
             apiInterface.firstLogin("ANDR", "password", username, password).enqueue(new Callback<LoginResponse>() {
                 @Override
@@ -147,7 +144,7 @@ public class Login {
                 return;
             }
 
-            BakalariAPI apiInterface = retrofit.create(BakalariAPI.class);
+            LoginBakalariAPI apiInterface = retrofit.create(LoginBakalariAPI.class);
 
             refreshQueue.add(listener);
 
@@ -214,18 +211,19 @@ public class Login {
         /**
          * Logs out user (deletes credentials)
          */
-//        public void logout(){
-//            SharedPrefs.remove(context, SharedPrefs.USERNAME);
-//            SharedPrefs.remove(context, SharedPrefs.REFRESH_TOKEN);
-//            SharedPrefs.remove(context, SharedPrefs.ACCEESS_TOKEN);
-//            SharedPrefs.remove(context, SharedPrefs.ACCESS_EXPIRES);
-//            SharedPrefs.remove(context, SharedPrefs.URL);
-//            SharedPrefs.remove(context, SharedPrefs.NAME);
-//            RozvrhCache.clearCache(context);
+        public void logout(){
+            SharedPrefs.remove(context, SharedPrefs.USERNAME);
+            SharedPrefs.remove(context, SharedPrefs.REFRESH_TOKEN);
+            SharedPrefs.remove(context, SharedPrefs.ACCEESS_TOKEN);
+            SharedPrefs.remove(context, SharedPrefs.ACCESS_EXPIRES);
+            SharedPrefs.remove(context, SharedPrefs.URL);
+            SharedPrefs.remove(context, SharedPrefs.NAME);
+            SharedPrefs.remove(context, SharedPrefs.PASSWORD);
+            RozvrhCache.clearCache(context);
 //            PermanentNotification.update(null, 0, context);
 //            WidgetProvider.updateAll(null, context);
 //            AppSingleton.getInstance(context).getRozvrhAPI().clearMemory();
-//        }
+        }
 
         /**
          * Checks if user is logged in or has seen the welcome screen (where crash reports are

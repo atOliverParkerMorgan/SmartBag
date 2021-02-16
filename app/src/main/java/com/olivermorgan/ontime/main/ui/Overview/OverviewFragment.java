@@ -24,7 +24,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.olivermorgan.ontime.main.Activities.AddSubject;
 import com.olivermorgan.ontime.main.Activities.EditSubject;
-import com.olivermorgan.ontime.main.Activities.Settings;
+import com.olivermorgan.ontime.main.Activities.MainActivity;
+import com.olivermorgan.ontime.main.Activities.SettingsActivity;
 import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.google.firebase.storage.FirebaseStorage;
@@ -49,6 +50,7 @@ public class OverviewFragment extends Fragment {
 
         // create view
         final View view = inflater.inflate(R.layout.fragment_overview, parent, false);
+
 
         // tutorial
         ShowcaseConfig config = new ShowcaseConfig();
@@ -162,7 +164,7 @@ public class OverviewFragment extends Fragment {
         // image button logic settings
         ImageButton imageButtonSettings = view.findViewById(R.id.settingsButton);
         imageButtonSettings.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), Settings.class);
+            Intent intent = new Intent(getActivity(), SettingsActivity.class);
             startActivity(intent);
         });
 

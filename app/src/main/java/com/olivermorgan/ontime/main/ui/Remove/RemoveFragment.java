@@ -21,7 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.olivermorgan.ontime.main.Activities.AddSubject;
-import com.olivermorgan.ontime.main.Activities.Settings;
+import com.olivermorgan.ontime.main.Activities.MainActivity;
+import com.olivermorgan.ontime.main.Activities.SettingsActivity;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
 
@@ -42,6 +43,7 @@ public class RemoveFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // create view
         final View mainView = inflater.inflate(R.layout.fragment_remove, parent, false);
+
 
         // Spinner logic
         int spinnerIndex = SharedPrefs.getInt(getContext(), SharedPrefs.SPINNER);
@@ -141,7 +143,7 @@ public class RemoveFragment extends Fragment {
         imageButtonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, Settings.class);
+                Intent intent = new Intent(activity, SettingsActivity.class);
                 context.startActivity(intent);
             }
         });

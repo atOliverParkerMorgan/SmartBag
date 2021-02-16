@@ -4,6 +4,7 @@
     <color name="white">#4A6572</color>
     <color name="black">#232F34</color>
     <color name="colorAccent">#ff5e62</color>
+    <color name="loggedInBakalari">#F9AA33</color>
     <color name="bgColor" />
     <color name="barColor" />
     </resources>

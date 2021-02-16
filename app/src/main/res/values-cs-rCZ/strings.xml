@@ -86,4 +86,5 @@
     <string name="sever_unreachable">Nelze se spojit se srveru. Zkontrolujte školní adresu.</string>
     <string name="disabled_servises">Služby, které tato aplikace potřebuje nejsou k dispozici</string>
     <string name="LATER">POZDĚJI</string>
+    <string name="PREFS_SWITCH_TO_NEXT_WEEK">příští týden</string>
 </resources>

@@ -47,6 +47,9 @@ public class AddSubject extends AppCompatActivity {
 
         final ViewHolder viewHolder = new ViewHolder();
 
+        // show logged in
+        MainActivity.showLoggedInOnBar(findViewById(R.id.toolbar), this);
+
         // hide weekend
 
         boolean weekendOnBoolean = SharedPrefs.getBoolean(this, SharedPrefs.WEEKEND_ON);

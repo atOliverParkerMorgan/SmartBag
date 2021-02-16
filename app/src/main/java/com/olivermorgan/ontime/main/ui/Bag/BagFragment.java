@@ -16,11 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.olivermorgan.ontime.main.Activities.AddSubject;
+import com.olivermorgan.ontime.main.Activities.MainActivity;
 import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.Adapter.MyBagAdapter;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperItems;
 
-import com.olivermorgan.ontime.main.Activities.Settings;
+import com.olivermorgan.ontime.main.Activities.SettingsActivity;
 import com.olivermorgan.ontime.main.R;
 
 
@@ -37,6 +38,7 @@ public class BagFragment extends Fragment {
         // no items
         TextView noItems = view.findViewById(R.id.noItemsInBag);
         noItems.setAlpha(1.0f);
+
 
         // image button logic add item
         ImageButton imageButtonAddSubject = view.findViewById(R.id.addSubject);
@@ -55,7 +57,7 @@ public class BagFragment extends Fragment {
         imageButtonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), Settings.class);
+                Intent intent = new Intent(getActivity(), SettingsActivity.class);
                 startActivity(intent);
             }
         });
