@@ -342,9 +342,10 @@ public class Rozvrh {
      * @param lenght how many lessons does the widget display - determines the length of the returned array.
      * @return {@code null} if this is not a current week or it is not school-time now.
      */
-    public RozvrhHodina[] getWidgetDiaplayValues(int lenght, Context context) {
+    public RozvrhHodina[] getWidgetDiaplayValues(int lenght) {
         LocalDate nowDate = LocalDate.now();
         LocalTime nowTime = LocalTime.now();
+
 
 //        if (DebugUtils.getInstance(context).isDemoMode()) {
 //            nowDate = DebugUtils.getInstance(context).getDemoDate();

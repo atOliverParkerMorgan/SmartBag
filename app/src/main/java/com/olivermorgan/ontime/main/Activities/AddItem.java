@@ -38,8 +38,6 @@ public class AddItem extends AppCompatActivity {
         // Get subject from AddFragment
         final String subject = (String) getIntent().getSerializableExtra("Subject");
 
-        // show logged in
-        MainActivity.showLoggedInOnBar(findViewById(R.id.toolbar), this);
 
         // create a view holder for this layout
         final ViewHolder viewHolder = new ViewHolder();

@@ -1,11 +1,13 @@
 package com.olivermorgan.ontime.main.ui.Overview;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,17 +18,34 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+
 import com.olivermorgan.ontime.main.Activities.AddSubject;
 import com.olivermorgan.ontime.main.Activities.EditSubject;
 import com.olivermorgan.ontime.main.Activities.MainActivity;
 import com.olivermorgan.ontime.main.Activities.SettingsActivity;
 import com.olivermorgan.ontime.main.Adapter.Item;
+import com.olivermorgan.ontime.main.BakalariAPI.Login;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.AppSingleton;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.DebugUtils;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.RozvrhAPI;
+import com.android.volley.toolbox.Volley;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.RozvrhWrapper;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.Utils;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.Rozvrh;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.RozvrhDen;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.RozvrhHodina;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.RozvrhHodinaCaption;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.RozvrhRoot;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.google.firebase.storage.FirebaseStorage;
 
@@ -34,7 +53,15 @@ import com.google.firebase.storage.StorageReference;
 
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
+
+import org.joda.time.DateTimeConstants;
+import org.joda.time.LocalDate;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
@@ -46,10 +73,33 @@ public class OverviewFragment extends Fragment {
     TextView codeText;
     TextView codeTextInstructions;
     Button shareBagButton;
+
+    int weekIndex = 0;
+    private LocalDate week = null;
+    private boolean cacheSuccessful = false;
+    private boolean offline = false;
+    private RozvrhAPI rozvrhAPI = null;
+    private MainActivity mainApplication = null;
+    private Rozvrh rozvrh;
+
+    private View view;
+ // private RozvrhLayout rozvrhLayout;
+    private ScrollView scrollView;
+    private LiveData<RozvrhWrapper> liveData;
+
+    /**<code>false</code> when rozvrh for a certain week is displayed for the first time (a.k.a. <code>true</code> when being re-displayed
+     * as fresh rozvrh is received from the internet)
+     */
+    private boolean redisplayed;
+    private boolean scrollToCurrentLesson;
+
+   // private DisplayInfo displayInfo;
+
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
 
         // create view
-        final View view = inflater.inflate(R.layout.fragment_overview, parent, false);
+        view = inflater.inflate(R.layout.fragment_overview, parent, false);
 
 
         // tutorial
@@ -168,9 +218,7 @@ public class OverviewFragment extends Fragment {
             startActivity(intent);
         });
 
-
         updateTable(weekendOnBoolean, table, view);
-
 
         // on pressing btnUpload uploadImage() is called
         shareBagButton.setOnClickListener(v -> uploadDatabase());
@@ -206,11 +254,36 @@ public class OverviewFragment extends Fragment {
             // adding listeners on upload
             // or failure of image
 
-        // Progress Listener for loading
-// percentage on the dialog box
-        storageReference.child("subjects/"+codeName+".db").putFile(databaseSubjects)
+            // Progress Listener for loading
+            // percentage on the dialog box
+            storageReference.child("subjects/"+codeName+".db").putFile(databaseSubjects)
+                        .addOnSuccessListener(
+                                taskSnapshot -> {
+                                })
+
+                        .addOnFailureListener(e -> Toast.makeText(getContext(), "Error, check your internet connection.", Toast.LENGTH_LONG).show())
+                        .addOnProgressListener(
+                                taskSnapshot -> {
+                                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                                    progressBar.setProgress((int) progress);
+                                });
+
+            final String finalCodeName = codeName;
+            // Progress Listener for loading
+            // percentage on the dialog box
+            storageReference.child("items/"+codeName+".db").putFile(databaseItems)
                     .addOnSuccessListener(
                             taskSnapshot -> {
+                                // stay in place for half a second after completion
+                                Handler handler = new Handler();
+                                handler.postDelayed(() -> progressBar.setProgress(0), 1500);
+
+                                codeText.setText( finalCodeName);
+                                codeTextInstructions.setText(R.string.codeNameInstructions);
+                                shareBagButton.setText(R.string.updateBag);
+
+
+                                Toast.makeText(getContext(), "Success, your bag has been uploaded.", Toast.LENGTH_LONG).show();
                             })
 
                     .addOnFailureListener(e -> Toast.makeText(getContext(), "Error, check your internet connection.", Toast.LENGTH_LONG).show())
@@ -220,152 +293,134 @@ public class OverviewFragment extends Fragment {
                                 progressBar.setProgress((int) progress);
                             });
 
-        final String finalCodeName = codeName;
-        // Progress Listener for loading
-// percentage on the dialog box
-        storageReference.child("items/"+codeName+".db").putFile(databaseItems)
-                .addOnSuccessListener(
-                        taskSnapshot -> {
-                            // stay in place for half a second after completion
-                            Handler handler = new Handler();
-                            handler.postDelayed(() -> progressBar.setProgress(0), 1500);
-
-                            codeText.setText( finalCodeName);
-                            codeTextInstructions.setText(R.string.codeNameInstructions);
-                            shareBagButton.setText(R.string.updateBag);
-
-
-                            Toast.makeText(getContext(), "Success, your bag has been uploaded.", Toast.LENGTH_LONG).show();
-                        })
-
-                .addOnFailureListener(e -> Toast.makeText(getContext(), "Error, check your internet connection.", Toast.LENGTH_LONG).show())
-                .addOnProgressListener(
-                        taskSnapshot -> {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            progressBar.setProgress((int) progress);
-                        });
-
     }
     private void updateTable(boolean weekendOnBoolean, TableLayout table, View view){
         table.removeAllViews();
+        Login login = new Login(getContext());
+        if(login.isLoggedIn()){
+            displayWeek(weekIndex);
 
-        // get most subjects in a day
-        int max = Integer.MIN_VALUE;
-        int current = 0;
-        for (int i = 1; i < 8; i++) {
-            for (List<String> list : FeedReaderDbHelperSubjects.getContent(getContext(), true)) {
-                if (list.get(i).equals("true")) {
-                    current++;
+
+        }else {
+
+            // get most subjects in a day
+            int max = Integer.MIN_VALUE;
+            int current = 0;
+            for (int i = 1; i < 8; i++) {
+                for (List<String> list : FeedReaderDbHelperSubjects.getContent(getContext(), true)) {
+                    if (list.get(i).equals("true")) {
+                        current++;
+                    }
                 }
+                if (max < current) {
+                    max = current;
+                }
+                current = 0;
             }
-            if(max<current){
-                max = current;
-            }
-            current = 0;
-        }
-        final boolean donNotShare = max==0;
-        max = Math.max(max, 4);
-        boolean first = true;
+            final boolean donNotShare = max == 0;
+            max = Math.max(max, 4);
+            boolean first = true;
 
-        for (int i = 1; i < (weekendOnBoolean?6:8); i++) {
-            TableRow row = new TableRow(getContext());
-            row.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            row.setPadding(0,0,0,0);
+            for (int i = 1; i < (weekendOnBoolean ? 6 : 8); i++) {
+                TableRow row = new TableRow(getContext());
+                row.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                row.setPadding(0, 0, 0, 0);
 
-            int addedRows = 0;
-            final boolean isDarkMode = SharedPrefs.getDarkMode(getContext());
-            for (List<String> list : FeedReaderDbHelperSubjects.getContent(getContext(), true)) {
-                final Item item = new Item("null", list.get(0), false);
+                int addedRows = 0;
+                final boolean isDarkMode = SharedPrefs.getDarkMode(getContext());
+                for (List<String> list : FeedReaderDbHelperSubjects.getContent(getContext(), true)) {
+                    final Item item = new Item("null", list.get(0), false);
 
-                // days of the week logic
+                    // days of the week logic
 
-                if (list.get(i).equals("true")) {
-                    addedRows++;
-                    Button button = new Button(getContext());
+                    if (list.get(i).equals("true")) {
+                        addedRows++;
+                        Button button = new Button(getContext());
 
-                    if(first) {
-                        // tutorial
-                        ShowcaseConfig config = new ShowcaseConfig();
-                        config.setDelay(200); // half second between each showcase view
-                        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "recyclerViewerTutorialOverviewTableItem");
-                        sequence.setConfig(config);
-                        sequence.addSequenceItem(button,
-                                "Click the icon to edit this subject", "GOT IT");
-                        sequence.start();
-                        first = false;
+                        if (first) {
+                            // tutorial
+                            ShowcaseConfig config = new ShowcaseConfig();
+                            config.setDelay(200); // half second between each showcase view
+                            MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "recyclerViewerTutorialOverviewTableItem");
+                            sequence.setConfig(config);
+                            sequence.addSequenceItem(button,
+                                    "Click the icon to edit this subject", "GOT IT");
+                            sequence.start();
+                            first = false;
+                        }
+
+                        button.setMinimumWidth(0);
+                        button.setMinimumHeight(0);
+                        button.setBackgroundResource(R.drawable.rounded_textview_padding);
+                        button.setGravity(Gravity.CENTER);
+                        button.setText(item.getNameInitialsOfSubject());
+                        if (isDarkMode) {
+                            button.setTextColor(getResources().getColor(android.R.color.white));
+                        } else {
+                            button.setTextColor(getResources().getColor(android.R.color.black));
+                        }
+
+                        button.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+                        button.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+                        button.setTextSize(30);
+
+                        button.setOnClickListener(v -> {
+                            // go back to main activity
+                            Intent i1 = new Intent(getActivity(), EditSubject.class);
+                            i1.putExtra("subjectName", item.getSubjectName());
+                            startActivity(i1);
+                        });
+
+                        row.addView(button);
+
+
                     }
 
-                    button.setMinimumWidth(0);
-                    button.setMinimumHeight(0);
-                    button.setBackgroundResource(R.drawable.rounded_textview_padding);
-                    button.setGravity(Gravity.CENTER);
-                    button.setText(item.getNameInitialsOfSubject());
-                    if(isDarkMode){
-                        button.setTextColor(getResources().getColor(android.R.color.white));
-                    }else {
-                        button.setTextColor(getResources().getColor(android.R.color.black));
+                }
+                if (addedRows < max) {
+                    for (int j = 0; j < max - addedRows; j++) {
+                        Button padding = new Button(getContext());
+                        padding.setMinimumWidth(0);
+                        padding.setMinimumHeight(0);
+                        padding.setBackgroundResource(R.drawable.rounded_textview_padding);
+                        padding.setGravity(Gravity.CENTER);
+                        padding.setTextColor(Color.WHITE);
+                        padding.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+                        padding.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+                        padding.setText("");
+                        padding.setTextSize(30);
+                        row.addView(padding);
                     }
 
-                    button.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-                    button.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-                    button.setTextSize(30);
-
-                    button.setOnClickListener(v -> {
-                        // go back to main activity
-                        Intent i1 = new Intent( getActivity(), EditSubject.class);
-                        i1.putExtra("subjectName", item.getSubjectName());
-                        startActivity(i1);
-                    });
-
-                    row.addView(button);
-
-
                 }
+                table.addView(row);
 
             }
-            if(addedRows<max){
-                for(int j=0;j<max-addedRows;j++) {
-                    Button padding = new Button(getContext());
-                    padding.setMinimumWidth(0);
-                    padding.setMinimumHeight(0);
-                    padding.setBackgroundResource(R.drawable.rounded_textview_padding);
-                    padding.setGravity(Gravity.CENTER);
-                    padding.setTextColor(Color.WHITE);
-                    padding.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-                    padding.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-                    padding.setText("");
-                    padding.setTextSize(30);
-                    row.addView(padding);
-                }
-
+            table.requestLayout();     // Not sure if this is needed.
+            Button addSubjectButton = view.findViewById(R.id.showButton);
+            // hide share if there are zero items
+            if (donNotShare) {
+                // hide table
+                table.setVisibility(View.GONE);
+                view.findViewById(R.id.Table).setVisibility(View.GONE);
+                // hide share button
+                shareBagButton.setVisibility(View.GONE);
+                addSubjectButton.setVisibility(View.VISIBLE);
+                view.findViewById(R.id.codeTextInstructions).setVisibility(View.INVISIBLE);
+                view.findViewById(R.id.codeText).setVisibility(View.INVISIBLE);
+                addSubjectButton.setOnClickListener(v -> {
+                    // setting add Subject first to falls to avoid error
+                    AddSubject.firstViewOfActivity = true;
+                    Intent intent = new Intent(getActivity(), AddSubject.class);
+                    startActivity(intent);
+                });
+            } else {
+                addSubjectButton.setVisibility(View.GONE);
+                // show table
+                table.setVisibility(View.VISIBLE);
+                view.findViewById(R.id.Table).setVisibility(View.VISIBLE);
+                shareBagButton.setVisibility(View.VISIBLE);
             }
-            table.addView(row);
-
-        }
-        table.requestLayout();     // Not sure if this is needed.
-        Button addSubjectButton =  view.findViewById(R.id.showButton);
-        // hide share if there are zero items
-        if(donNotShare){
-            // hide table
-            table.setVisibility(View.GONE);
-            view.findViewById(R.id.Table).setVisibility(View.GONE);
-            // hide share button
-            shareBagButton.setVisibility(View.GONE);
-            addSubjectButton.setVisibility(View.VISIBLE);
-            view.findViewById(R.id.codeTextInstructions).setVisibility(View.INVISIBLE);
-            view.findViewById(R.id.codeText).setVisibility(View.INVISIBLE);
-            addSubjectButton.setOnClickListener(v -> {
-                // setting add Subject first to falls to avoid error
-                AddSubject.firstViewOfActivity = true;
-                Intent intent = new Intent(getActivity(), AddSubject.class);
-                startActivity(intent);
-            });
-        }else{
-            addSubjectButton.setVisibility(View.GONE);
-            // show table
-            table.setVisibility(View.VISIBLE);
-            view.findViewById(R.id.Table).setVisibility(View.VISIBLE);
-            shareBagButton.setVisibility(View.VISIBLE);
         }
 
     }
@@ -384,6 +439,68 @@ public class OverviewFragment extends Fragment {
 
         return true;
     }
+
+    public void displayWeek(int weekIndex) {
+        //debug timing: Log.d(TAG_TIMER, "displayWeek start " + Utils.getDebugTime());
+        this.weekIndex = weekIndex;
+        if (weekIndex == Integer.MAX_VALUE)
+            week = null;
+        else
+            week = Utils.getDisplayWeekMonday(getContext()).plusWeeks(weekIndex);
+
+        if (liveData != null)
+            liveData.removeObservers(this);
+        rozvrhAPI = AppSingleton.getInstance(getContext()).getRozvrhAPI();
+        liveData = rozvrhAPI.getLiveData(week);
+        RozvrhWrapper rw = liveData.getValue();
+        rozvrh = rw == null ? null : liveData.getValue().getRozvrh();
+        if(rozvrh==null){
+            liveData.observe(getViewLifecycleOwner(), rozvrhWrapper -> {
+                rozvrh = rozvrhWrapper.getRozvrh();
+                if (rozvrhWrapper.getSource() == RozvrhWrapper.SOURCE_CACHE){
+                    // Log.e("cache_rozvrhApp", String.valueOf(rozvrhAPI.getCurrentWeekLiveData().getValue().getRozvrh()));
+                    int row = rozvrh.getDny().size();
+                    for(int i =0; i<row; i++) {
+                        RozvrhDen den = rozvrh.getDny().get(i);
+                        for (int j = 0; j < den.getHodiny().size(); j++) {
+                            RozvrhHodina item = den.getHodiny().get(j);
+                            Log.e("net_rozvrhAppHodina", String.valueOf(item.getZkrpr()));
+                            Log.e("net_rozvrhAppHodina", String.valueOf(item.getPr()));
+                            Log.e("net_rozvrhAppHodina","------");
+
+                        }
+                    }
+                    Log.e("net_rozvrhApp", String.valueOf(rozvrh.getNazevcyklu()));
+                    // onCacheResponse(rozvrhWrapper.getCode(), rozvrhWrapper.getRozvrh(), finalWeek);
+                }else if (rozvrhWrapper.getSource() == RozvrhWrapper.SOURCE_NET){
+                    // Log.e("cache_rozvrhApp", String.valueOf(rozvrhAPI.getCurrentWeekLiveData().getValue().getRozvrh()));
+                    int row = rozvrh.getDny().size();
+                    for(int i =0; i<row; i++) {
+                        RozvrhDen den = rozvrh.getDny().get(i);
+                        for (int j = 0; j < den.getHodiny().size(); j++) {
+                            RozvrhHodina item = den.getHodiny().get(j);
+                            Log.e("net_rozvrhAppHodina", String.valueOf(item.getZkrpr()));
+                            Log.e("net_rozvrhAppHodina", String.valueOf(item.getPr()));
+                            Log.e("net_rozvrhAppHodina", "------");
+                        }
+                    }
+                    Log.e("net_rozvrhApp", String.valueOf(rozvrh.getNazevcyklu()));
+                    // onNetResponse(rozvrhWrapper.getCode(), rozvrhWrapper.getRozvrh(), finalWeek);
+                }
+            });
+        }else{
+
+        }
+    }
+
+    public void showBakalariTimeTable(Rozvrh rozvrh){
+
+
+
+    }
+
+
+
 }
 
 

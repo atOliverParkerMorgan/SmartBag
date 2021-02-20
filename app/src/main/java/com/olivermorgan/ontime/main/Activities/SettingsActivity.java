@@ -128,6 +128,7 @@ public class SettingsActivity extends AppCompatActivity{
     // navigation
     public BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @SuppressLint("NonConstantResourceId")
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     title.setVisibility(View.GONE);

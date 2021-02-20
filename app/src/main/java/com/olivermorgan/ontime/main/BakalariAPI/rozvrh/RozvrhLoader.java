@@ -75,7 +75,7 @@ public class RozvrhLoader {
             call.enqueue(new Callback<Rozvrh3>() {
                 @Override
                 public void onResponse(@NonNull Call<Rozvrh3> call, @NonNull Response<Rozvrh3> response) {
-                    if(login.getLogin().isLoggedIn()) {
+                    if(!login.getLogin().isLoggedIn()) {
                         // in case the user has meanwhile logged out
                         return;
                     }
@@ -95,7 +95,7 @@ public class RozvrhLoader {
                         if (response.code() == 401 /*Unauthorized*/){
                             if (!isRetry) {
                                 //refresh token and try again
-                                ((MainActivity) context.getApplicationContext()).getLogin().refreshToken(code -> {
+                                login.getLogin().refreshToken(code -> {
                                     loadRozvrh(monday, listener, true);
                                 });
                             }else {

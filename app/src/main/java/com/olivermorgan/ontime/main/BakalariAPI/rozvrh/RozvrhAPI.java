@@ -2,6 +2,7 @@
 package com.olivermorgan.ontime.main.BakalariAPI.rozvrh;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -75,7 +76,7 @@ public class RozvrhAPI {
     public LiveData<RozvrhWrapper> getLiveData(LocalDate monday) {
         MutableLiveData<RozvrhWrapper> ld = liveDatas.get(monday);
         if (ld == null) {
-            ld = new MutableLiveData<RozvrhWrapper>();
+            ld = new MutableLiveData<>();
             liveDatas.put(monday, ld);
         }
 
@@ -88,14 +89,17 @@ public class RozvrhAPI {
             final Mutable<Boolean> netFinishedSucessfully = new Mutable<>(false);
             getFromCacheAndSave(monday, rozvrhWrapper -> {
                 if (!netFinishedSucessfully.getValue()) {
+                    Log.d("FAIL","AAAAAAAAAAA");
                     updateLiveData(monday, rozvrhWrapper);
                 }
             });
             getFromNetAndSave(monday, rozvrhWrapper -> {
                 if (rozvrhWrapper.getCode() == SUCCESS) {
+                    Log.d("SUCCESS","AAAAAAAAAAA");
                     updateLiveData(monday, rozvrhWrapper);
                     netFinishedSucessfully.setValue(true);
                 } else {
+                    Log.d("FAIL","AAAAAAAAAAA");
                     Rozvrh prevRozvrh = fld.getValue() == null ? null : fld.getValue().getRozvrh();
                     updateLiveData(monday, new RozvrhWrapper(prevRozvrh, rozvrhWrapper.getCode(), RozvrhWrapper.SOURCE_NET));
                 }
@@ -137,7 +141,7 @@ public class RozvrhAPI {
     private void updateLiveData(LocalDate monday, RozvrhWrapper rw) {
         MutableLiveData<RozvrhWrapper> ld = liveDatas.get(monday);
         if (ld != null) {
-            ld.setValue(rw);
+            ld.postValue(rw);
         }
 
         if (monday != null && Utils.getWeekMonday(monday).equals(Utils.getCurrentMonday())){

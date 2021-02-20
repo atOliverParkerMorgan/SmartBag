@@ -31,6 +31,27 @@ public class Item {
             }
 
         }
+        // specialSchoolCases
+        switch (getSubjectName()){
+
+            case "Biologie":
+                return "Bi";
+
+            case "Fyzika":
+                return "Fy";
+
+            case "Algoritmy":
+                return "Alg";
+
+            case "Programování":
+                return "Pg";
+
+            case "Chemie":
+                return "Ch";
+
+        }
+
+
         return initials.toString();
     }
 
