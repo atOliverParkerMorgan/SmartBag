@@ -37,4 +37,7 @@ public class RozvrhRoot {
 //            rozvrh = DebugUtils.getInstance(context).getDemoRozvrh();
 //        }
     }
+
+    public void empty() {
+    }
 }

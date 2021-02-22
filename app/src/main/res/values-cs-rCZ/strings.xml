@@ -87,4 +87,6 @@
     <string name="disabled_servises">Služby, které tato aplikace potřebuje nejsou k dispozici</string>
     <string name="LATER">POZDĚJI</string>
     <string name="PREFS_SWITCH_TO_NEXT_WEEK">příští týden</string>
+    <string name="loading_timetable">Načíta se váš aktuální rozvrh</string>
+    <string name="add_a_subject_description">přidej předmět</string>
 </resources>

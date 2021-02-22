@@ -21,7 +21,7 @@ public class Item {
 
     public String getNameInitialsOfSubject() {
         StringBuilder initials = new StringBuilder();
-        initials.append(Character.toUpperCase(getSubjectName().charAt(0)));
+            initials.append(Character.toUpperCase(getSubjectName().charAt(0)));
         for (int i = 1; i < getSubjectName().length() - 1; i++) {
             if (getSubjectName().charAt(i) == ' ') {
                 initials.append(Character.toUpperCase(getSubjectName().charAt(i + 1)));

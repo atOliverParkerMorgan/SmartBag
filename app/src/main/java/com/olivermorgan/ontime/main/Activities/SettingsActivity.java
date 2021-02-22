@@ -50,85 +50,90 @@ public class SettingsActivity extends AppCompatActivity{
         setContentView(R.layout.activity_settings);
         title = findViewById(R.id.LoginTitle);
         // is logged in
-        ImageView loginButton = findViewById(R.id.bakalariLoginButton);
-        Login login = new Login(this);
-        if(login.isLoggedIn()){
-            TextView name = findViewById(R.id.bakalari);
-            name.setText(SharedPrefs.getString(this, SharedPrefs.NAME));
-            loginButton.setImageResource(R.drawable.ic_log_out);
-            loginButton.setOnClickListener(v ->{
-                login.logout();
-                restart();
-            });
+        new Thread(()-> {
 
+            ImageView loginButton = findViewById(R.id.bakalariLoginButton);
+            Login login = new Login(this);
+            if (login.isLoggedIn()) {
+                TextView name = findViewById(R.id.bakalari);
+                name.setText(SharedPrefs.getString(this, SharedPrefs.NAME));
+                loginButton.setImageResource(R.drawable.ic_log_out);
+                loginButton.setOnClickListener(v -> {
+                    login.logout();
+                    restart();
+                });
 
-        }else {
-
-            loginButton.setOnClickListener(v -> {
-                Intent i = new Intent(SettingsActivity.this, LoginActivity.class);
-                i.putExtra("buttonName", getText(R.string.app_intro_next_button));
-                startActivity(i);
-            });
-        }
-
-        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch darkMode = findViewById(R.id.darkModeSwitch);
-        darkMode.setChecked(darkModeOn);
-        darkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
-
-            SharedPrefs.setBoolean(getApplicationContext(), SharedPrefs.DARK_MODE, isChecked);
-
-            if (isChecked) {
-                Toast.makeText(getApplicationContext(), "Dark mode is on", Toast.LENGTH_SHORT).show();
 
             } else {
-                Toast.makeText(getApplicationContext(),"Light mode is on", Toast.LENGTH_SHORT).show();
 
-            }
-            restart();
+                loginButton.setOnClickListener(v -> {
+                    Intent i = new Intent(SettingsActivity.this, LoginActivity.class);
+                    i.putExtra("buttonName", getText(R.string.app_intro_next_button));
+                    startActivity(i);
+                });
+            }}).start();
 
+            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch darkMode = findViewById(R.id.darkModeSwitch);
+            darkMode.setChecked(darkModeOn);
+            darkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
-        });
+                new Thread(()->  SharedPrefs.setBoolean(getApplicationContext(), SharedPrefs.DARK_MODE, isChecked)).start();
 
-        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch weekendOn = findViewById(R.id.deleteSundayAndSaturdaySwitch);
-        weekendOn.setChecked(!weekendOnBoolean);
-        weekendOn.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            //declare the shardPreferences variable..
-            // if due is set to Saturday or Sunday and do not show Weekend is checked set due to Today.
-            if(!isChecked) {
+                if (isChecked) {
+                    Toast.makeText(getApplicationContext(), "Dark mode is on", Toast.LENGTH_SHORT).show();
 
-                if(SharedPrefs.getInt(getApplicationContext(), SharedPrefs.SPINNER)== 8 || SharedPrefs.getInt(getApplicationContext(), SharedPrefs.SPINNER)== 7 ) {
-                    SharedPrefs.setInt(getApplicationContext(), SharedPrefs.SPINNER, 0);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Light mode is on", Toast.LENGTH_SHORT).show();
+
                 }
+                restart();
+
+
+            });
+
+            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch weekendOn = findViewById(R.id.deleteSundayAndSaturdaySwitch);
+            weekendOn.setChecked(!weekendOnBoolean);
+            weekendOn.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                //declare the shardPreferences variable..
+                // if due is set to Saturday or Sunday and do not show Weekend is checked set due to Today.
+                new Thread(()-> {
+                    if (!isChecked) {
+
+                        if (SharedPrefs.getInt(getApplicationContext(), SharedPrefs.SPINNER) == 8 || SharedPrefs.getInt(getApplicationContext(), SharedPrefs.SPINNER) == 7) {
+                            SharedPrefs.setInt(getApplicationContext(), SharedPrefs.SPINNER, 0);
+                        }
+                    }
+                    SharedPrefs.setBoolean(getApplicationContext(), SharedPrefs.WEEKEND_ON, !isChecked);
+                }).start();
+
+
+                if (isChecked) {
+                    Toast.makeText(getApplicationContext(), R.string.willShowWeek, Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.willShowWeekNot, Toast.LENGTH_SHORT).show();
+
+                }
+                weekendOn.setChecked(!SharedPrefs.getBoolean(this, SharedPrefs.WEEKEND_ON));
+            });
+
+
+            BottomNavigationView navView = findViewById(R.id.nav_view);
+            navView.setSelectedItemId(R.id.navigation_bag);
+            navView.setOnNavigationItemSelectedListener(navListener);
+            //I added this if statement to keep the selected fragment when rotating the device
+            if (savedInstanceState == null && !firstViewOfActivity) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
+                        new AddFragment()).commit();
             }
-            SharedPrefs.setBoolean(getApplicationContext(),SharedPrefs.WEEKEND_ON, !isChecked);
 
-
-            if (isChecked) {
-                Toast.makeText(getApplicationContext(), R.string.willShowWeek, Toast.LENGTH_SHORT).show();
-
-            } else {
-                Toast.makeText(getApplicationContext(),R.string.willShowWeekNot, Toast.LENGTH_SHORT).show();
-
-            }
-            weekendOn.setChecked(!SharedPrefs.getBoolean(this,SharedPrefs.WEEKEND_ON));
-        });
-
-
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        navView.setSelectedItemId(R.id.navigation_bag);
-        navView.setOnNavigationItemSelectedListener(navListener);
-        //I added this if statement to keep the selected fragment when rotating the device
-        if (savedInstanceState == null && !firstViewOfActivity) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
-                    new AddFragment()).commit();
-        }
     }
 
 
     // navigation
     public BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @SuppressLint("NonConstantResourceId")
+
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     title.setVisibility(View.GONE);

@@ -131,4 +131,7 @@
      <string name="disabled_servises">The servises this app needs are unavailable</string>
      <string name="LATER">LATER</string>
      <string name="PREFS_SWITCH_TO_NEXT_WEEK">next week</string>
+
+     <string name="loading_timetable">Loading your timetable from Bakaláři</string>
+     <string name="add_a_subject_description">add a Subject</string>
  </resources>

@@ -27,13 +27,14 @@ public class AddItem extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        boolean darkModeOn = SharedPrefs.getDarkMode(this);
-        if (darkModeOn) {
-            setTheme(R.style.DARK);
-        } else {
-            setTheme(R.style.LIGHT);
-        }
+        new Thread(()-> {
+            boolean darkModeOn = SharedPrefs.getDarkMode(this);
+            if (darkModeOn) {
+                setTheme(R.style.DARK);
+            } else {
+                setTheme(R.style.LIGHT);
+            }
+        }).start();
         setContentView(R.layout.activity_add_items);
         // Get subject from AddFragment
         final String subject = (String) getIntent().getSerializableExtra("Subject");

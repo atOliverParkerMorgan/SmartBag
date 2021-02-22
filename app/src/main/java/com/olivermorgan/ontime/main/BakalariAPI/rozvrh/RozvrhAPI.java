@@ -3,6 +3,7 @@ package com.olivermorgan.ontime.main.BakalariAPI.rozvrh;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -89,7 +90,6 @@ public class RozvrhAPI {
             final Mutable<Boolean> netFinishedSucessfully = new Mutable<>(false);
             getFromCacheAndSave(monday, rozvrhWrapper -> {
                 if (!netFinishedSucessfully.getValue()) {
-                    Log.d("FAIL","AAAAAAAAAAA");
                     updateLiveData(monday, rozvrhWrapper);
                 }
             });
@@ -99,9 +99,9 @@ public class RozvrhAPI {
                     updateLiveData(monday, rozvrhWrapper);
                     netFinishedSucessfully.setValue(true);
                 } else {
-                    Log.d("FAIL","AAAAAAAAAAA");
+                    Toast.makeText(context,"Error", Toast.LENGTH_LONG).show();
                     Rozvrh prevRozvrh = fld.getValue() == null ? null : fld.getValue().getRozvrh();
-                    updateLiveData(monday, new RozvrhWrapper(prevRozvrh, rozvrhWrapper.getCode(), RozvrhWrapper.SOURCE_NET));
+                   // updateLiveData(monday, new RozvrhWrapper(prevRozvrh, rozvrhWrapper.getCode(), RozvrhWrapper.SOURCE_NET));
                 }
             });
             updateLiveData(monday, new RozvrhWrapper(null, NO_CACHE, RozvrhWrapper.SOURCE_MEMORY));

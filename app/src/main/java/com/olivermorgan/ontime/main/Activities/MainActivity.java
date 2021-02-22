@@ -1,17 +1,28 @@
 package com.olivermorgan.ontime.main.Activities;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ScrollView;
+
 import androidx.appcompat.widget.Toolbar;
 
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.olivermorgan.ontime.main.BakalariAPI.Login;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.AppSingleton;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.RozvrhAPI;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.RozvrhWrapper;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.Utils;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.Rozvrh;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.RozvrhDen;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.RozvrhHodina;
+import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
 import com.olivermorgan.ontime.main.ui.Add.AddFragment;
@@ -24,9 +35,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+
+import org.joda.time.LocalDate;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Executor;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -40,14 +57,11 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 public class MainActivity extends AppCompatActivity{
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         SharedPreferences userPreferences = Objects.requireNonNull(this.getSharedPreferences("userId", android.content.Context.MODE_PRIVATE));
-
-
 
          if(userPreferences.getBoolean("first", true)) {
              overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
@@ -57,13 +71,18 @@ public class MainActivity extends AppCompatActivity{
              edit.apply();
 
          }
+        setContentView(R.layout.activity_main);
+
+        LoadBag loadBag = new LoadBag(this,this);
+        loadBag.getRozvrh(0,false);
+
+
         boolean darkModeOn = SharedPrefs.getDarkMode(this);
         if (darkModeOn) {
             setTheme(R.style.DARK);
         } else {
             setTheme(R.style.LIGHT);
         }
-        setContentView(R.layout.activity_main);
 
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -96,6 +115,7 @@ public class MainActivity extends AppCompatActivity{
         }
 
 
+
     }
     // navigation
     @SuppressLint("NonConstantResourceId")
@@ -126,6 +146,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onResume() {
         super.onResume();
+
     }
 
     private Login login = null;
@@ -135,6 +156,17 @@ public class MainActivity extends AppCompatActivity{
         }
         return login;
     }
+
+
+    public static void showAlert(Context context, String message){
+        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+        alert.setMessage(message);
+        alert.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+            dialog.cancel();
+        });
+    }
+
+
 
 
 
