@@ -48,7 +48,6 @@ public class AddFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-
         // create view
         final View mainView = inflater.inflate(R.layout.fragment_add, parent, false);
         SharedPreferences userPreferences = requireActivity().getSharedPreferences("userId", android.content.Context.MODE_PRIVATE);
@@ -65,7 +64,7 @@ public class AddFragment extends Fragment {
         sequence.addSequenceItem(mainView.findViewById(R.id.daySpinner),
                 "Click here to select which day do you want to prepare your bag for", "NEXT");
 
-        sequence.addSequenceItem(mainView.findViewById(R.id.addSubject),
+        sequence.addSequenceItem(getActivity().findViewById(R.id.toolbar),
                 "Click here to add a new subject", "GOT IT");
 
 
@@ -163,29 +162,6 @@ public class AddFragment extends Fragment {
         final RecyclerView ItemsToAddRecycleView = view.findViewById(R.id.ItemsToAdd);
         ItemsToAddRecycleView.setLayoutManager(new LinearLayoutManager(activity));
 
-        // Toolbar
-
-        // image button logic add item
-        ImageButton imageButtonAddSubject = view.findViewById(R.id.addSubject);
-        imageButtonAddSubject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // setting add Subject first to falls to avoid error
-                AddSubject.firstViewOfActivity = true;
-                Intent intent = new Intent(activity, AddSubject.class);
-                context.startActivity(intent);
-            }
-        });
-
-        // image button logic settings
-        ImageButton imageButtonSettings = view.findViewById(R.id.settingsButton);
-        imageButtonSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(activity, SettingsActivity.class);
-                context.startActivity(intent);
-            }
-        });
 
         // this is data for recycler view
         List<Item> inMyBag = new ArrayList<>();
@@ -238,4 +214,6 @@ public class AddFragment extends Fragment {
         }
 
     }
+
+
 }

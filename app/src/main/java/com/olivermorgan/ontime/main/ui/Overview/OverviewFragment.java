@@ -186,21 +186,6 @@ public class OverviewFragment extends Fragment {
 
         });
 
-        // image button logic add item
-        ImageButton imageButtonAddSubject = view.findViewById(R.id.addSubject);
-        imageButtonAddSubject.setOnClickListener(v -> {
-            // setting add Subject first to falls to avoid error
-            AddSubject.firstViewOfActivity = true;
-            Intent intent = new Intent(getActivity(), AddSubject.class);
-            startActivity(intent);
-        });
-
-        // image button logic settings
-        ImageButton imageButtonSettings = view.findViewById(R.id.settingsButton);
-        imageButtonSettings.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), SettingsActivity.class);
-            startActivity(intent);
-        });
 
         updateTable(weekendOnBoolean, table, view);
 

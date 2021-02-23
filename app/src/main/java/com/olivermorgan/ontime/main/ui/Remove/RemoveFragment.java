@@ -125,32 +125,6 @@ public class RemoveFragment extends Fragment {
             }
         }
 
-
-        // image button logic add item
-        ImageButton imageButtonAddSubject = view.findViewById(R.id.addSubject);
-        imageButtonAddSubject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // setting add Subject first to falls to avoid error
-                AddSubject.firstViewOfActivity = true;
-                Intent intent = new Intent(activity, AddSubject.class);
-                context.startActivity(intent);
-            }
-        });
-
-        // image button logic settings
-        ImageButton imageButtonSettings = view.findViewById(R.id.settingsButton);
-        imageButtonSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(activity, SettingsActivity.class);
-                context.startActivity(intent);
-            }
-        });
-
-
-
-
         final RecyclerView ItemsToRemoveRecycleView = view.findViewById(R.id.ItemsToRemove);
         ItemsToRemoveRecycleView.setLayoutManager(new LinearLayoutManager(activity));
 

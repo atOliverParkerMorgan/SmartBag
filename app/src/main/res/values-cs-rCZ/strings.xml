@@ -16,8 +16,8 @@
     <string name="to_add_text_subtitle">"přidejte tyto pomůcky do batohu "</string>
     <string name="to_remove_text">Odeberte z batohu</string>
     <string name="to_remove_text_subtitle">"Vyndejte tyto pomůcky z batohu  "</string>
-    <string name="to_in_bag">Váš batoh</string>
-    <string name="to_in_bag_instructions">Tyto pomůcky jsou ve vašem batohu</string>
+    <string name="in_bag_text">Váš batoh</string>
+    <string name="in_bag_subtext">Tyto pomůcky jsou ve vašem batohu</string>
     <string name="cant_connect">Nelze připojit</string>
     <string name="user_connected">Jste připojeni!!</string>
     <string name="monday">Pondělí</string>

@@ -5,11 +5,17 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -34,6 +40,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 
@@ -54,8 +61,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 
-public class MainActivity extends AppCompatActivity{
-
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,19 +69,21 @@ public class MainActivity extends AppCompatActivity{
 
         SharedPreferences userPreferences = Objects.requireNonNull(this.getSharedPreferences("userId", android.content.Context.MODE_PRIVATE));
 
-         if(userPreferences.getBoolean("first", true)) {
-             overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
-             startActivity(new Intent(this, IntroActivity.class));
-             SharedPreferences.Editor edit = userPreferences.edit();
-             edit.putBoolean("first", false);
-             edit.apply();
+        if (userPreferences.getBoolean("first", true)) {
+            overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
+            startActivity(new Intent(this, IntroActivity.class));
+            SharedPreferences.Editor edit = userPreferences.edit();
+            edit.putBoolean("first", false);
+            edit.apply();
 
-         }
+        }
         setContentView(R.layout.activity_main);
 
-        LoadBag loadBag = new LoadBag(this,this);
-        loadBag.getRozvrh(0,false);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
+        LoadBag loadBag = new LoadBag(this, this);
+        loadBag.getRozvrh(0, false);
 
         boolean darkModeOn = SharedPrefs.getDarkMode(this);
         if (darkModeOn) {
@@ -90,11 +98,13 @@ public class MainActivity extends AppCompatActivity{
 
         // I added this if statement to keep the selected fragment when rotating the device
         if (savedInstanceState == null) {
+
             getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
                     new AddFragment()).commit();
+
         }
         Serializable fragment = getIntent().getSerializableExtra("Fragment");
-        if(fragment!=null) {
+        if (fragment != null) {
             if ("add".equals(fragment)) {
                 navView.setSelectedItemId(R.id.navigation_add);
                 getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
@@ -115,15 +125,15 @@ public class MainActivity extends AppCompatActivity{
         }
 
 
-
     }
+
     // navigation
     @SuppressLint("NonConstantResourceId")
     public BottomNavigationView.OnNavigationItemSelectedListener navListener =
             menuItem -> {
 
                 Fragment selectedFragment = null;
-                switch (menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.navigation_add:
                         selectedFragment = new AddFragment();
                         break;
@@ -144,9 +154,25 @@ public class MainActivity extends AppCompatActivity{
             };
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.top_nav_menu, menu);
+        return true;
+    }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.subject) {
+            AddSubject.firstViewOfActivity = true;
+            Intent intent = new Intent(this, AddSubject.class);
+            this.startActivity(intent);
+            return true;
+        }else if(item.getItemId() == R.id.settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            this.startActivity(intent);
+            return true;
+        }
+        return true;
     }
 
     private Login login = null;
