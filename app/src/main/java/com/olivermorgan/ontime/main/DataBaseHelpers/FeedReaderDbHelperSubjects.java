@@ -348,28 +348,31 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
     }
 
     public static boolean write(Context context, Intent intent, String subject){
-
-        // adding to database
-        // DataBase work
-        FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(context);
-
-        // Gets the data repository in write mode
-        SQLiteDatabase dbForSubject = dbHelperForSubject.getWritableDatabase();
-
-        // Create a new map of values, where column names are the keys
-        ContentValues valuesForSubject = new ContentValues();
-        valuesForSubject.put(COLUMN_NAME_TITLE, subject);
-        valuesForSubject.put(FeedEntry.COLUMN_NAME_MONDAY, (String) intent.getSerializableExtra("Monday"));
-        valuesForSubject.put(FeedEntry.COLUMN_NAME_TUESDAY, (String) intent.getSerializableExtra("Tuesday"));
-        valuesForSubject.put(FeedEntry.COLUMN_NAME_WEDNESDAY, (String) intent.getSerializableExtra("Wednesday"));
-        valuesForSubject.put(FeedEntry.COLUMN_NAME_THURSDAY, (String) intent.getSerializableExtra("Thursday"));
-        valuesForSubject.put(FeedEntry.COLUMN_NAME_FRIDAY, (String) intent.getSerializableExtra("Friday"));
-        valuesForSubject.put(FeedEntry.COLUMN_NAME_SATURDAY, (String) intent.getSerializableExtra("Saturday"));
-        valuesForSubject.put(FeedEntry.COLUMN_NAME_SUNDAY, (String) intent.getSerializableExtra("Sunday"));
+        try {
+            // adding to database
+            // DataBase work
+            FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(context);
+            // Gets the data repository in write mode
+            SQLiteDatabase dbForSubject = dbHelperForSubject.getWritableDatabase();
+            // Create a new map of values, where column names are the keys
+            ContentValues valuesForSubject = new ContentValues();
+            valuesForSubject.put(COLUMN_NAME_TITLE, subject);
+            valuesForSubject.put(FeedEntry.COLUMN_NAME_MONDAY, (String) intent.getSerializableExtra("Monday"));
+            valuesForSubject.put(FeedEntry.COLUMN_NAME_TUESDAY, (String) intent.getSerializableExtra("Tuesday"));
+            valuesForSubject.put(FeedEntry.COLUMN_NAME_WEDNESDAY, (String) intent.getSerializableExtra("Wednesday"));
+            valuesForSubject.put(FeedEntry.COLUMN_NAME_THURSDAY, (String) intent.getSerializableExtra("Thursday"));
+            valuesForSubject.put(FeedEntry.COLUMN_NAME_FRIDAY, (String) intent.getSerializableExtra("Friday"));
+            valuesForSubject.put(FeedEntry.COLUMN_NAME_SATURDAY, (String) intent.getSerializableExtra("Saturday"));
+            valuesForSubject.put(FeedEntry.COLUMN_NAME_SUNDAY, (String) intent.getSerializableExtra("Sunday"));
 
 
-        // Insert the new row, returning the primary key value of the new row
-       return dbForSubject.insert(TABLE_NAME, null, valuesForSubject)>0;
+            // Insert the new row, returning the primary key value of the new row
+            return dbForSubject.insert(TABLE_NAME, null, valuesForSubject)>0;
+        }catch (Exception e){
+            return false;
+        }
+
+
 
 
     }

@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +28,14 @@ public class AddItem extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_add_items);
+
+        Toolbar toolbar = findViewById(R.id.toolbarAddItems);
+        toolbar.setNavigationOnClickListener(v -> {
+            onBackPressed();
+        });
+
         new Thread(()-> {
             boolean darkModeOn = SharedPrefs.getDarkMode(this);
             if (darkModeOn) {
@@ -35,7 +44,7 @@ public class AddItem extends AppCompatActivity {
                 setTheme(R.style.LIGHT);
             }
         }).start();
-        setContentView(R.layout.activity_add_items);
+
         // Get subject from AddFragment
         final String subject = (String) getIntent().getSerializableExtra("Subject");
 
@@ -116,7 +125,6 @@ public class AddItem extends AppCompatActivity {
             startActivity(i);
         });
 
-        viewHolder.back.setOnClickListener(v -> onBackPressed());
 
     }
 
@@ -125,11 +133,9 @@ public class AddItem extends AppCompatActivity {
         Button addItems;
         Button discard;
         Button create;
-        ImageButton back;
         RecyclerView addedItemsRecycleView;
 
         ViewHolder(){
-            back = findViewById(R.id.imageButtonBack);
             addItems = findViewById(R.id.addItem);
             itemName = findViewById(R.id.editItem);
             discard = findViewById(R.id.discard);

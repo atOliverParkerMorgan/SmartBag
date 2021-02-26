@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.olivermorgan.ontime.main.BakalariAPI.Login;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
+import com.olivermorgan.ontime.main.ui.Settings.SettingsFragment;
 
 public class LoginActivity extends AppCompatActivity {
     final static String TAG = "Baka";
@@ -62,10 +63,8 @@ public class LoginActivity extends AppCompatActivity {
 
         if (getIntent().getStringExtra("buttonName").equals(getText(R.string.LATER).toString())) {
             back.setText(getText(R.string.LATER).toString());
-            back.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, MainActivity.class)));
-        } else {
-            back.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, SettingsActivity.class)));
         }
+        back.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, MainActivity.class)));
 
         Button searchSchool = findViewById(R.id.buttonSearchSchools);
 
@@ -138,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.top_nav_menu, menu);
+        inflater.inflate(R.menu.top_nav_main_menu, menu);
         menu.add("hello");
         return true;
     }

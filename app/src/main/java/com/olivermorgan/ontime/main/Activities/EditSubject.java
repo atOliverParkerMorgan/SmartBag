@@ -1,5 +1,6 @@
 package com.olivermorgan.ontime.main.Activities;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -52,12 +53,19 @@ public class EditSubject extends AppCompatActivity {
         // setting up switches
 
         String[] daysOfTheWeek = FeedReaderDbHelperSubjects.getDaysOfSubjects(getApplicationContext(), subject);
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
         final Switch mon = findViewById(R.id.mondaySwitchEdit);
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
         final Switch tue = findViewById(R.id.tuesdaySwitchEdit);
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
         final Switch wed = findViewById(R.id.wednesdaySwitchEdit);
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
         final Switch thu = findViewById(R.id.thursdaySwitchEdit);
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
         final Switch fri = findViewById(R.id.fridaySwitchEdit);
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
         final Switch sat = findViewById(R.id.saturdaySwitchEdit);
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
         final Switch sun = findViewById(R.id.sundaySwitchEdit);
 
         // hide weekend
@@ -100,89 +108,78 @@ public class EditSubject extends AppCompatActivity {
         // 5. set itemAdd animator to DefaultAnimator
 
         // delete and save buttons
-        viewHolder.saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    if(subject==null){
-                        Toast.makeText(v.getContext(), "An error occurred",
-                                Toast.LENGTH_LONG).show();
-                    }
-                    else if(subject.equals("")) {
-                        Toast.makeText(v.getContext(), "To add a subject write some text into the text field (Mathematics).",
-                                Toast.LENGTH_LONG).show();
-                    }
-                    else if(FeedReaderDbHelperItems.subjectExists(getApplicationContext(), subject) && !subject.equals(viewHolder.subjectName.getText().toString())){
-                        Toast.makeText(v.getContext(), "The subject "+viewHolder.subjectName.getText().toString()+" already exists. Pick an unique name",
-                                Toast.LENGTH_LONG).show();
-                    }else if(subject.length()>25){
-                        Toast.makeText(v.getContext(), "The subject name is too long. The maximum length is 25 characters",
-                                Toast.LENGTH_LONG).show();
-                    }
-
-                    else if(!(mon.isChecked()||
-                            tue.isChecked()||wed.isChecked()||thu.isChecked()||
-                            fri.isChecked()||sat.isChecked()||sun.isChecked())){
-                        Toast.makeText(v.getContext(), "You have to choose at least one day of the week",
-                                Toast.LENGTH_LONG).show();
-                    }else {
-                        FeedReaderDbHelperItems.deleteSubject(v.getContext(), subject);
-                        FeedReaderDbHelperSubjects.edit(v.getContext(), subject, title.getText().toString(),
-                                mon.isChecked(), tue.isChecked(), wed.isChecked(), thu.isChecked(),
-                                fri.isChecked(), sat.isChecked(), sun.isChecked());
-                        // item logic
-
-                        // get items pre edit
-                        // -1 means an Error has occurred
-                        FeedReaderDbHelperSubjects.edit(v.getContext(), subject, viewHolder.subjectName.getText().toString());
-
-                        Intent i = new Intent(EditSubject.this, MainActivity.class);
-                        i.putExtra("Fragment", "overview");
-
-                        i.putExtra("putInToBag", "null");
-                        if (!FeedReaderDbHelperItems.write(v.getContext(), i, itemsDataItemsToEdit, viewHolder.subjectName.getText().toString())) {
-                            Toast.makeText(v.getContext(), "An error as occurred in the database report this issue",
-                                    Toast.LENGTH_LONG).show();
-                        }
-
-                        startActivity(i);
-                    }
-
-                } catch (android.database.sqlite.SQLiteException e) {
-                    Toast.makeText(v.getContext(), "An error as occurred in the database report this issue",
+        viewHolder.saveButton.setOnClickListener(v -> {
+            try {
+                if(subject==null){
+                    Toast.makeText(v.getContext(), "An error occurred",
+                            Toast.LENGTH_LONG).show();
+                }
+                else if(subject.equals("")) {
+                    Toast.makeText(v.getContext(), "To add a subject write some text into the text field (Mathematics).",
+                            Toast.LENGTH_LONG).show();
+                }
+                else if(FeedReaderDbHelperItems.subjectExists(getApplicationContext(), subject) && !subject.equals(viewHolder.subjectName.getText().toString())){
+                    Toast.makeText(v.getContext(), "The subject "+viewHolder.subjectName.getText().toString()+" already exists. Pick an unique name",
+                            Toast.LENGTH_LONG).show();
+                }else if(subject.length()>25){
+                    Toast.makeText(v.getContext(), "The subject name is too long. The maximum length is 25 characters",
                             Toast.LENGTH_LONG).show();
                 }
 
+                else if(!(mon.isChecked()||
+                        tue.isChecked()||wed.isChecked()||thu.isChecked()||
+                        fri.isChecked()||sat.isChecked()||sun.isChecked())){
+                    Toast.makeText(v.getContext(), "You have to choose at least one day of the week",
+                            Toast.LENGTH_LONG).show();
+                }else {
+                    FeedReaderDbHelperItems.deleteSubject(v.getContext(), subject);
+                    FeedReaderDbHelperSubjects.edit(v.getContext(), subject, title.getText().toString(),
+                            mon.isChecked(), tue.isChecked(), wed.isChecked(), thu.isChecked(),
+                            fri.isChecked(), sat.isChecked(), sun.isChecked());
+                    // item logic
 
+                    // get items pre edit
+                    // -1 means an Error has occurred
+                    FeedReaderDbHelperSubjects.edit(v.getContext(), subject, viewHolder.subjectName.getText().toString());
+
+                    Intent i = new Intent(EditSubject.this, MainActivity.class);
+                    i.putExtra("Fragment", "overview");
+
+                    i.putExtra("putInToBag", "null");
+                    if (!FeedReaderDbHelperItems.write(v.getContext(), i, itemsDataItemsToEdit, viewHolder.subjectName.getText().toString())) {
+                        Toast.makeText(v.getContext(), "An error as occurred in the database report this issue",
+                                Toast.LENGTH_LONG).show();
+                    }
+
+                    startActivity(i);
+                }
+
+            } catch (android.database.sqlite.SQLiteException e) {
+                Toast.makeText(v.getContext(), "An error as occurred in the database report this issue",
+                        Toast.LENGTH_LONG).show();
             }
+
+
         });
 
 
-        viewHolder.deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
-                alert.setTitle("Delete Subject");
-                alert.setMessage("Are you sure you want to delete " + subject + "?");
-                alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int which) {
-                        FeedReaderDbHelperSubjects.deleteSubject(subject, getApplicationContext());
-                        Intent i = new Intent(EditSubject.this, MainActivity.class);
-                        i.putExtra("Fragment", "overview");
-                        startActivity(i);
-                    }
-                });
-                alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // close dialog
-                        dialog.cancel();
-                    }
-                });
-                alert.show();
+        viewHolder.deleteButton.setOnClickListener(v -> {
+            AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
+            alert.setTitle("Delete Subject");
+            alert.setMessage("Are you sure you want to delete " + subject + "?");
+            alert.setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                FeedReaderDbHelperSubjects.deleteSubject(subject, this);
+                Intent i = new Intent(EditSubject.this, MainActivity.class);
+                i.putExtra("Fragment", "overview");
+                startActivity(i);
+            });
+            alert.setNegativeButton(android.R.string.no, (dialog, which) -> {
+                // close dialog
+                dialog.cancel();
+            });
+            alert.show();
 
 
-            }
         });
 
 

@@ -50,9 +50,6 @@
             android:name=".Activities.EditSubject" >
         </activity>
         <activity
-            android:name=".Activities.SettingsActivity">
-        </activity>
-        <activity
             android:name=".Activities.SuccessfulLoginActivity">
         </activity>
         <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
@@ -67,6 +64,7 @@
             />
         <activity android:name=".Activities.SchoolsListActivity"
             />
+        <activity android:name=".Activities.InfoAfterLoginActivity" />
 
 
     </application>

@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.android.volley.RequestQueue;
 import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.Rozvrh;
+import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
 
 import org.joda.time.LocalDate;
@@ -95,13 +96,12 @@ public class RozvrhAPI {
             });
             getFromNetAndSave(monday, rozvrhWrapper -> {
                 if (rozvrhWrapper.getCode() == SUCCESS) {
-                    Log.d("SUCCESS","AAAAAAAAAAA");
+                    Toast.makeText(context, R.string.subTextSuccess, Toast.LENGTH_LONG).show();
                     updateLiveData(monday, rozvrhWrapper);
                     netFinishedSucessfully.setValue(true);
                 } else {
-                    Toast.makeText(context,"Error", Toast.LENGTH_LONG).show();
                     Rozvrh prevRozvrh = fld.getValue() == null ? null : fld.getValue().getRozvrh();
-                   // updateLiveData(monday, new RozvrhWrapper(prevRozvrh, rozvrhWrapper.getCode(), RozvrhWrapper.SOURCE_NET));
+                    updateLiveData(monday, new RozvrhWrapper(prevRozvrh, rozvrhWrapper.getCode(), RozvrhWrapper.SOURCE_NET));
                 }
             });
             updateLiveData(monday, new RozvrhWrapper(null, NO_CACHE, RozvrhWrapper.SOURCE_MEMORY));

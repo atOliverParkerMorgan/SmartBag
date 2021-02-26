@@ -1,11 +1,9 @@
 package com.olivermorgan.ontime.main.ui.Bag;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,13 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.olivermorgan.ontime.main.Activities.AddSubject;
 import com.olivermorgan.ontime.main.Activities.MainActivity;
 import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.Adapter.MyBagAdapter;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperItems;
 
-import com.olivermorgan.ontime.main.Activities.SettingsActivity;
 import com.olivermorgan.ontime.main.R;
 
 
@@ -35,14 +31,14 @@ public class BagFragment extends Fragment {
 
         final View view = inflater.inflate(R.layout.fragment_in_bag, container, false);
 
+        // set title
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle(R.string.in_bag_text);
+
         // no items
         TextView noItems = view.findViewById(R.id.noItemsInBag);
         noItems.setAlpha(1.0f);
 
-
-
-        // init database
-
+        // init recyclerview
         final RecyclerView ItemsInBagRecycleView = view.findViewById(R.id.RecycleViewYourBag);
         ItemsInBagRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
         List<Item> inMyBag = new ArrayList<>();

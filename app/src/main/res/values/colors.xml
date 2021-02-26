@@ -3,8 +3,13 @@
     <color name="colorPrimary">#F9AA33</color>
     <color name="white">#4A6572</color>
     <color name="black">#232F34</color>
+
+    <color name="barColorLight">#F5F5F5</color>
+    <color name="barColorDark">#232F34</color>
+    <color name="textColorLight">#000000</color>
+    <color name="textColorDark">#ffffff</color>
+
     <color name="colorAccent">#ff5e62</color>
     <color name="loggedInBakalari">#F9AA33</color>
     <color name="bgColor" />
-    <color name="barColor" />
     </resources>

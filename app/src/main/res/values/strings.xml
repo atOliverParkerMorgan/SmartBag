@@ -127,11 +127,18 @@
      <string name="subTextSuccess">You have successfully logged into your Bakaláři account</string>
      <string name="unexpected_response">Oops something went wrong. We got an unexpected response.</string>
      <string name="invalid_login">Oops your username or password is incorrect</string>
-     <string name="sever_unreachable">The servers are unreachable. Check your school address.</string>
+     <string name="sever_unreachable">The servers are unreachable. Check your connection and your school address.</string>
      <string name="disabled_servises">The servises this app needs are unavailable</string>
      <string name="LATER">LATER</string>
      <string name="PREFS_SWITCH_TO_NEXT_WEEK">next week</string>
 
      <string name="loading_timetable">Loading your timetable from Bakaláři</string>
      <string name="add_a_subject_description">add a Subject</string>
+     <string name="absolute_error">something went terribly wrong with your database</string>
+
+     <string name="info">INFORMATION</string>
+     <string name="info1">• Smartbag automatically synchronises items within the same subject names.</string>
+     <string name="info2">• The default item for subject without any pre-defined items is: "items for 'subject'"</string>
+     <string name="info3">• U can add items of new unique subjects in the next activity.</string>
+
  </resources>

@@ -1,12 +1,12 @@
 package com.olivermorgan.ontime.main.ui.Overview;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,38 +15,21 @@ import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 
 import com.olivermorgan.ontime.main.Activities.AddSubject;
 import com.olivermorgan.ontime.main.Activities.EditSubject;
-import com.olivermorgan.ontime.main.Activities.LoadBag;
 import com.olivermorgan.ontime.main.Activities.MainActivity;
-import com.olivermorgan.ontime.main.Activities.SettingsActivity;
 import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.BakalariAPI.Login;
-import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.AppSingleton;
-import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.DebugUtils;
-import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.RozvrhAPI;
-import com.android.volley.toolbox.Volley;
-import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.RozvrhWrapper;
-import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.Utils;
 import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.Rozvrh;
-import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.RozvrhDen;
-import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.RozvrhHodina;
-import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.RozvrhHodinaCaption;
-import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.RozvrhRoot;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.google.firebase.storage.FirebaseStorage;
 
@@ -55,14 +38,7 @@ import com.google.firebase.storage.StorageReference;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
 
-import org.joda.time.DateTimeConstants;
-import org.joda.time.LocalDate;
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
-
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
@@ -74,6 +50,8 @@ public class OverviewFragment extends Fragment {
     TextView codeText;
     TextView codeTextInstructions;
     Button shareBagButton;
+    boolean weekendOnBoolean;
+    TableLayout table;
 
     private View view;
 
@@ -85,6 +63,8 @@ public class OverviewFragment extends Fragment {
         // create view
         view = inflater.inflate(R.layout.fragment_overview, parent, false);
 
+        // set title
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle(R.string.title_overview);
 
         // tutorial
         ShowcaseConfig config = new ShowcaseConfig();
@@ -103,10 +83,10 @@ public class OverviewFragment extends Fragment {
         shareBagButton = view.findViewById(R.id.shareBagButton);
         Button load = view.findViewById(R.id.buttonLoad);
 
-        final TableLayout table = view.findViewById(R.id.mainTable);
+        table = view.findViewById(R.id.mainTable);
 
         // hide weekend
-        boolean weekendOnBoolean = SharedPrefs.getBoolean(getContext(), SharedPrefs.WEEKEND_ON);
+        weekendOnBoolean = SharedPrefs.getBoolean(getContext(), SharedPrefs.WEEKEND_ON);
         if(weekendOnBoolean){
             View v = view.findViewById(R.id.Sun);
             ((ViewManager)v.getParent()).removeView(v);
@@ -145,9 +125,17 @@ public class OverviewFragment extends Fragment {
             }else {
                 AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
                 alert.setTitle("Download bag: " + code.getText().toString());
-                alert.setMessage("Are you sure you want to download another bag? " +
-                        "This is will override all existing subjects and items.");
+                Login login = new Login(getContext());
+                if(login.isLoggedIn()) {
+                    alert.setMessage("Are you sure you want to download another bag? " +
+                            "This is will override all existing subjects and items and log you out of your Bakaláři account.");
+                }else{
+                    alert.setMessage("Are you sure you want to download another bag? " +
+                            "This is will override all existing subjects and items.");
+                }
                 alert.setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    // if is logged in => log out
+                    if(login.isLoggedIn()) login.logout();
                     // for subject
                     StorageReference subjectRef = storageReference.child("subjects/" + code.getText().toString() + ".db");
                     subjectRef.getFile(databaseSubjects).addOnSuccessListener(taskSnapshot -> {
@@ -173,6 +161,7 @@ public class OverviewFragment extends Fragment {
                     });
 
 
+
                 });
                 alert.setNegativeButton(android.R.string.no, (dialog, which) -> {
                     // close dialog
@@ -186,8 +175,15 @@ public class OverviewFragment extends Fragment {
 
         });
 
+        //can only be placed into thread if context is valid
+        if(SharedPrefs.getBoolean(getContext(),"updateTableInThread")) {
 
-        updateTable(weekendOnBoolean, table, view);
+            // create thread to post logic in
+            Handler mainHandler = new Handler(Looper.getMainLooper());
+            mainHandler.post(() -> updateTable(weekendOnBoolean, table, view));
+        }else {
+            updateTable(weekendOnBoolean, table, view);
+        }
 
         // on pressing btnUpload uploadImage() is called
         shareBagButton.setOnClickListener(v -> uploadDatabase());
@@ -264,15 +260,13 @@ public class OverviewFragment extends Fragment {
 
     }
     private void updateTable(boolean weekendOnBoolean, TableLayout table, View view){
+
         table.removeAllViews();
-        Login login = new Login(getContext());
 
-
-        // get most subjects in a day
         int max = Integer.MIN_VALUE;
         int current = 0;
         for (int i = 1; i < 8; i++) {
-            for (List<String> list : FeedReaderDbHelperSubjects.getContent(getContext(), true)) {
+            for (List<String> list : FeedReaderDbHelperSubjects.getContent(getActivity(), true)) {
                 if (list.get(i).equals("true")) {
                     current++;
                 }
@@ -369,6 +363,7 @@ public class OverviewFragment extends Fragment {
             table.setVisibility(View.GONE);
             view.findViewById(R.id.Table).setVisibility(View.GONE);
             // hide share button
+
             shareBagButton.setVisibility(View.GONE);
             addSubjectButton.setVisibility(View.VISIBLE);
             view.findViewById(R.id.codeTextInstructions).setVisibility(View.INVISIBLE);
@@ -386,6 +381,10 @@ public class OverviewFragment extends Fragment {
             view.findViewById(R.id.Table).setVisibility(View.VISIBLE);
             shareBagButton.setVisibility(View.VISIBLE);
         }
+        // hide load bar
+        ProgressBar progressBar = view.findViewById(R.id.progressBarLoadTable);
+        progressBar.setVisibility(View.INVISIBLE);
+
     }
 
 

@@ -5,30 +5,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ScrollView;
-import android.widget.Toast;
-
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
-
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.olivermorgan.ontime.main.BakalariAPI.Login;
-import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.AppSingleton;
-import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.RozvrhAPI;
-import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.RozvrhWrapper;
-import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.Utils;
-import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.Rozvrh;
-import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.RozvrhDen;
-import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.RozvrhHodina;
-import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
+import com.olivermorgan.ontime.main.Logic.LoadBag;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
 import com.olivermorgan.ontime.main.ui.Add.AddFragment;
@@ -36,32 +20,15 @@ import com.olivermorgan.ontime.main.ui.Bag.BagFragment;
 import com.olivermorgan.ontime.main.ui.Overview.OverviewFragment;
 import com.olivermorgan.ontime.main.ui.Remove.RemoveFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-
-import androidx.annotation.NonNull;
+import com.olivermorgan.ontime.main.ui.Settings.SettingsFragment;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-
-import org.joda.time.LocalDate;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Executor;
-
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 
 public class MainActivity extends AppCompatActivity {
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,52 +44,75 @@ public class MainActivity extends AppCompatActivity {
             edit.apply();
 
         }
-        setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        LoadBag loadBag = new LoadBag(this, this);
-        loadBag.getRozvrh(0, false);
 
         boolean darkModeOn = SharedPrefs.getDarkMode(this);
         if (darkModeOn) {
             setTheme(R.style.DARK);
+
         } else {
             setTheme(R.style.LIGHT);
         }
-
+        setContentView(R.layout.activity_main);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener);
+        if (darkModeOn) {
+            navView.setBackgroundColor(getResources().getColor(R.color.barColorDark));
+        } else {
+            navView.setBackgroundColor(getResources().getColor(R.color.barColorLight));
+        }
+
+        // informs
+        boolean activityIsBeingRestartedFromOverView = "overview".equals(getIntent().getSerializableExtra("Fragment"));
+        // informs activity that the them is being reset
+        boolean fromSettings = getIntent().getBooleanExtra("fromSettings", false);
+        // prevents databse from updateing
+        boolean backSettings = getIntent().getBooleanExtra("dontUpdateDatabase", false);
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        Login login = new Login(this);
+        if(login.isLoggedIn()&&!activityIsBeingRestartedFromOverView&&!fromSettings&&!backSettings) {
+            Handler mainHandler = new Handler(Looper.getMainLooper());
+
+            mainHandler.post(()->{
+                LoadBag loadBag = new LoadBag(getApplicationContext(), this);
+                loadBag.getRozvrh(0);
+            });
+
+        }
+
+
 
         // I added this if statement to keep the selected fragment when rotating the device
-        if (savedInstanceState == null) {
+        if(fromSettings)
+            getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment, new SettingsFragment()).commit();
+        else {
+            if (savedInstanceState == null) {
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
-                    new AddFragment()).commit();
-
-        }
-        Serializable fragment = getIntent().getSerializableExtra("Fragment");
-        if (fragment != null) {
-            if ("add".equals(fragment)) {
-                navView.setSelectedItemId(R.id.navigation_add);
                 getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
                         new AddFragment()).commit();
-            } else if ("remove".equals(fragment)) {
-                navView.setSelectedItemId(R.id.navigation_remove);
-                getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
-                        new RemoveFragment()).commit();
-            } else if ("bag".equals(fragment)) {
-                navView.setSelectedItemId(R.id.navigation_bag);
-                getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
-                        new BagFragment()).commit();
-            } else if ("overview".equals(fragment)) {
-                navView.setSelectedItemId(R.id.navigation_overview);
-                getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
-                        new OverviewFragment()).commit();
+
             }
-        }
+
+            }
+        // check if start activity should be overview
+        if (activityIsBeingRestartedFromOverView) {
+            // show tool bar
+            SharedPrefs.setBoolean(getApplicationContext(), "updateTableInThread", false);
+            setSupportActionBar(toolbar);
+            Objects.requireNonNull(getSupportActionBar()).show();
+
+            navView.setSelectedItemId(R.id.navigation_overview);
+            getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
+                    new OverviewFragment()).commit();
+
+            getIntent().getSerializableExtra("Fragment");
+
+        } else
+            SharedPrefs.setBoolean(getApplicationContext(), "updateTableInThread", true);
 
 
     }
@@ -131,6 +121,11 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     public BottomNavigationView.OnNavigationItemSelectedListener navListener =
             menuItem -> {
+
+                // show tool bar
+                setSupportActionBar(toolbar);
+                getSupportActionBar().show();
+
 
                 Fragment selectedFragment = null;
                 switch (menuItem.getItemId()) {
@@ -148,14 +143,14 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
 
-                assert selectedFragment != null;
-                getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment, selectedFragment).commit();
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment, Objects.requireNonNull(selectedFragment)).commit();
                 return true;
             };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.top_nav_menu, menu);
+        getMenuInflater().inflate(R.menu.top_nav_main_menu, menu);
         return true;
     }
 
@@ -168,8 +163,9 @@ public class MainActivity extends AppCompatActivity {
             this.startActivity(intent);
             return true;
         }else if(item.getItemId() == R.id.settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            this.startActivity(intent);
+            toolbar.setTitle(getString(R.string.settings));
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment, new SettingsFragment()).commit();
             return true;
         }
         return true;
@@ -187,13 +183,7 @@ public class MainActivity extends AppCompatActivity {
     public static void showAlert(Context context, String message){
         AlertDialog.Builder alert = new AlertDialog.Builder(context);
         alert.setMessage(message);
-        alert.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-            dialog.cancel();
-        });
+        alert.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
     }
-
-
-
-
 
 }

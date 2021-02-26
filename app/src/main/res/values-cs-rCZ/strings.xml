@@ -89,4 +89,10 @@
     <string name="PREFS_SWITCH_TO_NEXT_WEEK">příští týden</string>
     <string name="loading_timetable">Načíta se váš aktuální rozvrh</string>
     <string name="add_a_subject_description">přidej předmět</string>
+    <string name="absolute_error">něco se pokazilo s databází</string>
+
+    <string name="info">INFORMACE</string>
+    <string name="info1">• Smartbag automaticky synchronizuje položky se jmény předmětů.</string>
+    <string name="info2">• Defoltní položko pro předmět bez žadné předem dané položky je:"položky pro 'předmět'""</string>
+    <string name="info3">• Můžete přidávat položky pro unikátní předmět v další aktivitě.</string>
 </resources>

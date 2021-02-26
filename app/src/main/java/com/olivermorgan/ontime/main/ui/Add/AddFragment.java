@@ -1,45 +1,31 @@
 package com.olivermorgan.ontime.main.ui.Add;
 
-
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.olivermorgan.ontime.main.Activities.AddSubject;
 import com.olivermorgan.ontime.main.Activities.MainActivity;
-import com.olivermorgan.ontime.main.Activities.SettingsActivity;
 import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.Adapter.MyListAdapter;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
-
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
@@ -50,7 +36,10 @@ public class AddFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // create view
         final View mainView = inflater.inflate(R.layout.fragment_add, parent, false);
-        SharedPreferences userPreferences = requireActivity().getSharedPreferences("userId", android.content.Context.MODE_PRIVATE);
+
+        // set title
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle(R.string.to_add_text);
+
         // tutorial
         final String SHOWCASE_ID = "firstTutorial1";
         // sequence example
@@ -64,8 +53,8 @@ public class AddFragment extends Fragment {
         sequence.addSequenceItem(mainView.findViewById(R.id.daySpinner),
                 "Click here to select which day do you want to prepare your bag for", "NEXT");
 
-        sequence.addSequenceItem(getActivity().findViewById(R.id.toolbar),
-                "Click here to add a new subject", "GOT IT");
+//        sequence.addSequenceItem(getActivity().findViewById(R.id.toolbar),
+//                "Click here to add a new subject", "GOT IT");
 
 
         sequence.start();
@@ -128,14 +117,6 @@ public class AddFragment extends Fragment {
         return mainView;
     }
 
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        // TODO Add your menu entries here
-        super.onCreateOptionsMenu(menu, inflater);
-        MenuItem fav;
-        fav = menu.add("add");
-        fav.setIcon(R.drawable.ic_to_add);
-
-    }
 
     private static void loadRecyclerViewer(final Context context, int spinnerIndex, View view, final Activity activity, boolean doNotShow, boolean tomorrowOff){
         // no items

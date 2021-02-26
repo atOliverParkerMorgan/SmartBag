@@ -2,14 +2,12 @@ package com.olivermorgan.ontime.main.ui.Remove;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -20,9 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.olivermorgan.ontime.main.Activities.AddSubject;
 import com.olivermorgan.ontime.main.Activities.MainActivity;
-import com.olivermorgan.ontime.main.Activities.SettingsActivity;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
 
@@ -44,6 +40,8 @@ public class RemoveFragment extends Fragment {
         // create view
         final View mainView = inflater.inflate(R.layout.fragment_remove, parent, false);
 
+        // set title
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle(R.string.to_remove_text);
 
         // Spinner logic
         int spinnerIndex = SharedPrefs.getInt(getContext(), SharedPrefs.SPINNER);

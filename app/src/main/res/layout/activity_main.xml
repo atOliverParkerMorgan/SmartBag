@@ -13,11 +13,12 @@
         android:layout_height="wrap_content"
         android:background="?attr/barColor"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
     </androidx.appcompat.widget.Toolbar>
+
+
 
     <FrameLayout
         android:id="@+id/HostFragment"
@@ -37,8 +38,6 @@
         android:id="@+id/nav_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
-        app:itemBackground="?attr/colorPrimaryDark"
         app:itemIconTint="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

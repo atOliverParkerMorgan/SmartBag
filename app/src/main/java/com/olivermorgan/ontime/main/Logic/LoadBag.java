@@ -1,10 +1,11 @@
-package com.olivermorgan.ontime.main.Activities;
+package com.olivermorgan.ontime.main.Logic;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
+import android.view.Display;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.storage.StorageReference;
+import com.olivermorgan.ontime.main.Activities.MainActivity;
 import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.Adapter.MyListAdapter;
 import com.olivermorgan.ontime.main.Adapter.Subject;
@@ -45,11 +47,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LoadBag {
-    StorageReference storageReference;
-    ProgressBar progressBar;
-    TextView codeText;
-    TextView codeTextInstructions;
-    Button shareBagButton;
     public static final int SUCCESS = 0;
     public static final int LOGIN_FAILED = 1;
     public static final int UNEXPECTED_RESPONSE = 2;
@@ -58,25 +55,17 @@ public class LoadBag {
     public static final int ERROR = 5;
     public static final int OFFLINE = 5;
 
-    //private RozvrhLayout rozvrhLayout;
-    private ScrollView scrollView;
     private LiveData<RozvrhWrapper> liveData;
 
-    /**<code>false</code> when rozvrh for a certain week is displayed for the first time (a.k.a. <code>true</code> when being re-displayed
-     * as fresh rozvrh is received from the internet)
-     */
-    private boolean redisplayed;
-    private boolean scrollToCurrentLesson;
+    private static Rozvrh currentRozvrh;
 
 
     private LocalDate week = null;
-    private int weekIndex = 0; //what week is it from now (0: this, 1: next, -1: last, Integer.MAX_VALUE: permanent)
-    private boolean cacheSuccessful = false;
     private boolean offline = false;
     private RozvrhAPI rozvrhAPI = null;
 
-    private Context context;
-    private LifecycleOwner lifecycleOwner;
+    private final Context context;
+    private final LifecycleOwner lifecycleOwner;
      Rozvrh rozvrh;
 
 
@@ -94,10 +83,10 @@ public class LoadBag {
 
     public void updateDatabaseWithNewBakalariTimeTable() {
         List<Subject> subjects = new ArrayList<>();
+        context.deleteDatabase(FeedReaderDbHelperSubjects.DATABASE_NAME);
 
-
-
-        Log.e("HERE", String.valueOf(rozvrh));
+        // setup current rozvrh so overview can display it
+        currentRozvrh = rozvrh;
 
         int row = rozvrh.getDny().size();
         for (int i = 0; i < row; i++) {
@@ -106,25 +95,25 @@ public class LoadBag {
 
             for (int j = 0; j < den.getHodiny().size(); j++) {
                 RozvrhHodina item = den.getHodiny().get(j);
-                Log.d("Hodina", String.valueOf(den.getHodiny().get(j).getPr()));
+
+                // check if database already has element
                 boolean found = false;
-                for (Subject s: subjects) {
-                    if(s.getName().equals(item.getPr())){
+                for (Subject s : subjects) {
+                    if (s.getName().equals(item.getPr())) {
                         s.setDay(i);
                         found = true;
                         break;
                     }
                 }
-                if(!found){
+                if (!found) {
                     Subject s = new Subject(item.getPr());
                     s.setDay(i);
                     subjects.add(s);
 
                 }
-
             }
         }
-        new Thread(()-> {
+
 
         for (int i = 0; i < subjects.size(); i++) {
             Intent intent = new Intent();
@@ -138,32 +127,31 @@ public class LoadBag {
             intent.putExtra("Saturday", Boolean.toString(subjects.get(i).getWeek()[5]));
             intent.putExtra("Sunday", Boolean.toString(subjects.get(i).getWeek()[6]));
             intent.putExtra("putInToBag", false);
-            FeedReaderDbHelperSubjects.deleteSubject(subjects.get(i).getName(), context);
+
             if (!FeedReaderDbHelperSubjects.write(context, intent, subjects.get(i).getName())) {
                 Log.e("ERROR", "something went terribly wrong");
+                Toast.makeText(context, R.string.absolute_error,Toast.LENGTH_LONG).show();
             }
-            Log.e("HERE", subjects.get(i).getName());
+
         }
-        }).start();
+
 
 
 
     }
 
-    public void getRozvrh(int weekIndex, boolean scrollToCurrentLesson) {
+    public void getRozvrh(int weekIndex) {
         //debug timing: Log.d(TAG_TIMER, "displayWeek start " + Utils.getDebugTime());
 
-        this.weekIndex = weekIndex;
+        //what week is it from now (0: this, 1: next, -1: last, Integer.MAX_VALUE: permanent)
         if (weekIndex == Integer.MAX_VALUE)
             week = null;
         else
             week = Utils.getDisplayWeekMonday(getContext()).plusWeeks(weekIndex);
 
         final LocalDate finalWeek = week;
-        redisplayed = false;
-        this.scrollToCurrentLesson = scrollToCurrentLesson;
 
-        cacheSuccessful = false;
+
         //String infoMessage = Utils.getfl10nedWeekString(weekIndex, getContext());
         if (offline) {
             MainActivity.showAlert(context,"OFFLINE");
@@ -179,7 +167,6 @@ public class LoadBag {
         Rozvrh item = rw == null ? null : liveData.getValue().getRozvrh();
         if (item != null) {
             // rozvrhLayout.setRozvrh(item);
-            redisplayed = true;
             if (rw.getSource() == RozvrhWrapper.SOURCE_MEMORY){
                 if (offline) {
                     // displayInfo.setLoadingState(DisplayInfo.ERROR);
@@ -242,10 +229,9 @@ public class LoadBag {
     private void onCacheResponse(int code, Rozvrh rozvrh) {
         //check if fragment was not removed while loading
         if (code == SUCCESS) {
-            cacheSuccessful = true;
             this.rozvrh = rozvrh;
             updateDatabaseWithNewBakalariTimeTable();
-            redisplayed = true;
+
         }else {
             MainActivity.showAlert(context,"ERROR");
         }
@@ -253,7 +239,6 @@ public class LoadBag {
 
     public void refresh() {
         // displayInfo.setLoadingState(DisplayInfo.LOADING);
-        cacheSuccessful = false;
 
         rozvrhAPI.refresh(week, rw -> {
             /*if (rw.getCode() != SUCCESS){
@@ -262,6 +247,10 @@ public class LoadBag {
             onNetResponse(rw.getCode(), rw.getRozvrh());
             /*}*/
         });
+    }
+
+    public static Rozvrh getCurrentRozvrh(){
+        return currentRozvrh;
     }
 
 }
