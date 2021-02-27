@@ -48,13 +48,13 @@ public class RemoveFragment extends Fragment {
         // show weekend
         boolean weekendOnBoolean = SharedPrefs.getBoolean(getContext(), SharedPrefs.WEEKEND_ON);
         Calendar calendar = Calendar.getInstance();
-        final boolean doNotShow = !((weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Sa"))
-                ||(weekendOnBoolean&&calendar.getTime().toString().substring(0, 2).equals("Su")));
+        final boolean doNotShow = !((weekendOnBoolean&& calendar.getTime().toString().startsWith("Sa"))
+                ||(weekendOnBoolean&& calendar.getTime().toString().startsWith("Su")));
 
         boolean tomorrowOff = false;
         Spinner spinner = (Spinner) mainView.findViewById(R.id.daySpinner);
         ArrayAdapter<CharSequence> adapter;
-        if(weekendOnBoolean && calendar.getTime().toString().substring(0,2).equals("Sa")){
+        if(weekendOnBoolean && calendar.getTime().toString().startsWith("Sa")){
             // Create an ArrayAdapter using the string array and a default spinner layout
             adapter = ArrayAdapter.createFromResource(requireContext(),
                     R.array.daySpinnerWithoutWeekendAndTomorrow, android.R.layout.simple_spinner_item);

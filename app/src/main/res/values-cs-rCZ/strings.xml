@@ -2,19 +2,19 @@
 <resources>
     <string name="app_name">SmartBag</string>
     <string name="title_add_button_navigation">Přidat</string>
-    <string name="title_create_subject">Nový předmět</string>
+    <string name="title_create_subject">Vytořte předmět</string>
     <string name="title_remove_button_navigation">Odebrat</string>
     <string name="title_overview_button_navigation">Přehled</string>
     <string name="title_bag_button_navigation">Batoh</string>
-    <string name="title_add_item">"Přidat pomůcky k předmětu "</string>
+    <string name="title_add_item">"Přidejte pomůcky k předmětu "</string>
     <string name="none">N</string>
     <string name="days_of_the_week_text">Jaké dny v týdnu chcete tuto pomůcku v batohu?</string>
-    <string name="add_to_bag">Chcete přidat tuto pomůcku do batohu</string>
+    <string name="add_to_bag">Chcete přidat tento předmět do batohu</string>
     <string name="subject_input_text">Přidejte jméno předmětu</string>
     <string name="to_add_text">Přidat do batohu</string>
     <string name="title_overview">Přehled</string>
     <string name="to_add_text_subtitle">"přidejte tyto pomůcky do batohu "</string>
-    <string name="to_remove_text">Odeberte z batohu</string>
+    <string name="to_remove_text">Odebrat z batohu</string>
     <string name="to_remove_text_subtitle">"Vyndejte tyto pomůcky z batohu  "</string>
     <string name="in_bag_text">Váš batoh</string>
     <string name="in_bag_subtext">Tyto pomůcky jsou ve vašem batohu</string>
@@ -38,7 +38,7 @@
     <string name="delete_icon_description">tlačítko k odebrání</string>
     <string name="add_icon_description">tlačítko k odebrání</string>
     <string name="item_hint">Sešit</string>
-    <string name="subjects_hint">Přidejte jméno předmětu (např. Dějepis)</string>
+    <string name="subjects_hint">Přidejte předmět (např. Dějepis)</string>
     <string name="noItemsInAdd">Všechny potřebné pomůcky jsou přidány</string>
     <string name="schoolSearch">Vyhledejte vaší školu</string>
     <string name="noItemsInRemove">Všechny nepotřebné pomůcky jsou odebrány</string>
@@ -74,7 +74,7 @@
     <string name="updateBag">AKTULAZILUJTE SVŮJ BATOH</string>
     <string name="code">KÓD</string>
     <string name="title_single_shot">Test</string>
-    <string name="switchInstructions">Jaké dny v týdnu chcete tuto pomůcku v batohu?</string>
+    <string name="switchInstructions">Jaké dny v týdnu chcete tento předmět v batohu?</string>
     <string name="weekendText">KLINKNĚTE ABYSTE VYĎELI POMŮCKY NA PONDĚLÍ</string>
     <string name="user_logged_in">Uživatel %1$s je přihlášen.</string>
     <string name="willShowWeek">bude se zobrazovat Sobota a Neděle</string>
@@ -95,4 +95,60 @@
     <string name="info1">• Smartbag automaticky synchronizuje položky se jmény předmětů.</string>
     <string name="info2">• Defoltní položko pro předmět bez žadné předem dané položky je:"položky pro 'předmět'""</string>
     <string name="info3">• Můžete přidávat položky pro unikátní předmět v další aktivitě.</string>
+    <string name="interfaceTitle">Rozhraní:</string>
+    <string name="languageTitle">Jazyky: </string>
+    <string name="english">Angličtina</string>
+    <string name="czech">Čeština</string>
+
+    <string-array name="daySpinner">
+        <item>Dnešek</item>
+        <item>Zítřek</item>
+        <item>Pondělí</item>
+        <item>Úterý</item>
+        <item>Středa</item>
+        <item>Čtvrtek</item>
+        <item>Pátek</item>
+        <item>Sobota</item>
+        <item>Neděle</item>
+    </string-array>
+
+    <string-array name="daySpinnerWithoutWeekend">
+        <item>Dnešek</item>
+        <item>Zítřek</item>
+        <item>Pondělí</item>
+        <item>Úterý</item>
+        <item>Středa</item>
+        <item>Čtvrtek</item>
+        <item>Pátek</item>
+    </string-array>
+    <string-array name="daySpinnerWithoutWeekendAndTomorrow">
+        <item>Dnešek</item>
+        <item>Pondělí</item>
+        <item>Úterý</item>
+        <item>Středa</item>
+        <item>Čtvrtek</item>
+        <item>Pátek</item>
+    </string-array>
+
+    <string name="nothingInSubjectFiled">Abyste mohli přidat pomůcky musíte napsat nějaký text do textového pole (Sešit).</string>
+    <string name="itemAlreadyAdded">Už jste přidali tento předmět.</string>
+    <string name="atLeastOneItem">Musíte přidat alespoň jednu pomůcku</string>
+    <string name="databaseError">Nastal problém v databázy. Napište nám zprávu o tomto problému!</string>
+    <string name="anError">Vyskytla se chyba</string>
+    <string name="tooLong">Jméno předmětu je moc dlouhé. maximální počet znaků je 25 písmen</string>
+    <string name="mustChooseAtLeastOneDay">Musíte vybrat alespoň jeden den týdnu</string>
+    <string name="subject">Předmět </string>
+    <string name="alreadyExist"> již existuje. Vyberte unikátní jméno</string>
+    <string name="deleteSubject">Odebrat předmět</string>
+    <string name="areYouSureDelete">Jste si jisti, že chcete odstranit</string>
+    <string name="hasBeenRemoved"> se odstraněnil z vašeho batohu</string>
+    <string name="clickHereToSelectDay">Klikněte sem abyste si vybrali pro jaký den chcete mít svojí tašku připravenou</string>
+    <string name="Next">DALŠÍ</string>
+    <string name="clickHereToRemoveItemFromBag">klikněte zde abyste odstranili tento předmět z vašeho batohu</string>
+    <string name="gotIt">Rozumim</string>
+    <string name="hasBeenAddedToBag">byl přidán do batohu</string>
+    <string name="ClickIconSubject">Klikněte ikonku abyste mohli editovat předmět</string>
+    <string name="ClickHereToAddToBag">Klikněte sem abyste přidali tuto pomůcku do vašeho batoh</string>
+
+
 </resources>

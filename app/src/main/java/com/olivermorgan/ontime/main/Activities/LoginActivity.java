@@ -17,10 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.olivermorgan.ontime.main.BakalariAPI.Login;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
-import com.olivermorgan.ontime.main.ui.Settings.SettingsFragment;
 
 public class LoginActivity extends AppCompatActivity {
-    final static String TAG = "Baka";
 
 
     @Override
@@ -138,7 +136,6 @@ public class LoginActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.top_nav_main_menu, menu);
-        menu.add("hello");
         return true;
     }
 

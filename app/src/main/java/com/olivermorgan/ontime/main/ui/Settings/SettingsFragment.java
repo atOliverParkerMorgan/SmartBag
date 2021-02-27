@@ -1,7 +1,10 @@
 package com.olivermorgan.ontime.main.ui.Settings;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -9,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +28,7 @@ import com.olivermorgan.ontime.main.BakalariAPI.Login;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
 
+import java.util.Locale;
 import java.util.Objects;
 
 
@@ -54,6 +59,31 @@ public class SettingsFragment extends Fragment{
 
         boolean weekendOnBoolean = SharedPrefs.getBoolean(getContext(),SharedPrefs.WEEKEND_ON);
 
+        boolean languageBoolean = SharedPrefs.getBoolean(getContext(),"Language");
+        // false => english
+        // true => czech
+
+        RadioButton english = mainView.findViewById(R.id.radioButtonEnglish);
+        RadioButton czech = mainView.findViewById(R.id.radioButtonCzech);
+
+
+        english.setChecked(!languageBoolean);
+        czech.setChecked(languageBoolean);
+
+
+        english.setOnClickListener(v->{
+            SharedPrefs.setBoolean(getContext(),"Language", false);
+            english.setChecked(true);
+            czech.setChecked(false);
+            restart();
+        });
+
+        czech.setOnClickListener(v->{
+            SharedPrefs.setBoolean(getContext(),"Language", true);
+            english.setChecked(false);
+            czech.setChecked(true);
+            restart();
+        });
 
         // is logged in
         new Thread(()-> {
@@ -137,6 +167,16 @@ public class SettingsFragment extends Fragment{
         startActivity(intent);
         requireActivity().finish();
         requireActivity().overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
+    }
+
+    // change language
+    public static void setLocale(Activity activity, String languageCode) {
+        Locale locale = new Locale(languageCode);
+        Locale.setDefault(locale);
+        Resources resources = activity.getResources();
+        Configuration config = resources.getConfiguration();
+        config.setLocale(locale);
+        resources.updateConfiguration(config, resources.getDisplayMetrics());
     }
 
 

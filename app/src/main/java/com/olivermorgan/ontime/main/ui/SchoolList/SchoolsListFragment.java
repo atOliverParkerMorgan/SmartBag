@@ -1,11 +1,8 @@
 package com.olivermorgan.ontime.main.ui.SchoolList;
 
 
-import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,12 +19,10 @@ import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 
-import com.olivermorgan.ontime.main.Activities.MainActivity;
 import com.olivermorgan.ontime.main.R;
-import com.olivermorgan.ontime.main.schoolsDatabase.SchoolDAO;
 import com.olivermorgan.ontime.main.schoolsDatabase.SchoolsAdapter;
 import com.olivermorgan.ontime.main.schoolsDatabase.SchoolsDatabaseAPI;
-import com.olivermorgan.ontime.main.schoolsDatabase.SchoolsDatabse;
+import com.olivermorgan.ontime.main.schoolsDatabase.SchoolsDatabase;
 import com.olivermorgan.ontime.main.schoolsDatabase.SchoolsViewModel;
 
 
@@ -50,7 +45,7 @@ public class SchoolsListFragment extends Fragment {
     OnItemClickListener listener = url -> {};
 
     RequestQueue requestQueue = null;
-    SchoolsDatabse database = null;
+    SchoolsDatabase database = null;
 
 
     public SchoolsListFragment() {
@@ -138,7 +133,7 @@ public class SchoolsListFragment extends Fragment {
         }
     }
 
-    public static interface OnItemClickListener{
-        public void onClick(String url);
+    public interface OnItemClickListener{
+        void onClick(String url);
     }
 }

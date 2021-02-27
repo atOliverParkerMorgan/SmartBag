@@ -3,7 +3,7 @@ package com.olivermorgan.ontime.main.Adapter;
 public class Item {
     private String itemName;
     private String subjectName;
-    private boolean isInBag;
+    private final boolean isInBag;
 
     public Item(String itemName, String subjectName, boolean isInBag) {
         this.subjectName = subjectName;

@@ -7,28 +7,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.ProgressBar;
-
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 
 public class SchoolsDatabaseAPI {
@@ -38,55 +21,13 @@ public class SchoolsDatabaseAPI {
 
 
     /**
-     * Fetches list ao all places (cities/towns/anything listed on their api) and returns their names
-     * using the listener. If action fails, null is returned.
-     *
-     * @param listListener listener using which data is returned. If action fails, null is returned.
-     */
-    public static void getCities(RequestQueue requestQueue, Context context, ListListener<String> listListener) {
-        StringRequest request = new StringRequest(Request.Method.GET, SCHOOLS_DATABASE_URL, response -> {
-            try {
-                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                DocumentBuilder db = dbf.newDocumentBuilder();
-                Document document = db.parse(new ByteArrayInputStream(response.getBytes()));
-
-                Element root = document.getDocumentElement();
-                root.normalize();
-
-                List<String> list = new LinkedList<>();
-
-                NodeList nodeList = root.getElementsByTagName("name");
-                for (int i = 0; i < nodeList.getLength(); i++) {
-                    list.add(nodeList.item(i).getTextContent());
-                }
-
-                listListener.method(list);
-                return;
-                /*for (int i = 0; i < root.getChildNodes().getLength(); i++) {
-                    Node item = root.getChildNodes().item(i);
-                    item.get
-                }*/
-
-            } catch (ParserConfigurationException | IOException | SAXException e) {
-                e.printStackTrace();
-                listListener.method(null);
-                return;
-            }
-        }, error -> {
-            listListener.method(null);
-            return;
-        });
-        requestQueue.add(request);
-    }
-
-    /**
      * Fetches list of all schools from Bakaláři api by fetching schools for each letter of Czech alphabet. Might take some time. Returns false if fetching fails.
      *
      * @param database SchoolInfo data will be saved into this database.
      * @param progressBar progress is displayed onto this progressbar unless it is {@code null}.
      * @return RequestQueue used for requests.
      */
-    public static RequestQueue getAllSchools(Context context, Listener listener, SchoolsDatabse database, ProgressBar progressBar) {
+    public static RequestQueue getAllSchools(Context context, Listener listener, SchoolsDatabase database, ProgressBar progressBar) {
         final RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         AsyncTask.execute(() -> {
@@ -144,12 +85,10 @@ public class SchoolsDatabaseAPI {
         return requestQueue;
     }
 
-    public static interface ListListener<T> {
-        public void method(List<T> list);
-    }
 
-    public static interface Listener {
-        public void onFinished(boolean success);
+
+    public interface Listener {
+        void onFinished(boolean success);
     }
 
     private static void decrement(AtomicInteger i, Listener listener, SchoolDAO dao, int start, ProgressBar progressBar) {

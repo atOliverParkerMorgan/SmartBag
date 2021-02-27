@@ -51,10 +51,8 @@ public class AddFragment extends Fragment {
         sequence.setConfig(config);
 
         sequence.addSequenceItem(mainView.findViewById(R.id.daySpinner),
-                "Click here to select which day do you want to prepare your bag for", "NEXT");
+                getActivity().getResources().getString(R.string.clickHereToSelectDay), getActivity().getResources().getString(R.string.Next));
 
-//        sequence.addSequenceItem(getActivity().findViewById(R.id.toolbar),
-//                "Click here to add a new subject", "GOT IT");
 
 
         sequence.start();

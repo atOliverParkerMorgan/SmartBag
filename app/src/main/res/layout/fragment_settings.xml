@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="?attr/ic_to_back"
         app:subtitleTextAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:titleTextColor="?attr/textColor" >
+        app:titleTextColor="?attr/textColor">
 
         <TextView
             android:id="@+id/toolbar_title"
@@ -29,8 +29,7 @@
             android:text="@string/settings"
             android:textColor="?attr/textColor"
             android:textSize="18sp"
-            android:textStyle="bold"
-           />
+            android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
 
     <ImageView
@@ -39,21 +38,56 @@
         android:layout_height="48dp"
         android:contentDescription="TODO"
         android:src="@drawable/bakalari_button"
-        app:layout_constraintBottom_toTopOf="@+id/view2"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarSettings" />
+        app:layout_constraintTop_toTopOf="@+id/guideline15" />
+
+    <TextView
+        android:id="@+id/bakalariTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bakaTitle"
+        android:textColor="?attr/textColor"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline15"
+        app:layout_constraintStart_toStartOf="@+id/startOfText" />
+
 
     <TextView
         android:id="@+id/bakalari"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:text="@string/bakalari"
         android:textColor="?attr/textColor"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/startOfText"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarSettings" />
+        app:layout_constraintTop_toTopOf="@+id/guideline15" />
 
+    <TextView
+        android:id="@+id/InterfaceTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/interfaceTitle"
+        android:textColor="?attr/textColor"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline16"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/languageTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/languageTitle"
+        android:textColor="?attr/textColor"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline21"
+        app:layout_constraintStart_toStartOf="@+id/startOfText" />
 
     <View
         android:id="@+id/view2"
@@ -61,51 +95,82 @@
         android:layout_height="2dp"
         android:background="@color/colorAccent"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+    <View
+        android:id="@+id/view5"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline20"
+        app:layout_constraintTop_toTopOf="@+id/guideline20" />
 
     <TextView
         android:id="@+id/darkModeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/dark_mode"
         android:textColor="?attr/textColor"
         android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline19"
+        app:layout_constraintStart_toStartOf="@+id/startOfText" />
+
+    <TextView
+        android:id="@+id/english"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/english"
+        android:textColor="?attr/textColor"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline22"
+        app:layout_constraintStart_toStartOf="@+id/startOfText" />
+
+    <TextView
+        android:id="@+id/czech"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/czech"
+        android:textColor="?attr/textColor"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/startOfText"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+        app:layout_constraintTop_toTopOf="@+id/guideline22" />
 
     <Switch
         android:id="@+id/darkModeSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline19"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <TextView
         android:id="@+id/doNotShowSaturdayAndSundayText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:text="@string/doNotShowSaturdaySunday"
         android:textColor="?attr/textColor"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/startOfText"
-        app:layout_constraintTop_toBottomOf="@+id/darkModeText" />
+        app:layout_constraintTop_toTopOf="@+id/guideline19" />
 
     <Switch
         android:id="@+id/deleteSundayAndSaturdaySwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/darkModeSwitch"
+        app:layout_constraintTop_toTopOf="@+id/guideline19"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -120,7 +185,67 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.2" />
+        app:layout_constraintGuide_percent="0.24" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.14" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.31" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.41" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.52" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.59" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.69" />
+
+    <RadioButton
+        android:id="@+id/radioButtonEnglish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline22"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <RadioButton
+        android:id="@+id/radioButtonCzech"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline22" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

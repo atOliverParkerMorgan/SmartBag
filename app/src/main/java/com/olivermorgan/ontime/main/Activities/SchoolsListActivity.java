@@ -1,22 +1,13 @@
 package com.olivermorgan.ontime.main.Activities;
 
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
 import com.olivermorgan.ontime.main.ui.SchoolList.SchoolsListFragment;
 
-import java.util.Objects;
-
-
 public class SchoolsListActivity extends AppCompatActivity {
-    public static final String EXTRA_URL = SchoolsListActivity.class.getCanonicalName() + ".url";
     public static final int RESULT_OK = 0;
     public static final int RESULT_CANCEL = 1;
     SchoolsListFragment fragment;

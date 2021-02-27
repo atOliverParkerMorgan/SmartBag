@@ -2,12 +2,8 @@ package com.olivermorgan.ontime.main.Activities;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-
 import android.os.Bundle;
-import android.view.View;
 import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,11 +23,8 @@ import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
-
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class EditSubject extends AppCompatActivity {
 
@@ -111,25 +104,25 @@ public class EditSubject extends AppCompatActivity {
         viewHolder.saveButton.setOnClickListener(v -> {
             try {
                 if(subject==null){
-                    Toast.makeText(v.getContext(), "An error occurred",
+                    Toast.makeText(v.getContext(), R.string.anError,
                             Toast.LENGTH_LONG).show();
                 }
                 else if(subject.equals("")) {
-                    Toast.makeText(v.getContext(), "To add a subject write some text into the text field (Mathematics).",
+                    Toast.makeText(v.getContext(),  R.string.nothingInSubjectFiled,
                             Toast.LENGTH_LONG).show();
                 }
                 else if(FeedReaderDbHelperItems.subjectExists(getApplicationContext(), subject) && !subject.equals(viewHolder.subjectName.getText().toString())){
-                    Toast.makeText(v.getContext(), "The subject "+viewHolder.subjectName.getText().toString()+" already exists. Pick an unique name",
+                    Toast.makeText(v.getContext(), R.string.subject+viewHolder.subjectName.getText().toString()+R.string.alreadyExist,
                             Toast.LENGTH_LONG).show();
                 }else if(subject.length()>25){
-                    Toast.makeText(v.getContext(), "The subject name is too long. The maximum length is 25 characters",
+                    Toast.makeText(v.getContext(), R.string.tooLong,
                             Toast.LENGTH_LONG).show();
                 }
 
                 else if(!(mon.isChecked()||
                         tue.isChecked()||wed.isChecked()||thu.isChecked()||
                         fri.isChecked()||sat.isChecked()||sun.isChecked())){
-                    Toast.makeText(v.getContext(), "You have to choose at least one day of the week",
+                    Toast.makeText(v.getContext(), R.string.mustChooseAtLeastOneDay,
                             Toast.LENGTH_LONG).show();
                 }else {
                     FeedReaderDbHelperItems.deleteSubject(v.getContext(), subject);
@@ -147,7 +140,7 @@ public class EditSubject extends AppCompatActivity {
 
                     i.putExtra("putInToBag", "null");
                     if (!FeedReaderDbHelperItems.write(v.getContext(), i, itemsDataItemsToEdit, viewHolder.subjectName.getText().toString())) {
-                        Toast.makeText(v.getContext(), "An error as occurred in the database report this issue",
+                        Toast.makeText(v.getContext(), R.string.databaseError,
                                 Toast.LENGTH_LONG).show();
                     }
 
@@ -155,7 +148,7 @@ public class EditSubject extends AppCompatActivity {
                 }
 
             } catch (android.database.sqlite.SQLiteException e) {
-                Toast.makeText(v.getContext(), "An error as occurred in the database report this issue",
+                Toast.makeText(v.getContext(), R.string.databaseError,
                         Toast.LENGTH_LONG).show();
             }
 
@@ -165,8 +158,8 @@ public class EditSubject extends AppCompatActivity {
 
         viewHolder.deleteButton.setOnClickListener(v -> {
             AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
-            alert.setTitle("Delete Subject");
-            alert.setMessage("Are you sure you want to delete " + subject + "?");
+            alert.setTitle(R.string.deleteSubject);
+            alert.setMessage(R.string.areYouSureDelete + subject + " ?");
             alert.setPositiveButton(android.R.string.yes, (dialog, which) -> {
                 FeedReaderDbHelperSubjects.deleteSubject(subject, this);
                 Intent i = new Intent(EditSubject.this, MainActivity.class);
@@ -183,45 +176,42 @@ public class EditSubject extends AppCompatActivity {
         });
 
 
-        viewHolder.addItems.setOnClickListener(new View.OnClickListener() {
+        viewHolder.addItems.setOnClickListener(v -> {
+            // getting the editText input
+            String text = viewHolder.itemName.getText().toString();
+            // the user has to input some text
+            if (text.equals("")) {
+                Toast.makeText(v.getContext(), R.string.nothingInSubjectFiled,
+                        Toast.LENGTH_LONG).show();
+            } else {
+                // also the item cannot already be in the recycle viewer
+                boolean found = false;
+                for (Item item : itemsDataItemsToEdit) {
+                    if (item.getItemName().equals(viewHolder.itemName.getText().toString())) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    // this is data for recycler view
+                    itemsDataItemsToEdit.add(new Item(viewHolder.itemName.getText().toString(), subject, false));
 
-            public void onClick(View v) {
-                // getting the editText input
-                String text = viewHolder.itemName.getText().toString();
-                // the user has to input some text
-                if (text.equals("")) {
-                    Toast.makeText(v.getContext(), "To add an item write some text into the text field (Textbook).",
-                            Toast.LENGTH_LONG).show();
+                    // create an adapter
+                    @SuppressLint("CutPasteId") MyListAdapter mAdapterItemsToAdd1 = new MyListAdapter(itemsDataItemsToEdit, (byte) -10, findViewById(android.R.id.content), false, true, false, EditSubject.this);
+                    // set adapter
+                    viewHolder.editItemsRecycleView.setAdapter(mAdapterItemsToAdd1);
+                    // set itemAdd animator to DefaultAnimator
+                    viewHolder.editItemsRecycleView.setItemAnimator(new DefaultItemAnimator());
+
+                    viewHolder.itemName.setText("");
+
                 } else {
-                    // also the item cannot already be in the recycle viewer
-                    boolean found = false;
-                    for (Item item : itemsDataItemsToEdit) {
-                        if (item.getItemName().equals(viewHolder.itemName.getText().toString())) {
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found) {
-                        // this is data for recycler view
-                        itemsDataItemsToEdit.add(new Item(viewHolder.itemName.getText().toString(), subject, false));
-
-                        // create an adapter
-                        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToEdit, (byte) -10, findViewById(android.R.id.content), false, true, false, EditSubject.this);
-                        // set adapter
-                        viewHolder.editItemsRecycleView.setAdapter(mAdapterItemsToAdd);
-                        // set itemAdd animator to DefaultAnimator
-                        viewHolder.editItemsRecycleView.setItemAnimator(new DefaultItemAnimator());
-
-                        viewHolder.itemName.setText("");
-
-                    } else {
-                        Toast.makeText(v.getContext(), "You have already added this item.",
-                                Toast.LENGTH_LONG).show();
-                    }
-
+                    Toast.makeText(v.getContext(), R.string.itemAlreadyAdded,
+                            Toast.LENGTH_LONG).show();
                 }
 
             }
+
         });
     }
 

@@ -16,16 +16,16 @@ public class SchoolsViewModel extends ViewModel {
     public SchoolsViewModel() {
     }
 
-    private SchoolsDatabse database = null;
+    private SchoolsDatabase database = null;
     private SchoolDAO dao;
     private LiveData<PagedList<SchoolInfo>> allSchools;
     private LiveData<PagedList<SchoolInfo>> queriedSchools;
     private MutableLiveData<String> query = new MutableLiveData<>();
 
-    public SchoolsDatabse init(Context context){
+    public SchoolsDatabase init(Context context){
         context = context.getApplicationContext();
         if (database == null) {
-            database = Room.inMemoryDatabaseBuilder(context, SchoolsDatabse.class).build();
+            database = Room.inMemoryDatabaseBuilder(context, SchoolsDatabase.class).build();
             // /\ that one is right, \/ this is debug
             //database = Room.databaseBuilder(context, SchoolsDatabse.class,"schools-database.sqlite").build();
         }
@@ -64,7 +64,7 @@ public class SchoolsViewModel extends ViewModel {
         query.setValue(queryString);
     }
 
-    public SchoolsDatabse getDatabase() {
+    public SchoolsDatabase getDatabase() {
         return database;
     }
 

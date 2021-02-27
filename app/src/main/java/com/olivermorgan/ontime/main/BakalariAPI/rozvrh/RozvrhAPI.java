@@ -2,7 +2,6 @@
 package com.olivermorgan.ontime.main.BakalariAPI.rozvrh;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;

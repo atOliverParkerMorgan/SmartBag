@@ -97,21 +97,18 @@ public class Login {
                                     SharedPrefs.setString(context, SharedPrefs.TYPE, response.body().UserType);
                                     listener.onResponse(SUCCESS);
                                 }else {
-                                    Log.e(TAG, "Unexpected user login response: " + response.toString());
                                     listener.onResponse(UNEXPECTER_RESPONSE);
                                 }
                             }
 
                             @Override
                             public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
-                                Log.d("RIP POP","ARRRR");
                                 Log.e(TAG, t.toString());
                                 t.printStackTrace();
                                 listener.onResponse(SERVER_UNREACHABLE);
                             }
                         });
                     }else {
-                        Log.e(TAG, "Login failed: " + response.toString());
                         listener.onResponse(WRONG_LOGIN);
 
                     }
@@ -119,7 +116,6 @@ public class Login {
 
                 @Override
                 public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
-                    Log.d("RIP POP","ARRRR");
                     Log.e(TAG, t.toString());
                     t.printStackTrace();
                     listener.onResponse(SERVER_UNREACHABLE);
@@ -136,7 +132,6 @@ public class Login {
          * refreshes login token
          * */
         public void refreshToken(Listener listener){
-            Log.d("RIP POP","yeah");
             Retrofit retrofit = getRetrofit();
             if (retrofit == null){
 
@@ -156,7 +151,6 @@ public class Login {
                             String refreshToken = Objects.requireNonNull(response.body()).refresh_token;
                             String accessToken = response.body().access_token;
 
-                            Log.d("ACCESSTOKEN", accessToken);
 
                             SharedPrefs.setString(context, SharedPrefs.REFRESH_TOKEN, refreshToken);
                             SharedPrefs.setString(context, SharedPrefs.ACCEESS_TOKEN, accessToken);
@@ -164,7 +158,6 @@ public class Login {
 
                             notifyRefreshQueue(SUCCESS);
                         }else {
-                            Log.e(TAG, "Refresh failed: " + response.toString());
                             notifyRefreshQueue(WRONG_LOGIN);
 
                         }
@@ -211,7 +204,7 @@ public class Login {
         /**
          * Logs out user (deletes credentials)
          */
-        public void logout(){
+        public void logout() {
             SharedPrefs.remove(context, SharedPrefs.USERNAME);
             SharedPrefs.remove(context, SharedPrefs.REFRESH_TOKEN);
             SharedPrefs.remove(context, SharedPrefs.ACCEESS_TOKEN);
@@ -220,40 +213,7 @@ public class Login {
             SharedPrefs.remove(context, SharedPrefs.NAME);
             SharedPrefs.remove(context, SharedPrefs.PASSWORD);
             RozvrhCache.clearCache(context);
-//            PermanentNotification.update(null, 0, context);
-//            WidgetProvider.updateAll(null, context);
-//            AppSingleton.getInstance(context).getRozvrhAPI().clearMemory();
         }
-
-        /**
-         * Checks if user is logged in or has seen the welcome screen (where crash reports are
-         * enabled/disabled), the starts the corresponding activity (if it isn't already started).
-         * <code>finish()</code> <b>won't</b> be called on the current activity.
-         *
-         * @return An activity which is being started or <code>null</code> if no activity will be started.
-         */
-//        public static Class<? extends Activity> checkLogin(Activity currentActivity){
-//            Context ctx = currentActivity;
-//            boolean isLoggedIn = !SharedPrefs.getString(currentActivity, "main", SharedPrefs.REFRESH_TOKEN, null).isEmpty();
-//            //boolean seenWelcome = SharedPrefs.containsPreference(ctx, R.string.PREFS_SEND_CRASH_REPORTS);
-//
-//            if (!seenWelcome && !(currentActivity instanceof IntroActivity)){
-//                Intent intent = new Intent(ctx, IntroActivity.class);
-//                ctx.startActivity(intent);
-//                return IntroActivity.class;
-//            }
-//            if (!isLoggedIn && !(currentActivity instanceof LoginActivity)){
-//                Intent intent = new Intent(ctx, LoginActivity.class);
-//                ctx.startActivity(intent);
-//                return LoginActivity.class;
-//            }
-//            if (!(currentActivity instanceof MainActivity)){
-//                Intent intent = new Intent(ctx, MainActivity.class);
-//                ctx.startActivity(intent);
-//                return MainActivity.class;
-//            }
-//            return null;
-//        }
 
         /**
          * Whether to show teacher's or students rozvrh (each is fetched and displayed slightly differently)

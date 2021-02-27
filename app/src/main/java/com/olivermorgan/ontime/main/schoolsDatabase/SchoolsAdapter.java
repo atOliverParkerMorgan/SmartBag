@@ -17,8 +17,8 @@ import com.olivermorgan.ontime.main.ui.SchoolList.SchoolsListFragment;
 
 public class SchoolsAdapter extends PagedListAdapter<SchoolInfo, SchoolsAdapter.ViewHolder> {
 
-    private Context context;
-    private SchoolsListFragment.OnItemClickListener listener;
+    private final Context context;
+    private final SchoolsListFragment.OnItemClickListener listener;
 
 
     public SchoolsAdapter(Context context, SchoolsListFragment.OnItemClickListener listener) {
@@ -40,7 +40,7 @@ public class SchoolsAdapter extends PagedListAdapter<SchoolInfo, SchoolsAdapter.
         holder.bind(item);
     }
 
-    private static DiffUtil.ItemCallback<SchoolInfo> DIFF_CALLBACK =
+    private static final DiffUtil.ItemCallback<SchoolInfo> DIFF_CALLBACK =
             new DiffUtil.ItemCallback<SchoolInfo>() {
 
                 @Override
@@ -58,7 +58,7 @@ public class SchoolsAdapter extends PagedListAdapter<SchoolInfo, SchoolsAdapter.
             };
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         View view;
         TextView twName;

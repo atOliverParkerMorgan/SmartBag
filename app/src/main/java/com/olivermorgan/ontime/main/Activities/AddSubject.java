@@ -69,21 +69,21 @@ public class AddSubject extends AppCompatActivity {
         viewHolder.addItems.setOnClickListener(v -> {
             String s = viewHolder.subjectName.getText().toString();
             if(s.equals("")) {
-                Toast.makeText(v.getContext(), "To add a subject write some text into the text field (Mathematics).",
+                Toast.makeText(v.getContext(), R.string.nothingInSubjectFiled,
                         Toast.LENGTH_LONG).show();
             }
             else if(FeedReaderDbHelperItems.subjectExists(getApplicationContext(), s)){
-                Toast.makeText(v.getContext(), "The subject "+s+" already exists. Pick an unique name",
+                Toast.makeText(v.getContext(), R.string.subject+" "+s+" "+R.string.alreadyExist,
                 Toast.LENGTH_LONG).show();
             }else if(s.length()>25){
-                Toast.makeText(v.getContext(), "The subject name is too long. The maximum length is 25 characters",
+                Toast.makeText(v.getContext(), R.string.tooLong,
                         Toast.LENGTH_LONG).show();
             }
 
             else if(!(viewHolder.monday.isChecked()||
                     viewHolder.tuesday.isChecked()||viewHolder.wednesday.isChecked()||viewHolder.thursday.isChecked()||
                     viewHolder.friday.isChecked()||viewHolder.saturday.isChecked()||viewHolder.sunday.isChecked())){
-                Toast.makeText(v.getContext(), "You have to choose at least one day of the week",
+                Toast.makeText(v.getContext(), R.string.mustChooseAtLeastOneDay,
                         Toast.LENGTH_LONG).show();
             }
 

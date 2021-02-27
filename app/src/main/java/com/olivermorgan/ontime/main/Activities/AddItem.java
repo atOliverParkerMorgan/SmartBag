@@ -29,21 +29,18 @@ public class AddItem extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        boolean darkModeOn = SharedPrefs.getDarkMode(this);
+        if (darkModeOn) {
+            setTheme(R.style.DARK);
+        } else {
+            setTheme(R.style.LIGHT);
+        }
         setContentView(R.layout.activity_add_items);
 
         Toolbar toolbar = findViewById(R.id.toolbarAddItems);
         toolbar.setNavigationOnClickListener(v -> {
             onBackPressed();
         });
-
-        new Thread(()-> {
-            boolean darkModeOn = SharedPrefs.getDarkMode(this);
-            if (darkModeOn) {
-                setTheme(R.style.DARK);
-            } else {
-                setTheme(R.style.LIGHT);
-            }
-        }).start();
 
         // Get subject from AddFragment
         final String subject = (String) getIntent().getSerializableExtra("Subject");
@@ -64,7 +61,7 @@ public class AddItem extends AppCompatActivity {
 
 
             if(text.equals("")){
-                Toast.makeText(v.getContext(), "To add an item write some text into the text field (Textbook).",
+                Toast.makeText(v.getContext(), R.string.nothingInSubjectFiled,
                         Toast.LENGTH_LONG).show();
             }else {
                 // also the item cannot already be in the recycle viewer
@@ -89,7 +86,7 @@ public class AddItem extends AppCompatActivity {
                     viewHolder.itemName.setText("");
 
                 }else{
-                    Toast.makeText(v.getContext(), "You have already added this item.",
+                    Toast.makeText(v.getContext(), R.string.itemAlreadyAdded,
                             Toast.LENGTH_LONG).show();
                 }
 
@@ -100,14 +97,14 @@ public class AddItem extends AppCompatActivity {
         viewHolder.create.setOnClickListener(v -> {
 
             if( mAdapterItemsToAdd.getItems().size()==0) {
-                Toast.makeText(v.getContext(),"You must add at least one item",Toast.LENGTH_LONG).show();
+                Toast.makeText(v.getContext(),R.string.atLeastOneItem,Toast.LENGTH_LONG).show();
             }else {
 
                 // Insert the new row, returning the primary key value of the new row
 
                 // -1 means an Error has occurred
                 if ( !FeedReaderDbHelperItems.write(v.getContext(),  getIntent(),  mAdapterItemsToAdd.getItems())|| !FeedReaderDbHelperSubjects.write(v.getContext(), getIntent(), subject)) {
-                    Toast.makeText(v.getContext(), "An error as occurred in the database report this issue",
+                    Toast.makeText(v.getContext(), R.string.databaseError,
                             Toast.LENGTH_LONG).show();
                 }
                 // go back to main activity

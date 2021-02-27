@@ -129,7 +129,6 @@ public class LoadBag {
             intent.putExtra("putInToBag", false);
 
             if (!FeedReaderDbHelperSubjects.write(context, intent, subjects.get(i).getName())) {
-                Log.e("ERROR", "something went terribly wrong");
                 Toast.makeText(context, R.string.absolute_error,Toast.LENGTH_LONG).show();
             }
 

@@ -27,8 +27,8 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 
 public class MyBagAdapter extends RecyclerView.Adapter<MyBagAdapter.ViewHolder>{
-    private List<Item> Items;
-    private Activity mainActivity;
+    private final List<Item> Items;
+    private final Activity mainActivity;
 
     // RecyclerView recyclerView;
     public MyBagAdapter(List<Item> listdata, boolean showSubjectTitle, Activity mainActivity) {
@@ -72,42 +72,38 @@ public class MyBagAdapter extends RecyclerView.Adapter<MyBagAdapter.ViewHolder>{
                 MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mainActivity, "recyclerViewerTutorialRemoveFromBag");
                 sequence.setConfig(config);
                 sequence.addSequenceItem(holder.imageButton,
-                        "Click here to remove this item from your bag", "GOT IT");
+                        mainActivity.getResources().getString(R.string.clickHereToRemoveItemFromBag),  mainActivity.getResources().getString(R.string.gotIt));
                 sequence.start();
             }
 
             holder.textView.setText(Items.get(position).getItemName());
             holder.circle.setText(Items.get(position).getNameInitialsOfSubject());
-            holder.circle.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    // go back to main activity
-                    Intent i = new Intent( v.getContext(), EditSubject.class);
-                    i.putExtra("subjectName", Items.get(position).getSubjectName());
-                    v.getContext().startActivity(i);
-                }
+            holder.circle.setOnClickListener(v -> {
+                // go back to main activity
+                Intent i = new Intent( v.getContext(), EditSubject.class);
+                i.putExtra("subjectName", Items.get(position).getSubjectName());
+                v.getContext().startActivity(i);
             });
-            holder.imageButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    // logic
-                        FeedReaderDbHelperItems.editBag(v.getContext(), Items.get(position), false);
-                        Toast.makeText(v.getContext(), Items.get(position).getItemName() + " has been removed from your bag", Toast.LENGTH_SHORT).show();
-                        Items.remove(Items.get(position));  // remove the itemAdd from list
-                        notifyItemRemoved(position); // notify the adapter about the removed itemAdd
-                        notifyItemRangeChanged(position, Items.size());
-                        if(Items.get(position-1).getSubjectName()==null){
-                            if(position - 1 == Items.size()-1){
-                                Items.remove(Items.get(position-1));  // remove the Title from list
-                                notifyItemRemoved(position-1);
-                            }else if(Items.get(position).getSubjectName()==null){
-                                Items.remove(Items.get(position-1));  // remove the Title from list
-                                notifyItemRemoved(position-1);
-                            }
+            holder.imageButton.setOnClickListener(v -> {
+                // logic
+                    FeedReaderDbHelperItems.editBag(v.getContext(), Items.get(position), false);
+                    Toast.makeText(v.getContext(), Items.get(position).getItemName() + " "+R.string.hasBeenRemoved, Toast.LENGTH_SHORT).show();
+                    Items.remove(Items.get(position));  // remove the itemAdd from list
+                    notifyItemRemoved(position); // notify the adapter about the removed itemAdd
+                    notifyItemRangeChanged(position, Items.size());
+                    if(Items.get(position-1).getSubjectName()==null){
+                        if(position - 1 == Items.size()-1){
+                            Items.remove(Items.get(position-1));  // remove the Title from list
+                            notifyItemRemoved(position-1);
+                        }else if(Items.get(position).getSubjectName()==null){
+                            Items.remove(Items.get(position-1));  // remove the Title from list
+                            notifyItemRemoved(position-1);
                         }
-                        notifyItemRangeChanged(position-1, Items.size());
-
-
                     }
-            });
+                    notifyItemRangeChanged(position-1, Items.size());
+
+
+                });
         }
     }
 

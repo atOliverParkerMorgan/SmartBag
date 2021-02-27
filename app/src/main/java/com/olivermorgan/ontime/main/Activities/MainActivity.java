@@ -55,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_main);
 
+        String language = SharedPrefs.getBoolean(this,"Language")?"cs":"en";
+        SettingsFragment.setLocale(this, language);
+
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener);
         if (darkModeOn) {

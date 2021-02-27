@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.olivermorgan.ontime.main.SharedPrefs;
 
 public class AppSingleton {
-    private static final String TAG = AppSingleton.class.getSimpleName();
 
     @SuppressLint("StaticFieldLeak")
     private static AppSingleton instance;

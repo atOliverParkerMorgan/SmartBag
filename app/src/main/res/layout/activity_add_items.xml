@@ -27,11 +27,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/title_create_subject"
+            android:text="@string/title_add_item"
             android:textColor="?attr/textColor"
             android:textSize="18sp"
             android:textStyle="bold"
-            />
+            tools:layout_editor_absoluteX="139dp"
+            tools:layout_editor_absoluteY="16dp" />
     </androidx.appcompat.widget.Toolbar>
 
     <Button

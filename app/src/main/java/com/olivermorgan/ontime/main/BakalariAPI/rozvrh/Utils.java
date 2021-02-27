@@ -79,24 +79,5 @@ public class Utils {
 
         return getWeekMonday(LocalDate.now().plusDays(offset));
     }
-
-    /**
-     * For debugging purposes
-     */
-    public static String getDebugTime() {
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("mm:ss.SSS");
-        LocalTime time = LocalTime.now();
-        return dtf.print(time);
-    }
-
-    /**
-     * Get fucking localized string for week info
-     *
-     * @param week week relative to now: 0 - current, 1 - next, -1 previous, {@code Integer.MAX_VALUE} permanent schedule
-     * @return Localize, human friendly string
-     */
-
-
-
 }
 
