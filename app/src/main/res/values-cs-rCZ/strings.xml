@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">SmartBag</string>
     <string name="title_add_button_navigation">Přidat</string>
     <string name="title_create_subject">Vytořte předmět</string>
@@ -63,11 +63,11 @@
     <string name="doNotShowSaturdaySunday">Zobrazovat Soboty a Neděle</string>
     <string name="editSubjectItemHint">Přidat nebo upravit pomůcku</string>
     <string name="uploadBagYourBag">nahrajte svůj batoh</string>
-    <string name="loadBag">načtěte cizý batoh</string>
+    <string name="loadBag">Načtěte cizý batoh</string>
     <string name="loadButton">Načíst</string>
     <string name="yourBag">Přehled vašeho batohu</string>
     <string name="theItemsAreDue">Pomůcky na:</string>
-    <string name="bakalari">Synchornizujte se svými Bakaláři</string>
+    <string name="bakalari">Synchornizujte se s Bakaláři</string>
     <string name="addSubjectButtonText">Zatím jste nepřidali žadné pomůcky. Chcete-li je přidat, klikněte sem</string>
     <string name="Loading">Načítání…</string>
     <string name="codeNameInstructions"><font size="14">Váš kód ke sdílení vašeho batohu</font></string>
@@ -93,8 +93,8 @@
 
     <string name="info">INFORMACE</string>
     <string name="info1">• Smartbag automaticky synchronizuje položky se jmény předmětů.</string>
-    <string name="info2">• Defoltní položko pro předmět bez žadné předem dané položky je:"položky pro 'předmět'""</string>
-    <string name="info3">• Můžete přidávat položky pro unikátní předmět v další aktivitě.</string>
+    <string name="info2">• Defoltní položka pro předmět bez žadné předem dané pomůcky je:"pomůcky pro 'předmět'""</string>
+    <string name="info3">• Můžete změnit defoltní jméno v rozvrhu v přehledu tím, že klinknete na předmět.</string>
     <string name="interfaceTitle">Rozhraní:</string>
     <string name="languageTitle">Jazyky: </string>
     <string name="english">Angličtina</string>
@@ -149,6 +149,26 @@
     <string name="hasBeenAddedToBag">byl přidán do batohu</string>
     <string name="ClickIconSubject">Klikněte ikonku abyste mohli editovat předmět</string>
     <string name="ClickHereToAddToBag">Klikněte sem abyste přidali tuto pomůcku do vašeho batoh</string>
+    <string name="itemsForSubject">pomůcky pro</string>
+    <string name="invalidCode">Nevalidní kód, kód musí být šest velkých písmen</string>
+    <string name="downloadBag">Stáhnout batoh:</string>
+    <string name="sureAboutDownloadingBagAndLogoutBaka">Jste si jisti, že chcete stáhnout tento batoh? Toto přepíše všechny existující předměty a pomůcky. A také vás odhlásí z vašeho  Bakaláři účtu.</string>
+    <string name="sureAboutDownloadingBag">Jste si jisti, že chcete stáhnout tento batoh? Toto přepíše všechny existující předměty a pomůcky.</string>
+    <string name="incorrectCodeOrNoConnection">Eror, máte špatný kód nebo nemáte připojení k internetu.</string>
+    <string name="successfulUpdateWithCode">Úspěšně jste obnovili svůj batoh s kódem:</string>
+    <string name="internetConnection">Eror, zkontrolujte své připojení.</string>
+    <string name="successUpload">Úspěch, váš batoh byl nahrán.</string>
+    <string name="clickIconToEdit">Klikněte ikonku abyste mohli editovat batoh</string>
 
+    <string name="currentWeek">tento týden</string>
+    <string name="previousWeek">minulý týden</string>
+    <string name="nextWeek">příští týden</string>
+    <string name="backWeek">týdnů zpět</string>
+    <string name="forwardWeek">týdnů dopředu</string>
+    <string name="backWeekCZSpecialCase">týdny zpět</string>
+    <string name="forwardWeekbackWeekCZSpecialCase">týdny dopředu</string>
+
+    <string name="UserName">Uživatelské jméno</string>
+    <string name="Password">Heslo</string>
 
 </resources>

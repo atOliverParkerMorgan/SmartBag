@@ -1,8 +1,10 @@
 package com.olivermorgan.ontime.main.Adapter;
 
 public class Subject {
-    private boolean[] week;
-    private String name;
+    private final boolean[] week;
+    private final String name;
+
+
 
     public Subject(String name) {
         this.week = new boolean[7];

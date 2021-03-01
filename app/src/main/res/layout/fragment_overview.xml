@@ -27,7 +27,7 @@
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progress_bar"
         app:layout_constraintVertical_bias="1.0">
@@ -62,7 +62,6 @@
                 android:textColor="?attr/textColor"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/adView" />
 
@@ -312,6 +311,40 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/Table"
                 app:layout_constraintTop_toBottomOf="@+id/horizontalView" />
+
+            <ImageButton
+                android:id="@+id/imageWeekBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/bgColor"
+                android:padding="4dp"
+                app:layout_constraintBottom_toBottomOf="@+id/myBagInstructions"
+                app:layout_constraintEnd_toStartOf="@+id/myBagInstructions"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/myBagInstructions"
+                app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
+
+            <ImageButton
+                android:id="@+id/imageWeekFront"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/bgColor"
+                android:padding="4dp"
+                app:layout_constraintBottom_toBottomOf="@+id/myBagInstructions"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/myBagInstructions"
+                app:layout_constraintTop_toTopOf="@+id/myBagInstructions"
+                app:srcCompat="@drawable/ic_baseline_arrow_forward_24" />
+
+            <TextView
+                android:id="@+id/currentWeek"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text=""
+                app:layout_constraintBottom_toTopOf="@+id/myBagInstructions"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

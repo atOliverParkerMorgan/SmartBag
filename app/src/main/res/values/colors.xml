@@ -11,5 +11,7 @@
 
     <color name="colorAccent">#ff5e62</color>
     <color name="loggedInBakalari">#F9AA33</color>
+    <color name="splashScreenBackgroundColor">#fd9803</color>
+
     <color name="bgColor" />
     </resources>

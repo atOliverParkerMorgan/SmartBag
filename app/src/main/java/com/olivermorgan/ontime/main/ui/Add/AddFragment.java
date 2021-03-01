@@ -53,8 +53,6 @@ public class AddFragment extends Fragment {
         sequence.addSequenceItem(mainView.findViewById(R.id.daySpinner),
                 getActivity().getResources().getString(R.string.clickHereToSelectDay), getActivity().getResources().getString(R.string.Next));
 
-
-
         sequence.start();
 
         // Spinner logic

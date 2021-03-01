@@ -159,7 +159,7 @@ public class EditSubject extends AppCompatActivity {
         viewHolder.deleteButton.setOnClickListener(v -> {
             AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
             alert.setTitle(R.string.deleteSubject);
-            alert.setMessage(R.string.areYouSureDelete + subject + " ?");
+            alert.setMessage(getResources().getString(R.string.areYouSureDelete) + subject + " ?");
             alert.setPositiveButton(android.R.string.yes, (dialog, which) -> {
                 FeedReaderDbHelperSubjects.deleteSubject(subject, this);
                 Intent i = new Intent(EditSubject.this, MainActivity.class);

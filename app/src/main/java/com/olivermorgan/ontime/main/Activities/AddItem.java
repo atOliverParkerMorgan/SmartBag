@@ -1,12 +1,9 @@
 package com.olivermorgan.ontime.main.Activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -19,9 +16,7 @@ import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.Adapter.MyListAdapter;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
-
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class AddItem extends AppCompatActivity {
 
@@ -38,9 +33,7 @@ public class AddItem extends AppCompatActivity {
         setContentView(R.layout.activity_add_items);
 
         Toolbar toolbar = findViewById(R.id.toolbarAddItems);
-        toolbar.setNavigationOnClickListener(v -> {
-            onBackPressed();
-        });
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         // Get subject from AddFragment
         final String subject = (String) getIntent().getSerializableExtra("Subject");
@@ -51,7 +44,7 @@ public class AddItem extends AppCompatActivity {
         viewHolder.addedItemsRecycleView.setLayoutManager(new LinearLayoutManager(this));
 
         // create an adapter
-        final MyListAdapter mAdapterItemsToAdd = new MyListAdapter(new ArrayList<Item>(), (byte)-1, findViewById(android.R.id.content).getRootView(), false, false, false,this );
+        final MyListAdapter mAdapterItemsToAdd = new MyListAdapter(new ArrayList<>(), (byte)-1, findViewById(android.R.id.content).getRootView(), false, false, false,this );
 
         // Add items this onclick listener add an item to the recycle viewer
         viewHolder.addItems.setOnClickListener(v -> {
@@ -102,7 +95,7 @@ public class AddItem extends AppCompatActivity {
 
                 // Insert the new row, returning the primary key value of the new row
 
-                // -1 means an Error has occurred
+                // false means an Error has occurred
                 if ( !FeedReaderDbHelperItems.write(v.getContext(),  getIntent(),  mAdapterItemsToAdd.getItems())|| !FeedReaderDbHelperSubjects.write(v.getContext(), getIntent(), subject)) {
                     Toast.makeText(v.getContext(), R.string.databaseError,
                             Toast.LENGTH_LONG).show();

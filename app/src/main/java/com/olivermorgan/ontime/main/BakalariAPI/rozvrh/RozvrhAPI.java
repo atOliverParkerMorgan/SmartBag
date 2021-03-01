@@ -95,7 +95,7 @@ public class RozvrhAPI {
             });
             getFromNetAndSave(monday, rozvrhWrapper -> {
                 if (rozvrhWrapper.getCode() == SUCCESS) {
-                    Toast.makeText(context, R.string.subTextSuccess, Toast.LENGTH_LONG).show();
+                   // Toast.makeText(context, R.string.subTextSuccess, Toast.LENGTH_LONG).show();
                     updateLiveData(monday, rozvrhWrapper);
                     netFinishedSucessfully.setValue(true);
                 } else {

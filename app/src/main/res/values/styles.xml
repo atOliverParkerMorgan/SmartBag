@@ -45,4 +45,16 @@
         <item name="ic_to_back">@drawable/ic_to_back</item>
     </style>
 
+    <style name="DARK.Launcher">
+    <item name="android:windowBackground">@drawable/launch_screen</item>
+    <!-- Optional, on Android 5+ you can modify the colorPrimaryDark color to match the windowBackground color for further branding-->
+    <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
+    </style>
+    <style name="LIGHT.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <!-- Optional, on Android 5+ you can modify the colorPrimaryDark color to match the windowBackground color for further branding-->
+        <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
+    </style>
+
+
 </resources>

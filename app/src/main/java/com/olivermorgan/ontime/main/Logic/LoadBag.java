@@ -117,7 +117,7 @@ public class LoadBag {
 
         for (int i = 0; i < subjects.size(); i++) {
             Intent intent = new Intent();
-            if(subjects.get(i).getName().equals("")) i++;
+            if(subjects.get(i).getName().equals("")) i++; // skip free hours
 
             intent.putExtra("Monday", Boolean.toString(subjects.get(i).getWeek()[0]));
             intent.putExtra("Tuesday", Boolean.toString(subjects.get(i).getWeek()[1]));
@@ -131,7 +131,20 @@ public class LoadBag {
             if (!FeedReaderDbHelperSubjects.write(context, intent, subjects.get(i).getName())) {
                 Toast.makeText(context, R.string.absolute_error,Toast.LENGTH_LONG).show();
             }
+        }
+        for (Subject subject: subjects) {
+            if(FeedReaderDbHelperItems.getContent(context, subject.getName()).size()==0){
+                Intent intent = new Intent();
+                intent.putExtra("putInToBag", false);
+                List<Item> items = new ArrayList<>();
+                items.add(new Item(context.getResources().getString(R.string.itemsForSubject)
+                        +" "+subject.getName(),subject.getName(),false));
 
+                if(!FeedReaderDbHelperItems.write(context,  intent,  items)){
+                    Toast.makeText(context, R.string.databaseError,
+                            Toast.LENGTH_LONG).show();
+                }
+            }
         }
 
 
@@ -147,8 +160,6 @@ public class LoadBag {
             week = null;
         else
             week = Utils.getDisplayWeekMonday(getContext()).plusWeeks(weekIndex);
-
-        final LocalDate finalWeek = week;
 
 
         //String infoMessage = Utils.getfl10nedWeekString(weekIndex, getContext());
@@ -170,7 +181,7 @@ public class LoadBag {
                 if (offline) {
                     // displayInfo.setLoadingState(DisplayInfo.ERROR);
                 } else {
-                    //  displayInfo.setLoadingState(DisplayInfo.LOADED);
+                    // displayInfo.setLoadingState(DisplayInfo.LOADED);
                 }
             }
         } else {

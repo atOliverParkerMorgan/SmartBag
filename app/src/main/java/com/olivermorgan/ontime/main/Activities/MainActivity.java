@@ -22,7 +22,6 @@ import com.olivermorgan.ontime.main.ui.Remove.RemoveFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.olivermorgan.ontime.main.ui.Settings.SettingsFragment;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import java.util.Objects;
 
@@ -32,11 +31,27 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.DARK_Launcher);
+
+        // informs
+        boolean activityIsBeingRestartedFromOverView = "overview".equals(getIntent().getSerializableExtra("Fragment"));
+        // informs activity that the them is being reset
+        boolean fromSettings = getIntent().getBooleanExtra("fromSettings", false);
+        // prevents database from updating
+        boolean backSettings = getIntent().getBooleanExtra("dontUpdateDatabase", false);
+
+        Login login = new Login(this);
+        if(login.isLoggedIn()&&!activityIsBeingRestartedFromOverView&&!fromSettings&&!backSettings) {
+            LoadBag loadBag = new LoadBag(getApplicationContext(), this);
+            loadBag.getRozvrh(SharedPrefs.getInt(this,"weekIndex"));
+        }
+
         super.onCreate(savedInstanceState);
 
         SharedPreferences userPreferences = Objects.requireNonNull(this.getSharedPreferences("userId", android.content.Context.MODE_PRIVATE));
 
         if (userPreferences.getBoolean("first", true)) {
+            SharedPrefs.setInt(this,"weekIndex", 0);
             overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
             startActivity(new Intent(this, IntroActivity.class));
             SharedPreferences.Editor edit = userPreferences.edit();
@@ -45,18 +60,21 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-
         boolean darkModeOn = SharedPrefs.getDarkMode(this);
+
         if (darkModeOn) {
             setTheme(R.style.DARK);
 
         } else {
             setTheme(R.style.LIGHT);
         }
-        setContentView(R.layout.activity_main);
-
         String language = SharedPrefs.getBoolean(this,"Language")?"cs":"en";
         SettingsFragment.setLocale(this, language);
+
+
+
+        setContentView(R.layout.activity_main);
+
 
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -67,28 +85,9 @@ public class MainActivity extends AppCompatActivity {
             navView.setBackgroundColor(getResources().getColor(R.color.barColorLight));
         }
 
-        // informs
-        boolean activityIsBeingRestartedFromOverView = "overview".equals(getIntent().getSerializableExtra("Fragment"));
-        // informs activity that the them is being reset
-        boolean fromSettings = getIntent().getBooleanExtra("fromSettings", false);
-        // prevents databse from updateing
-        boolean backSettings = getIntent().getBooleanExtra("dontUpdateDatabase", false);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        Login login = new Login(this);
-        if(login.isLoggedIn()&&!activityIsBeingRestartedFromOverView&&!fromSettings&&!backSettings) {
-            Handler mainHandler = new Handler(Looper.getMainLooper());
-
-            mainHandler.post(()->{
-                LoadBag loadBag = new LoadBag(getApplicationContext(), this);
-                loadBag.getRozvrh(0);
-            });
-
-        }
-
-
 
         // I added this if statement to keep the selected fragment when rotating the device
         if(fromSettings)
@@ -117,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
 
         } else
             SharedPrefs.setBoolean(getApplicationContext(), "updateTableInThread", true);
+
+
 
 
     }

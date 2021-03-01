@@ -1,5 +1,6 @@
 package com.olivermorgan.ontime.main.ui.Overview;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -7,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
@@ -29,12 +30,12 @@ import com.olivermorgan.ontime.main.Activities.EditSubject;
 import com.olivermorgan.ontime.main.Activities.MainActivity;
 import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.BakalariAPI.Login;
-import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.Rozvrh;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.google.firebase.storage.FirebaseStorage;
 
 import com.google.firebase.storage.StorageReference;
 
+import com.olivermorgan.ontime.main.Logic.LoadBag;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
 
@@ -121,17 +122,15 @@ public class OverviewFragment extends Fragment {
 
         load.setOnClickListener(v -> {
             if(code.getText().toString().length()!=6 || !isStringUpperCase(code.getText().toString())){
-                Toast.makeText(getContext(),"Invalid code, must contain six upper-case letters.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), getActivity().getResources().getString(R.string.invalidCode), Toast.LENGTH_LONG).show();
             }else {
                 AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
-                alert.setTitle("Download bag: " + code.getText().toString());
+                alert.setTitle(getActivity().getResources().getString(R.string.downloadBag)+" " + code.getText().toString());
                 Login login = new Login(getContext());
                 if(login.isLoggedIn()) {
-                    alert.setMessage("Are you sure you want to download another bag? " +
-                            "This is will override all existing subjects and items and log you out of your Bakaláři account.");
+                    alert.setMessage(getActivity().getResources().getString(R.string.sureAboutDownloadingBagAndLogoutBaka));
                 }else{
-                    alert.setMessage("Are you sure you want to download another bag? " +
-                            "This is will override all existing subjects and items.");
+                    alert.setMessage(getActivity().getResources().getString(R.string.sureAboutDownloadingBag));
                 }
                 alert.setPositiveButton(android.R.string.yes, (dialog, which) -> {
                     // if is logged in => log out
@@ -141,7 +140,7 @@ public class OverviewFragment extends Fragment {
                     subjectRef.getFile(databaseSubjects).addOnSuccessListener(taskSnapshot -> {
                     }).addOnFailureListener(exception -> {
                         // Handle any errors
-                        Toast.makeText(getContext(), "Error, your code is incorrect or you don't have an internet connection.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), getActivity().getResources().getString(R.string.incorrectCodeOrNoConnection), Toast.LENGTH_LONG).show();
                     }).addOnProgressListener(snapshot -> {
                         double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
                         progressBar.setProgress((int) progress);
@@ -150,12 +149,12 @@ public class OverviewFragment extends Fragment {
                     // for items
                     StorageReference itemRef = storageReference.child("items/" + code.getText().toString() + ".db");
                     itemRef.getFile(databaseItems).addOnSuccessListener(taskSnapshot -> {
-                        Toast.makeText(getContext(), "You have successfully update your bag with the code: " + code.getText().toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), getActivity().getResources().getString(R.string.successfulUpdateWithCode)+" " + code.getText().toString(), Toast.LENGTH_LONG).show();
                         updateTable(weekendOnBoolean, table,  view);
                         Handler handler = new Handler();
                         handler.postDelayed(() -> progressBar.setProgress(0), 1500);
 
-                    }).addOnFailureListener(exception -> Toast.makeText(getContext(), "Error, your code is incorrect or you don't have an internet connection.", Toast.LENGTH_LONG).show()).addOnProgressListener(snapshot -> {
+                    }).addOnFailureListener(exception -> Toast.makeText(getContext(), getActivity().getResources().getString(R.string.incorrectCodeOrNoConnection), Toast.LENGTH_LONG).show()).addOnProgressListener(snapshot -> {
                         double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
                         progressBar.setProgress((int) progress);
                     });
@@ -226,7 +225,7 @@ public class OverviewFragment extends Fragment {
                                 taskSnapshot -> {
                                 })
 
-                        .addOnFailureListener(e -> Toast.makeText(getContext(), "Error, check your internet connection.", Toast.LENGTH_LONG).show())
+                        .addOnFailureListener(e -> Toast.makeText(getContext(), R.string.internetConnection, Toast.LENGTH_LONG).show())
                         .addOnProgressListener(
                                 taskSnapshot -> {
                                     double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
@@ -248,10 +247,10 @@ public class OverviewFragment extends Fragment {
                                 shareBagButton.setText(R.string.updateBag);
 
 
-                                Toast.makeText(getContext(), "Success, your bag has been uploaded.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), R.string.successUpload, Toast.LENGTH_LONG).show();
                             })
 
-                    .addOnFailureListener(e -> Toast.makeText(getContext(), "Error, check your internet connection.", Toast.LENGTH_LONG).show())
+                    .addOnFailureListener(e -> Toast.makeText(getContext(), R.string.internetConnection, Toast.LENGTH_LONG).show())
                     .addOnProgressListener(
                             taskSnapshot -> {
                                 double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
@@ -259,9 +258,40 @@ public class OverviewFragment extends Fragment {
                             });
 
     }
+    @SuppressLint("SetTextI18n")
     private void updateTable(boolean weekendOnBoolean, TableLayout table, View view){
-
+        // reset table
         table.removeAllViews();
+
+        // login
+        Login login = new Login(getContext());
+        ImageButton back = view.findViewById(R.id.imageWeekBack);
+        ImageButton front = view.findViewById(R.id.imageWeekFront);
+        TextView weekDisplay = view.findViewById(R.id.currentWeek);
+
+        if(login.isLoggedIn()){
+            int week = SharedPrefs.getInt(getContext(),"weekIndex");
+            setWeekText(week, weekDisplay);
+            back.setOnClickListener(v->{
+
+            if(week!=Integer.MIN_VALUE) {
+                SharedPrefs.setInt(getContext(), "weekIndex", week - 1);
+                setWeekText(week-1, weekDisplay);
+            }
+
+            });
+
+            front.setOnClickListener(v->{
+                if(week!=Integer.MAX_VALUE) {
+                    SharedPrefs.setInt(getContext(), "weekIndex", week + 1);
+                    setWeekText(week+1, weekDisplay);
+                }
+            });
+        }else {
+            back.setVisibility(View.INVISIBLE);
+            front.setVisibility(View.INVISIBLE);
+            weekDisplay.setText("");
+        }
 
         int max = Integer.MIN_VALUE;
         int current = 0;
@@ -303,7 +333,7 @@ public class OverviewFragment extends Fragment {
                         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "recyclerViewerTutorialOverviewTableItem");
                         sequence.setConfig(config);
                         sequence.addSequenceItem(button,
-                                "Click the icon to edit this subject", "GOT IT");
+                                getActivity().getResources().getString(R.string.clickIconToEdit),  getActivity().getResources().getString(R.string.gotIt));
                         sequence.start();
                         first = false;
                     }
@@ -341,7 +371,7 @@ public class OverviewFragment extends Fragment {
                     Button padding = new Button(getContext());
                     padding.setMinimumWidth(0);
                     padding.setMinimumHeight(0);
-                    padding.setBackgroundResource(R.drawable.rounded_textview_padding);
+                    padding.setBackgroundResource(R.drawable.round_textview_padding_holiday);
                     padding.setGravity(Gravity.CENTER);
                     padding.setTextColor(Color.WHITE);
                     padding.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -350,7 +380,6 @@ public class OverviewFragment extends Fragment {
                     padding.setTextSize(30);
                     row.addView(padding);
                 }
-
             }
             table.addView(row);
 
@@ -359,21 +388,47 @@ public class OverviewFragment extends Fragment {
         Button addSubjectButton = view.findViewById(R.id.showButton);
         // hide share if there are zero items
         if (donNotShare) {
-            // hide table
-            table.setVisibility(View.GONE);
-            view.findViewById(R.id.Table).setVisibility(View.GONE);
-            // hide share button
+            if(login.isLoggedIn()){
+                // holidays
+                table.removeAllViews();
+                for (int i = 1; i < (weekendOnBoolean ? 6 : 8); i++) {
+                    TableRow row = new TableRow(getContext());
+                    row.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    row.setPadding(0, 0, 0, 0);
+                    for (int j = 0; j <4 ; j++){
+                        Button padding = new Button(getContext());
+                        padding.setMinimumWidth(0);
+                        padding.setMinimumHeight(0);
+                        padding.setBackgroundResource(R.drawable.round_textview_padding_holiday);
+                        padding.setGravity(Gravity.CENTER);
+                        padding.setTextColor(Color.WHITE);
+                        padding.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+                        padding.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+                        padding.setText("");
+                        padding.setTextSize(30);
+                        row.addView(padding);
+                    }
+                    table.addView(row);
+                }
 
-            shareBagButton.setVisibility(View.GONE);
-            addSubjectButton.setVisibility(View.VISIBLE);
-            view.findViewById(R.id.codeTextInstructions).setVisibility(View.INVISIBLE);
-            view.findViewById(R.id.codeText).setVisibility(View.INVISIBLE);
-            addSubjectButton.setOnClickListener(v -> {
-                // setting add Subject first to falls to avoid error
-                AddSubject.firstViewOfActivity = true;
-                Intent intent = new Intent(getActivity(), AddSubject.class);
-                startActivity(intent);
-            });
+            }else {
+
+                // hide table
+                table.setVisibility(View.GONE);
+                view.findViewById(R.id.Table).setVisibility(View.GONE);
+                // hide share button
+
+                shareBagButton.setVisibility(View.GONE);
+                addSubjectButton.setVisibility(View.VISIBLE);
+                view.findViewById(R.id.codeTextInstructions).setVisibility(View.INVISIBLE);
+                view.findViewById(R.id.codeText).setVisibility(View.INVISIBLE);
+                addSubjectButton.setOnClickListener(v -> {
+                    // setting add Subject first to falls to avoid error
+                    AddSubject.firstViewOfActivity = true;
+                    Intent intent = new Intent(getActivity(), AddSubject.class);
+                    startActivity(intent);
+                });
+            }
         } else {
             addSubjectButton.setVisibility(View.GONE);
             // show table
@@ -403,12 +458,15 @@ public class OverviewFragment extends Fragment {
         return true;
     }
 
-
-    public void showBakalariTimeTable(Rozvrh rozvrh){
-
-
-
+    private void setWeekText(int week, TextView weekDisplay){
+        if(week==0) weekDisplay.setText(getActivity().getResources().getString(R.string.currentWeek));
+        else if(week==1) weekDisplay.setText(getActivity().getResources().getString(R.string.nextWeek));
+        else if(week==-1)weekDisplay.setText(getActivity().getResources().getString(R.string.previousWeek));
+        else if(week<-1&&week>-5) weekDisplay.setText(-week + " " + getActivity().getResources().getString(R.string.backWeekCZSpecialCase));
+        else if(week<-5) weekDisplay.setText(-week + " " + getActivity().getResources().getString(R.string.backWeek));
+        else if(week>1&&week<5) weekDisplay.setText(week +" "+getActivity().getResources().getString(R.string.forwardWeekbackWeekCZSpecialCase));
     }
+
 
 
 

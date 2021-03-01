@@ -126,7 +126,7 @@
     <string name="info">INFORMATION</string>
     <string name="info1">• Smartbag automatically synchronises items within the same subject names.</string>
     <string name="info2">• The default item for subject without any pre-defined items is: "items for 'subject'"</string>
-    <string name="info3">• U can add items of new unique subjects in the next activity.</string>
+    <string name="info3">• You can change the default name in the timetable in overview by clicking on a subject</string>
     <string name="bakaTitle" translatable="false">Bakaláři:</string>
     <string name="interfaceTitle">Interface:</string>
     <string name="languageTitle">Languages: </string>
@@ -151,4 +151,26 @@
     <string name="hasBeenAddedToBag">has been added to your bag</string>
     <string name="ClickIconSubject">Click the icon edit this subject</string>
     <string name="ClickHereToAddToBag">Click here to add this item to your bag</string>
+     <string name="itemsForSubject">items for</string>
+     <string name="invalidCode">Invalid code, must contain six upper-case letters.</string>
+     <string name="downloadBag">Download bag:</string>
+     <string name="sureAboutDownloadingBagAndLogoutBaka">Are you sure you want to download another bag? This is will override all existing subjects and items. It will also log you out of your Bakaláři account.</string>
+     <string name="sureAboutDownloadingBag">Are you sure you want to download another bag? This is will override all existing subjects and items.</string>
+    <string name="incorrectCodeOrNoConnection">Error, your code is incorrect or you do not have an internet connection.</string>
+     <string name="successfulUpdateWithCode">You have successfully update your bag with the code:</string>
+     <string name="internetConnection">Error, check your internet connection.</string>
+     <string name="successUpload">Success, your bag has been uploaded.</string>
+     <string name="clickIconToEdit">Click the icon to edit this subject</string>
+
+     <string name="currentWeek">current week</string>
+     <string name="previousWeek">previous week</string>
+     <string name="nextWeek">next week</string>
+     <string name="backWeek">weeks back</string>
+     <string name="forwardWeek">weeks forward</string>
+     <string name="backWeekCZSpecialCase">weeks back</string>
+     <string name="forwardWeekbackWeekCZSpecialCase">weeks forward</string>
+
+     <string name="UserName">User name</string>
+     <string name="Password">Password</string>
+
  </resources>
