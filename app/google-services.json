@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:277863259947:android:ffb056a0cafe26c593ef6e",
         "android_client_info": {
-          "package_name": "com.example.ontime"
+          "package_name": "com.olivermorgan.ontime.main"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "277863259947-q0r1u8cte9v36lponriidknd6qfcmipq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.ontime",
+            "package_name": "com.olivermorgan.ontime.main",
             "certificate_hash": "b289e2581170587b76a3e63d53e93f5e7b063d02"
           }
         },
