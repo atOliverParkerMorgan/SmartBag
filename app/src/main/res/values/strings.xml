@@ -125,7 +125,7 @@
     <string name="absolute_error">something went terribly wrong with your database</string>
     <string name="info">INFORMATION</string>
     <string name="info1">• Smartbag automatically synchronises items within the same subject names.</string>
-    <string name="info2">• The default item for subject without any pre-defined items is: "items for 'subject'"</string>
+    <string name="info2">• The default item for subject without any pre-defined items is: "items"</string>
     <string name="info3">• You can change the default name in the timetable in overview by clicking on a subject</string>
     <string name="bakaTitle" translatable="false">Bakaláři:</string>
     <string name="interfaceTitle">Interface:</string>
@@ -182,4 +182,6 @@
      <string name="LOGINFAIL">LOGIN FAIL</string>
      <string name="LOGINFAILsubtext">Smartbag cannot login into your bakaláři account.</string>
 
+     <string name="bagCode">Put the code for sharing a bag here</string>
+     <string name="bagCodeButton">Click here to load the shared bag</string>
  </resources>

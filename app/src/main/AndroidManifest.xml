@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.olivermorgan.ontime.main"
+    package="com.olivermorgan.ontimev2.main"
     tools:ignore="MissingLeanbackLauncher">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -30,7 +30,7 @@
         android:theme="@style/DARK">
 
         <activity
-            android:name=".Activities.MainActivity"
+            android:name="com.olivermorgan.ontime.v2.main.Activities.MainActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:label="@string/app_name"
@@ -43,30 +43,30 @@
         </activity>
 
         <activity
-            android:name=".Activities.AddItem" >
+            android:name="com.olivermorgan.ontime.v2.main.Activities.AddItem" >
         </activity>
         <activity
-            android:name=".Activities.AddSubject" >
+            android:name="com.olivermorgan.ontime.v2.main.Activities.AddSubject" >
         </activity>
         <activity
-            android:name=".Activities.EditSubject" >
+            android:name="com.olivermorgan.ontime.v2.main.Activities.EditSubject" >
         </activity>
         <activity
-            android:name=".Activities.SuccessfulLoginActivity">
+            android:name="com.olivermorgan.ontime.v2.main.Activities.SuccessfulLoginActivity">
         </activity>
         <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-8154771690714775~9428727911"/>
 
-        <activity android:name=".Activities.IntroActivity"
+        <activity android:name="com.olivermorgan.ontime.v2.main.Activities.IntroActivity"
             android:label="My Custom AppIntro" />
 
-        <activity android:name=".Activities.LoginActivity"
+        <activity android:name="com.olivermorgan.ontime.v2.main.Activities.LoginActivity"
             />
-        <activity android:name=".Activities.SchoolsListActivity"
+        <activity android:name="com.olivermorgan.ontime.v2.main.Activities.SchoolsListActivity"
             />
-        <activity android:name=".Activities.InfoAfterLoginActivity" />
+        <activity android:name="com.olivermorgan.ontime.v2.main.Activities.InfoAfterLoginActivity" />
 
 
     </application>
