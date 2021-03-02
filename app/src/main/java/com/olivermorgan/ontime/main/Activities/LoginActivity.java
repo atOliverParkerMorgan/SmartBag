@@ -59,9 +59,6 @@ public class LoginActivity extends AppCompatActivity {
 
         Button back = findViewById(R.id.buttonBack);
 
-        if (getIntent().getStringExtra("buttonName").equals(getText(R.string.LATER).toString())) {
-            back.setText(getText(R.string.LATER).toString());
-        }
         back.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, MainActivity.class)));
 
         Button searchSchool = findViewById(R.id.buttonSearchSchools);

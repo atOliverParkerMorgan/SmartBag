@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import androidx.appcompat.widget.Toolbar;
@@ -28,26 +29,13 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
+    @SuppressLint("StaticFieldLeak")
+    public static LoadBag loadBag;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.DARK_Launcher);
-
-        // informs
-        boolean activityIsBeingRestartedFromOverView = "overview".equals(getIntent().getSerializableExtra("Fragment"));
-        // informs activity that the them is being reset
-        boolean fromSettings = getIntent().getBooleanExtra("fromSettings", false);
-        // prevents database from updating
-        boolean backSettings = getIntent().getBooleanExtra("dontUpdateDatabase", false);
-
-        Login login = new Login(this);
-        if(login.isLoggedIn()&&!activityIsBeingRestartedFromOverView&&!fromSettings&&!backSettings) {
-            LoadBag loadBag = new LoadBag(getApplicationContext(), this);
-            loadBag.getRozvrh(SharedPrefs.getInt(this,"weekIndex"));
-        }
-
-        super.onCreate(savedInstanceState);
-
         SharedPreferences userPreferences = Objects.requireNonNull(this.getSharedPreferences("userId", android.content.Context.MODE_PRIVATE));
 
         if (userPreferences.getBoolean("first", true)) {
@@ -59,6 +47,20 @@ public class MainActivity extends AppCompatActivity {
             edit.apply();
 
         }
+        // informs
+        boolean activityIsBeingRestartedFromOverView = "overview".equals(getIntent().getSerializableExtra("Fragment"));
+        // informs activity that the them is being reset
+        boolean fromSettings = getIntent().getBooleanExtra("fromSettings", false);
+        // prevents database from updating
+        boolean backSettings = getIntent().getBooleanExtra("dontUpdateDatabase", false);
+
+        Login login = new Login(this);
+        if(login.isLoggedIn()&&!activityIsBeingRestartedFromOverView&&!fromSettings&&!backSettings) {
+            loadBag = new LoadBag(this, this);
+            loadBag.getRozvrh(SharedPrefs.getInt(this,"weekIndex"));
+        }
+
+        super.onCreate(savedInstanceState);
 
         boolean darkModeOn = SharedPrefs.getDarkMode(this);
 
@@ -104,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         // check if start activity should be overview
         if (activityIsBeingRestartedFromOverView) {
             // show tool bar
+
             SharedPrefs.setBoolean(getApplicationContext(), "updateTableInThread", false);
             setSupportActionBar(toolbar);
             Objects.requireNonNull(getSupportActionBar()).show();
@@ -111,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
             navView.setSelectedItemId(R.id.navigation_overview);
             getSupportFragmentManager().beginTransaction().replace(R.id.HostFragment,
                     new OverviewFragment()).commit();
+
+
 
             getIntent().getSerializableExtra("Fragment");
 
@@ -185,10 +190,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public static void showAlert(Context context, String message){
+    public static void showAlert(Context context, String message, String text){
         AlertDialog.Builder alert = new AlertDialog.Builder(context);
-        alert.setMessage(message);
+        alert.setTitle(message);
+        alert.setMessage(text);
         alert.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
+        alert.show();
     }
 
 }

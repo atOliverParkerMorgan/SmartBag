@@ -173,4 +173,13 @@
      <string name="UserName">User name</string>
      <string name="Password">Password</string>
 
+     <string name="UNREACHABLE">UNREACHABLE</string>
+     <string name="UNREACHABLEsubtext">Smartbag cannot connect with bakaláři. Check your internet connection.</string>
+     <string name="ERROR">ERROR</string>
+     <string name="ERRORsubtext">Oops something went wrong</string>
+     <string name="OFFLINE">OFFLINE</string>
+     <string name="OFFLINEsubtext">Smartbag cannot connect with bakaláři. Check your internet connection.</string>
+     <string name="LOGINFAIL">LOGIN FAIL</string>
+     <string name="LOGINFAILsubtext">Smartbag cannot login into your bakaláři account.</string>
+
  </resources>

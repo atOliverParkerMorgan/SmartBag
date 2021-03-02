@@ -1,14 +1,20 @@
 package com.olivermorgan.ontime.main.Adapter;
 
+import android.content.Context;
+
+import com.olivermorgan.ontime.main.SharedPrefs;
+
 public class Item {
     private String itemName;
     private String subjectName;
     private final boolean isInBag;
+    private final Context context;
 
-    public Item(String itemName, String subjectName, boolean isInBag) {
+    public Item(String itemName, String subjectName, boolean isInBag, Context context) {
         this.subjectName = subjectName;
         this.itemName = itemName;
         this.isInBag = isInBag;
+        this.context = context;
     }
 
     public String getSubjectName() {
@@ -16,6 +22,12 @@ public class Item {
     }
 
     public String getItemName() {
+        boolean language = SharedPrefs.getBoolean(context, "Language");
+        if (itemName.equals("items") && language) {
+            itemName = "pomůcky";
+        } else if (itemName.equals("pomůcky") && !language){
+            itemName = "items";
+        }
         return itemName;
     }
 
@@ -49,6 +61,19 @@ public class Item {
             case "Chemie":
                 return "Ch";
 
+            case "Konverzace ve francouzském jazyce":
+                return "FJK";
+            case "Konverzace ve španělském jazyce":
+                return "ŠJK";
+            case "Konverzace ve německém jazyce":
+                return "NJK";
+            case "Konverzace ve ruském jazyce":
+                return "RJK";
+            case "Konverzace ve italském jazyce":
+                return "IJK";
+
+            case "Základy společenských věd":
+                return "ZSV";
         }
 
 

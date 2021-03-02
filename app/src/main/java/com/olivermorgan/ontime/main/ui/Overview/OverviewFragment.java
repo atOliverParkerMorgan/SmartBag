@@ -35,7 +35,6 @@ import com.google.firebase.storage.FirebaseStorage;
 
 import com.google.firebase.storage.StorageReference;
 
-import com.olivermorgan.ontime.main.Logic.LoadBag;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
 
@@ -48,14 +47,15 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 public class OverviewFragment extends Fragment {
     StorageReference storageReference;
     ProgressBar progressBar;
+    ProgressBar progressBarLoadTable;
     TextView codeText;
     TextView codeTextInstructions;
     Button shareBagButton;
     boolean weekendOnBoolean;
     TableLayout table;
-
+    Login login;
     private View view;
-
+    int week;
    // private DisplayInfo displayInfo;
 
 
@@ -66,6 +66,7 @@ public class OverviewFragment extends Fragment {
 
         // set title
         ((MainActivity)getActivity()).getSupportActionBar().setTitle(R.string.title_overview);
+
 
         // tutorial
         ShowcaseConfig config = new ShowcaseConfig();
@@ -78,7 +79,13 @@ public class OverviewFragment extends Fragment {
                 "Click here to load the shared bag", "GOT IT");
         sequence.start();
 
+
+        //get login
+        login = new Login(getContext());
+
         progressBar = view.findViewById(R.id.progress_bar);
+        progressBarLoadTable = view.findViewById(R.id.progressBarLoadTable);
+
         codeText = view.findViewById(R.id.codeText);
         codeTextInstructions = view.findViewById(R.id.codeTextInstructions);
         shareBagButton = view.findViewById(R.id.shareBagButton);
@@ -86,6 +93,55 @@ public class OverviewFragment extends Fragment {
 
         table = view.findViewById(R.id.mainTable);
 
+        // login
+        ImageButton back = view.findViewById(R.id.imageWeekBack);
+        ImageButton front = view.findViewById(R.id.imageWeekFront);
+        TextView weekDisplay = view.findViewById(R.id.currentWeek);
+
+        weekDisplay.setText("");
+        if(login.isLoggedIn()){
+            week = SharedPrefs.getInt(getContext(), "weekIndex");
+            setWeekText(week, weekDisplay);
+            back.setVisibility(View.VISIBLE);
+            front.setVisibility(View.VISIBLE);
+            back.setOnClickListener(v->{
+
+                if(week!=Integer.MIN_VALUE) {
+                    SharedPrefs.setInt(getContext(), "weekIndex", week-1);
+                    week = SharedPrefs.getInt(getContext(), "weekIndex");
+
+                    setWeekText(week, weekDisplay);
+
+                    progressBarLoadTable.setVisibility(View.VISIBLE);
+
+                    MainActivity.loadBag.refresh(week,()->{
+                        MainActivity.loadBag.updateDatabaseWithNewBakalariTimeTable();
+                        updateTable(weekendOnBoolean,table,view);
+                    });
+                    progressBarLoadTable.setVisibility(View.INVISIBLE);
+
+
+                }
+
+            });
+
+            front.setOnClickListener(v->{
+                if(week!=Integer.MAX_VALUE) {
+                    SharedPrefs.setInt(getContext(), "weekIndex", week+1);
+                    week = SharedPrefs.getInt(getContext(), "weekIndex");
+
+                    setWeekText(week, weekDisplay);
+
+                    progressBarLoadTable.setVisibility(View.VISIBLE);
+
+                    MainActivity.loadBag.refresh(week,()->{
+                        MainActivity.loadBag.updateDatabaseWithNewBakalariTimeTable();
+                        updateTable(weekendOnBoolean,table,view);
+                    });
+                    progressBarLoadTable.setVisibility(View.INVISIBLE);
+                }
+            });
+        }
         // hide weekend
         weekendOnBoolean = SharedPrefs.getBoolean(getContext(), SharedPrefs.WEEKEND_ON);
         if(weekendOnBoolean){
@@ -263,36 +319,6 @@ public class OverviewFragment extends Fragment {
         // reset table
         table.removeAllViews();
 
-        // login
-        Login login = new Login(getContext());
-        ImageButton back = view.findViewById(R.id.imageWeekBack);
-        ImageButton front = view.findViewById(R.id.imageWeekFront);
-        TextView weekDisplay = view.findViewById(R.id.currentWeek);
-
-        if(login.isLoggedIn()){
-            int week = SharedPrefs.getInt(getContext(),"weekIndex");
-            setWeekText(week, weekDisplay);
-            back.setOnClickListener(v->{
-
-            if(week!=Integer.MIN_VALUE) {
-                SharedPrefs.setInt(getContext(), "weekIndex", week - 1);
-                setWeekText(week-1, weekDisplay);
-            }
-
-            });
-
-            front.setOnClickListener(v->{
-                if(week!=Integer.MAX_VALUE) {
-                    SharedPrefs.setInt(getContext(), "weekIndex", week + 1);
-                    setWeekText(week+1, weekDisplay);
-                }
-            });
-        }else {
-            back.setVisibility(View.INVISIBLE);
-            front.setVisibility(View.INVISIBLE);
-            weekDisplay.setText("");
-        }
-
         int max = Integer.MIN_VALUE;
         int current = 0;
         for (int i = 1; i < 8; i++) {
@@ -318,7 +344,7 @@ public class OverviewFragment extends Fragment {
             int addedRows = 0;
             final boolean isDarkMode = SharedPrefs.getDarkMode(getContext());
             for (List<String> list : FeedReaderDbHelperSubjects.getContent(getContext(), true)) {
-                final Item item = new Item("null", list.get(0), false);
+                final Item item = new Item("null", list.get(0), false, getContext());
 
                 // days of the week logic
 
@@ -437,8 +463,7 @@ public class OverviewFragment extends Fragment {
             shareBagButton.setVisibility(View.VISIBLE);
         }
         // hide load bar
-        ProgressBar progressBar = view.findViewById(R.id.progressBarLoadTable);
-        progressBar.setVisibility(View.INVISIBLE);
+        progressBarLoadTable.setVisibility(View.INVISIBLE);
 
     }
 
@@ -458,13 +483,15 @@ public class OverviewFragment extends Fragment {
         return true;
     }
 
+    @SuppressLint("SetTextI18n")
     private void setWeekText(int week, TextView weekDisplay){
         if(week==0) weekDisplay.setText(getActivity().getResources().getString(R.string.currentWeek));
         else if(week==1) weekDisplay.setText(getActivity().getResources().getString(R.string.nextWeek));
         else if(week==-1)weekDisplay.setText(getActivity().getResources().getString(R.string.previousWeek));
         else if(week<-1&&week>-5) weekDisplay.setText(-week + " " + getActivity().getResources().getString(R.string.backWeekCZSpecialCase));
-        else if(week<-5) weekDisplay.setText(-week + " " + getActivity().getResources().getString(R.string.backWeek));
+        else if(week<=-5) weekDisplay.setText(-week + " " + getActivity().getResources().getString(R.string.backWeek));
         else if(week>1&&week<5) weekDisplay.setText(week +" "+getActivity().getResources().getString(R.string.forwardWeekbackWeekCZSpecialCase));
+        else weekDisplay.setText(week +" "+getActivity().getResources().getString(R.string.forwardWeek));
     }
 
 

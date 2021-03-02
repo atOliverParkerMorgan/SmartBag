@@ -260,7 +260,7 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
             cursor.close();
             return true;
         }catch (android.database.sqlite.SQLiteException e){
-            Log.d("stop triping bruh", String.valueOf(e));
+            Log.d("Error", String.valueOf(e));
             return false;
         }
     }

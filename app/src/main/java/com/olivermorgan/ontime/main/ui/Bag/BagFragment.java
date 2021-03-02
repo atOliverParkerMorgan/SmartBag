@@ -47,7 +47,7 @@ public class BagFragment extends Fragment {
 
         final List<String[]> myBagItems = FeedReaderDbHelperItems.getItemsInBag(getContext());
         for (String[] item : myBagItems) {
-            inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(getContext(), item[0])));
+            inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(getContext(), item[0]), getContext()));
         }
 
         // loop through all relevant subjects

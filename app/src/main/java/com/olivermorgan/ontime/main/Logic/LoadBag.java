@@ -129,17 +129,16 @@ public class LoadBag {
             intent.putExtra("putInToBag", false);
 
             if (!FeedReaderDbHelperSubjects.write(context, intent, subjects.get(i).getName())) {
-                Toast.makeText(context, R.string.absolute_error,Toast.LENGTH_LONG).show();
+                Toast.makeText(context, context.getResources().getString(R.string.absolute_error),Toast.LENGTH_LONG).show();
             }
         }
         for (Subject subject: subjects) {
+            // set default item name => items/pomůcky
             if(FeedReaderDbHelperItems.getContent(context, subject.getName()).size()==0){
                 Intent intent = new Intent();
                 intent.putExtra("putInToBag", false);
                 List<Item> items = new ArrayList<>();
-                items.add(new Item(context.getResources().getString(R.string.itemsForSubject)
-                        +" "+subject.getName(),subject.getName(),false));
-
+                items.add(new Item("items", subject.getName(),false, context));
                 if(!FeedReaderDbHelperItems.write(context,  intent,  items)){
                     Toast.makeText(context, R.string.databaseError,
                             Toast.LENGTH_LONG).show();
@@ -164,7 +163,7 @@ public class LoadBag {
 
         //String infoMessage = Utils.getfl10nedWeekString(weekIndex, getContext());
         if (offline) {
-            MainActivity.showAlert(context,"OFFLINE");
+            MainActivity.showAlert(context,context.getResources().getString(R.string.OFFLINE), context.getResources().getString(R.string.OFFLINEsubtext));
         }
 
 
@@ -175,17 +174,15 @@ public class LoadBag {
         liveData = rozvrhAPI.getLiveData(week);
         RozvrhWrapper rw = liveData.getValue();
         Rozvrh item = rw == null ? null : liveData.getValue().getRozvrh();
-        if (item != null) {
+        if (item == null) {
+            // rozvrhLayout.empty();
+        } else {
             // rozvrhLayout.setRozvrh(item);
             if (rw.getSource() == RozvrhWrapper.SOURCE_MEMORY){
                 if (offline) {
-                    // displayInfo.setLoadingState(DisplayInfo.ERROR);
-                } else {
-                    // displayInfo.setLoadingState(DisplayInfo.LOADED);
+                    MainActivity.showAlert(context,context.getResources().getString(R.string.OFFLINE), context.getResources().getString(R.string.OFFLINEsubtext));
                 }
             }
-        } else {
-            // rozvrhLayout.empty();
         }
 
         liveData.observe(lifecycleOwner, rozvrhWrapper -> {
@@ -215,7 +212,7 @@ public class LoadBag {
                 rozvrhAPI.clearMemory();
                 this.rozvrh = rozvrh;
                 updateDatabaseWithNewBakalariTimeTable();
-                MainActivity.showAlert(context,"OFFLINE");
+                MainActivity.showAlert(context,context.getResources().getString(R.string.OFFLINE), context.getResources().getString(R.string.OFFLINEsubtext));
             }
             offline = false;
 
@@ -224,11 +221,11 @@ public class LoadBag {
             //displayInfo.setLoadingState(DisplayInfo.ERROR);
 
             if (code == UNREACHABLE) {
-                MainActivity.showAlert(context,"UNREACHABLE");
+                MainActivity.showAlert(context,context.getResources().getString(R.string.UNREACHABLE),context.getResources().getString(R.string.UNREACHABLEsubtext));
             } else if (code == UNEXPECTED_RESPONSE) {
-                MainActivity.showAlert(context,"WTF ERROR");
+                MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.ERRORsubtext));
             } else if (code == LOGIN_FAILED) {
-                MainActivity.showAlert(context,"LOGIN FAIL");
+                MainActivity.showAlert(context,context.getResources().getString(R.string.LOGINFAIL),context.getResources().getString(R.string.LOGINFAIL));
             }
 
 
@@ -243,18 +240,23 @@ public class LoadBag {
             updateDatabaseWithNewBakalariTimeTable();
 
         }else {
-            MainActivity.showAlert(context,"ERROR");
+            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.ERRORsubtext));
         }
     }
 
-    public void refresh() {
+    public void refresh(int weekIndex, Runnable runnable) {
         // displayInfo.setLoadingState(DisplayInfo.LOADING);
+        if (weekIndex == Integer.MAX_VALUE)
+            week = null;
+        else
+            week = Utils.getDisplayWeekMonday(getContext()).plusWeeks(weekIndex);
 
         rozvrhAPI.refresh(week, rw -> {
             /*if (rw.getCode() != SUCCESS){
                 displayWeek(weekIndex, false);
             }else {*/
             onNetResponse(rw.getCode(), rw.getRozvrh());
+            runnable.run();
             /*}*/
         });
     }
@@ -262,6 +264,8 @@ public class LoadBag {
     public static Rozvrh getCurrentRozvrh(){
         return currentRozvrh;
     }
+
+
 
 }
 

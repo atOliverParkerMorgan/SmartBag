@@ -65,7 +65,7 @@ public class AddFragment extends Fragment {
         final boolean doNotShow = !((weekendOnBoolean&& calendar.getTime().toString().startsWith("Sa"))
                 ||(weekendOnBoolean&& calendar.getTime().toString().startsWith("Su")));
 
-        Spinner spinner = (Spinner) mainView.findViewById(R.id.daySpinner);
+        Spinner spinner = mainView.findViewById(R.id.daySpinner);
         ArrayAdapter<CharSequence> adapter;
 
         boolean tomorrowOff = false;
@@ -148,7 +148,7 @@ public class AddFragment extends Fragment {
 
         //a
         for (String[] item : myBagItems) {
-            inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(context, item[0])));
+            inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(context, item[0]),context));
         }
 
         if(doNotShow || spinnerIndex != 0) {
@@ -167,7 +167,7 @@ public class AddFragment extends Fragment {
                         }
                     }
                     if (!found) {
-                        itemsDataItemsToAdd.add(new Item(item, subject,  FeedReaderDbHelperItems.isInBag(context, item)));
+                        itemsDataItemsToAdd.add(new Item(item, subject,  FeedReaderDbHelperItems.isInBag(context, item),context));
                     }
                 }
 

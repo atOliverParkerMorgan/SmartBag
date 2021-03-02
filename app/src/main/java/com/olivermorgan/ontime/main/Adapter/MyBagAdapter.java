@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.olivermorgan.ontime.main.Activities.EditSubject;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.olivermorgan.ontime.main.R;
+import com.olivermorgan.ontime.main.SharedPrefs;
 
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class MyBagAdapter extends RecyclerView.Adapter<MyBagAdapter.ViewHolder>{
                 }
             }
             for (int i = 0; i < indexToAdd.size(); i++) {
-                this.Items.add(indexToAdd.get(i) + i, new Item(subjectsToAdd.get(i), null, false));
+                this.Items.add(indexToAdd.get(i) + i, new Item(subjectsToAdd.get(i), null, false, mainActivity));
             }
         }
     }
@@ -87,7 +88,7 @@ public class MyBagAdapter extends RecyclerView.Adapter<MyBagAdapter.ViewHolder>{
             holder.imageButton.setOnClickListener(v -> {
                 // logic
                     FeedReaderDbHelperItems.editBag(v.getContext(), Items.get(position), false);
-                    Toast.makeText(v.getContext(), Items.get(position).getItemName() + " "+R.string.hasBeenRemoved, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), Items.get(position).getItemName() + " "+mainActivity.getResources().getString(R.string.hasBeenRemoved), Toast.LENGTH_SHORT).show();
                     Items.remove(Items.get(position));  // remove the itemAdd from list
                     notifyItemRemoved(position); // notify the adapter about the removed itemAdd
                     notifyItemRangeChanged(position, Items.size());

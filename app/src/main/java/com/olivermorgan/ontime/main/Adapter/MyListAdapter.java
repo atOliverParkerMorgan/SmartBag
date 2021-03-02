@@ -2,7 +2,6 @@
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -62,7 +61,7 @@ import static android.view.View.GONE;
                 }
             }
             for (int i = 0; i < indexToAdd.size(); i++) {
-                this.Items.add(indexToAdd.get(i) + i, new Item(subjectsToAdd.get(i), null, false));
+                this.Items.add(indexToAdd.get(i) + i, new Item(subjectsToAdd.get(i), null, false, mainActivity));
             }
         }
         this.view = view;
@@ -179,7 +178,7 @@ import static android.view.View.GONE;
                  if (add == 1) {
 
                      FeedReaderDbHelperItems.editBag(v.getContext(), Items.get(position), true);
-                     Toast.makeText(v.getContext(), Items.get(position).getItemName() + " "+R.string.hasBeenAddedToBag, Toast.LENGTH_SHORT).show();
+                     Toast.makeText(v.getContext(), Items.get(position).getItemName() + " "+mainActivity.getResources().getString(R.string.hasBeenAddedToBag), Toast.LENGTH_SHORT).show();
                      Items.remove(Items.get(position));  // remove the itemAdd from list
                      notifyItemRemoved(position); // notify the adapter about the removed itemAdd
                      notifyItemRangeChanged(position, Items.size());
@@ -201,7 +200,7 @@ import static android.view.View.GONE;
                          noItems.setAlpha(0.0f);
                      }else {
                          Items.size();
-                         noItems.setText(R.string.noItemsInAdd);
+                         noItems.setText(mainActivity.getResources().getString(R.string.noItemsInAdd));
                      }
 
                  }
@@ -214,7 +213,7 @@ import static android.view.View.GONE;
                  else if (add == 0) {
 
                      FeedReaderDbHelperItems.editBag(v.getContext(), Items.get(position), false);
-                     Toast.makeText(v.getContext(), Items.get(position).getItemName() + " "+R.string.hasBeenRemoved, Toast.LENGTH_SHORT).show();
+                     Toast.makeText(v.getContext(), Items.get(position).getItemName() + " "+mainActivity.getResources().getString(R.string.hasBeenRemoved), Toast.LENGTH_SHORT).show();
                      Items.remove(Items.get(position));  // remove the itemAdd from list
                      notifyItemRemoved(position); // notify the adapter about the removed itemAdd
                      notifyItemRangeChanged(position, Items.size());
@@ -236,29 +235,24 @@ import static android.view.View.GONE;
                          noItems.setAlpha(0.0f);
                      }else {
                          Items.size();
-                         noItems.setText(R.string.noItemsInRemove);
+                         noItems.setText(mainActivity.getResources().getString(R.string.noItemsInRemove));
                      }
 
                  } else if (add == -10) {
                      AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
                      alert.setTitle("Delete Item");
                      alert.setMessage("Are you sure you want to delete " + Items.get(position).getItemName() + "?");
-                     alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                         public void onClick(DialogInterface dialog, int which) {
-                             // continue with delete
-                             FeedReaderDbHelperItems.deleteItem(v.getContext(), Items.get(position).getItemName());
-                             Toast.makeText(v.getContext(), Items.get(position).getItemName() + " has been removed from your bag", Toast.LENGTH_SHORT).show();
-                             Items.remove(Items.get(position));  // remove the itemAdd from list
-                             notifyItemRemoved(position); // notify the adapter about the removed itemAdd
-                             notifyItemRangeChanged(position, Items.size());
-                         }
+                     alert.setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                         // continue with delete
+                         FeedReaderDbHelperItems.deleteItem(v.getContext(), Items.get(position).getItemName());
+                         Toast.makeText(v.getContext(), Items.get(position).getItemName() + " has been removed from your bag", Toast.LENGTH_SHORT).show();
+                         Items.remove(Items.get(position));  // remove the itemAdd from list
+                         notifyItemRemoved(position); // notify the adapter about the removed itemAdd
+                         notifyItemRangeChanged(position, Items.size());
                      });
-                     alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                         public void onClick(DialogInterface dialog, int which) {
-                             // close dialog
-                             dialog.cancel();
-                         }
+                     alert.setNegativeButton(android.R.string.no, (dialog, which) -> {
+                         // close dialog
+                         dialog.cancel();
                      });
                      alert.show();
 

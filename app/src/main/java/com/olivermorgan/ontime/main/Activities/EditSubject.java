@@ -90,7 +90,7 @@ public class EditSubject extends AppCompatActivity {
         final List<Item> itemsDataItemsToEdit = new ArrayList<>();
         final List<String> itemNames = FeedReaderDbHelperItems.getContent(this, subject);
         for (String item : itemNames) {
-            itemsDataItemsToEdit.add(new Item(item, subject, FeedReaderDbHelperItems.isInBag(getApplicationContext(), item)));
+            itemsDataItemsToEdit.add(new Item(item, subject, FeedReaderDbHelperItems.isInBag(getApplicationContext(), item), this));
         }
 
 
@@ -194,7 +194,7 @@ public class EditSubject extends AppCompatActivity {
                 }
                 if (!found) {
                     // this is data for recycler view
-                    itemsDataItemsToEdit.add(new Item(viewHolder.itemName.getText().toString(), subject, false));
+                    itemsDataItemsToEdit.add(new Item(viewHolder.itemName.getText().toString(), subject, false, this));
 
                     // create an adapter
                     @SuppressLint("CutPasteId") MyListAdapter mAdapterItemsToAdd1 = new MyListAdapter(itemsDataItemsToEdit, (byte) -10, findViewById(android.R.id.content), false, true, false, EditSubject.this);

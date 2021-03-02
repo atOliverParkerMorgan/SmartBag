@@ -52,7 +52,7 @@ public class RemoveFragment extends Fragment {
                 ||(weekendOnBoolean&& calendar.getTime().toString().startsWith("Su")));
 
         boolean tomorrowOff = false;
-        Spinner spinner = (Spinner) mainView.findViewById(R.id.daySpinner);
+        Spinner spinner = mainView.findViewById(R.id.daySpinner);
         ArrayAdapter<CharSequence> adapter;
         if(weekendOnBoolean && calendar.getTime().toString().startsWith("Sa")){
             // Create an ArrayAdapter using the string array and a default spinner layout
@@ -133,7 +133,7 @@ public class RemoveFragment extends Fragment {
             // adding all of my items in bag to list
             final List<String[]> myBagItems = FeedReaderDbHelperItems.getItemsInBag(context);
             for (String[] item : myBagItems) {
-                inMyBag.add(new Item(item[0], item[1],  FeedReaderDbHelperItems.isInBag(context, item[0])));
+                inMyBag.add(new Item(item[0], item[1],  FeedReaderDbHelperItems.isInBag(context, item[0]),context));
             }
 
 
@@ -157,7 +157,7 @@ public class RemoveFragment extends Fragment {
 
                     }
                     if (inBag) {
-                        itemsDataItemsToRemove.add(new Item(foundItem, subject, FeedReaderDbHelperItems.isInBag(context,foundItem)));
+                        itemsDataItemsToRemove.add(new Item(foundItem, subject, FeedReaderDbHelperItems.isInBag(context,foundItem),context));
                     }
 
 

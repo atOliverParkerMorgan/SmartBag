@@ -46,7 +46,7 @@ public class IntroActivity extends AppIntro {
     @Override
     protected void onSkipPressed(Fragment currentFragment) {
         super.onSkipPressed(currentFragment);
-        Intent i = new Intent(this, LoginActivity.class);
+        Intent i = new Intent(this, MainActivity.class);
         i.putExtra("buttonName", getText(R.string.LATER).toString());
         startActivity(i);
         finish();
@@ -55,7 +55,7 @@ public class IntroActivity extends AppIntro {
     @Override
     protected void onDonePressed(Fragment currentFragment) {
         super.onDonePressed(currentFragment);
-        Intent i = new Intent(this, LoginActivity.class);
+        Intent i = new Intent(this, MainActivity.class);
         i.putExtra("buttonName", getText(R.string.LATER).toString());
         startActivity(i);
         finish();

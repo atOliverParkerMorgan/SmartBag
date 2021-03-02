@@ -92,8 +92,8 @@
     <string name="absolute_error">něco se pokazilo s databází</string>
 
     <string name="info">INFORMACE</string>
-    <string name="info1">• Smartbag automaticky synchronizuje položky se jmény předmětů.</string>
-    <string name="info2">• Defoltní položka pro předmět bez žadné předem dané pomůcky je:"pomůcky pro 'předmět'""</string>
+    <string name="info1">• Smartbag automaticky synchronizuje pomůcky se jmény předmětů.</string>
+    <string name="info2">• Defoltní pomůcka pro předmět bez žadné předem dané pomůcky je:"pomůcky pro 'předmět'""</string>
     <string name="info3">• Můžete změnit defoltní jméno v rozvrhu v přehledu tím, že klinknete na předmět.</string>
     <string name="interfaceTitle">Rozhraní:</string>
     <string name="languageTitle">Jazyky: </string>
@@ -171,4 +171,12 @@
     <string name="UserName">Uživatelské jméno</string>
     <string name="Password">Heslo</string>
 
+    <string name="UNREACHABLE">OFFLINE</string>
+    <string name="UNREACHABLEsubtext">Nelze se spojit s bakalářemi. Máte připojení k internetu?</string>
+    <string name="ERROR">EROR</string>
+    <string name="ERRORsubtext">jejda něco se pokazilp</string>
+    <string name="OFFLINE">OFFLINE</string>
+    <string name="OFFLINEsubtext">Nelze se spojit s bakalářemi. Máte připojení k internetu?</string>
+    <string name="LOGINFAIL">LOGIN SELHAL</string>
+    <string name="LOGINFAILsubtext">Nelze se zaregistrovat do vašeho bakaláři účtu</string>
 </resources>

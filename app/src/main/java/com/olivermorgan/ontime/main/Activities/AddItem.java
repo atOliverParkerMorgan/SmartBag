@@ -68,7 +68,7 @@ public class AddItem extends AppCompatActivity {
                 if(!found) {
                     // this is data for recycler view
 
-                    mAdapterItemsToAdd.add(new Item(viewHolder.itemName.getText().toString(), subject, FeedReaderDbHelperItems.isInBag(getApplicationContext(), viewHolder.itemName.getText().toString())));
+                    mAdapterItemsToAdd.add(new Item(viewHolder.itemName.getText().toString(), subject, FeedReaderDbHelperItems.isInBag(getApplicationContext(), viewHolder.itemName.getText().toString()),this));
 
 
                     // set adapter

@@ -1,5 +1,6 @@
 package com.olivermorgan.ontime.main.DataBaseHelpers;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -105,7 +106,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
 
         // How you want the results sorted in the resulting Cursor
 
-        Cursor cursorSubject = dbForSubject.query(
+        @SuppressLint("Recycle") Cursor cursorSubject = dbForSubject.query(
                 TABLE_NAME,   // The table to query
                 projectionSubject,             // The array of columns to return (pass null to get all)
                 selectionSubject,              // The columns for the WHERE clause
