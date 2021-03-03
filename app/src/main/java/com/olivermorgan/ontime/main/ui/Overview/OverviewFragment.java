@@ -68,18 +68,6 @@ public class OverviewFragment extends Fragment {
         ((MainActivity)getActivity()).getSupportActionBar().setTitle(R.string.title_overview);
 
 
-        // tutorial
-        ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(200); // half second between each showcase view
-        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "recyclerViewerTutorialOverviewLoad");
-        sequence.setConfig(config);
-        sequence.addSequenceItem(view.findViewById(R.id.editTextCode),
-                getActivity().getResources().getString(R.string.bagCode), getActivity().getResources().getString(R.string.Next));
-        sequence.addSequenceItem(view.findViewById(R.id.buttonLoad),
-                getActivity().getResources().getString(R.string.bagCodeButton), getActivity().getResources().getString(R.string.gotIt));
-        sequence.start();
-
-
         //get login
         login = new Login(getContext());
 
@@ -156,16 +144,14 @@ public class OverviewFragment extends Fragment {
 
             front.setOnClickListener(v->{
                 if(week!=Integer.MAX_VALUE) {
-                    SharedPrefs.setInt(getContext(), "weekIndex", week+1);
-                    week = SharedPrefs.getInt(getContext(), "weekIndex");
 
-                    setWeekText(week, weekDisplay);
+                    week = SharedPrefs.getInt(getContext(), "weekIndex");
 
                     front.setVisibility(View.INVISIBLE);
                     back.setVisibility(View.INVISIBLE);
                     progressBarLoadTable.setVisibility(View.VISIBLE);
 
-                    MainActivity.loadBag.refresh(week,()->{
+                    MainActivity.loadBag.refresh(week+1,()->{
                         MainActivity.loadBag.updateDatabaseWithNewBakalariTimeTable();
                         updateTable(weekendOnBoolean,table,view);
                     },()->{
@@ -177,6 +163,17 @@ public class OverviewFragment extends Fragment {
                     });
                 }
             });
+        }else{
+            // tutorial
+            ShowcaseConfig config = new ShowcaseConfig();
+            config.setDelay(200); // half second between each showcase view
+            MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "recyclerViewerTutorialOverviewLoad");
+            sequence.setConfig(config);
+            sequence.addSequenceItem(view.findViewById(R.id.editTextCode),
+                    getActivity().getResources().getString(R.string.bagCode), getActivity().getResources().getString(R.string.Next));
+            sequence.addSequenceItem(view.findViewById(R.id.buttonLoad),
+                    getActivity().getResources().getString(R.string.bagCodeButton), getActivity().getResources().getString(R.string.gotIt));
+            sequence.start();
         }
         // hide weekend
         weekendOnBoolean = SharedPrefs.getBoolean(getContext(), SharedPrefs.WEEKEND_ON);

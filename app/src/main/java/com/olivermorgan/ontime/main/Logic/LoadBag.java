@@ -201,9 +201,11 @@ public class LoadBag {
 
             if (code == UNREACHABLE) {
                 MainActivity.showAlert(context,context.getResources().getString(R.string.UNREACHABLE),context.getResources().getString(R.string.UNREACHABLEsubtext));
-            } else if (code == UNEXPECTED_RESPONSE) {
+            }
+            else if (code == UNEXPECTED_RESPONSE) {
                 MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.ERRORsubtext));
-            } else if (code == LOGIN_FAILED) {
+            }
+            else if (code == LOGIN_FAILED) {
                 MainActivity.showAlert(context,context.getResources().getString(R.string.LOGINFAIL),context.getResources().getString(R.string.LOGINFAIL));
             }
 
@@ -238,9 +240,11 @@ public class LoadBag {
             if (code == UNREACHABLE) {
 
                 MainActivity.showAlert(context,context.getResources().getString(R.string.UNREACHABLE),context.getResources().getString(R.string.UNREACHABLEsubtext));
-            } else if (code == UNEXPECTED_RESPONSE) {
-                MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.ERRORsubtext));
-            } else if (code == LOGIN_FAILED) {
+            }
+            else if (code == UNEXPECTED_RESPONSE) {
+               MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.ERRORsubtext));
+            }
+            else if (code == LOGIN_FAILED) {
                 MainActivity.showAlert(context,context.getResources().getString(R.string.LOGINFAIL),context.getResources().getString(R.string.LOGINFAIL));
             }
 
@@ -256,7 +260,7 @@ public class LoadBag {
             updateDatabaseWithNewBakalariTimeTable();
 
         }else {
-            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.ERRORsubtext));
+          //  MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.ERRORsubtext));
         }
     }
 
