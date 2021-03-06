@@ -48,6 +48,7 @@ public class LoadBag {
     private LocalDate week = null;
     private boolean offline = false;
     private RozvrhAPI rozvrhAPI = null;
+    private boolean databasehasBeenUpdated = false;
 
     private final Context context;
 
@@ -292,6 +293,10 @@ public class LoadBag {
         if (rozvrh != null) {
             rozvrhAPI.clearMemory();
             this.rozvrh = rozvrh;
+            if(databasehasBeenUpdated) {
+                updateDatabaseWithNewBakalariTimeTable();
+                databasehasBeenUpdated = false;
+            }
 
         }
         //onNetLoaded
