@@ -61,8 +61,14 @@ public class MainActivity extends AppCompatActivity {
 
         if(login.isLoggedIn()&&!activityIsBeingRestartedFromOverView&&!fromSettings&&!backSettings) {
             loadBag = new LoadBag(this, this);
-            loadBag.getRozvrh(SharedPrefs.getInt(this,"weekIndex"));
+            loadBag.getRozvrhVariable(SharedPrefs.getInt(this,"weekIndex"));
+            new Thread(()-> {
+                while (loadBag.getRozvrhVariable()!=null) {
+                    if (loadBag.getRozvrhVariable()!=null)loadBag.updateDatabaseWithNewBakalariTimeTable();
+                }
+            }).start();
         }
+
 
         super.onCreate(savedInstanceState);
 
@@ -124,8 +130,6 @@ public class MainActivity extends AppCompatActivity {
 
         } else
             SharedPrefs.setBoolean(getApplicationContext(), "updateTableInThread", true);
-
-
 
 
     }

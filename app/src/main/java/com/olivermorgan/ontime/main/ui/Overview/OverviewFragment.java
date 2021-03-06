@@ -87,7 +87,7 @@ public class OverviewFragment extends Fragment {
         // login
         ImageButton back = view.findViewById(R.id.imageWeekBack);
         ImageButton front = view.findViewById(R.id.imageWeekFront);
-
+        ImageButton refresh = view.findViewById(R.id.refresh);
         TextView weekDisplay = view.findViewById(R.id.currentWeek);
 
         weekDisplay.setText("");
@@ -96,10 +96,38 @@ public class OverviewFragment extends Fragment {
             setWeekText(week, weekDisplay);
             back.setVisibility(View.VISIBLE);
             front.setVisibility(View.VISIBLE);
+            refresh.setVisibility(View.VISIBLE);
+            refresh.setClickable(true);
             back.setClickable(true);
             front.setClickable(true);
 
+            refresh.setOnClickListener(v->{
+                week = SharedPrefs.getInt(getContext(), "weekIndex");
 
+                refresh.setClickable(false);
+                back.setClickable(false);
+                front.setClickable(false);
+
+                refresh.setVisibility(View.INVISIBLE);
+                front.setVisibility(View.INVISIBLE);
+                back.setVisibility(View.INVISIBLE);
+                progressBarLoadTable.setVisibility(View.VISIBLE);
+
+                MainActivity.loadBag.refresh(week,()->{
+                    setWeekText(week, weekDisplay);
+
+                    updateTable(weekendOnBoolean,table,view);
+
+                    progressBarLoadTable.setVisibility(View.INVISIBLE);
+                    front.setVisibility(View.VISIBLE);
+                    back.setVisibility(View.VISIBLE);
+                    refresh.setVisibility(View.VISIBLE);
+
+                    refresh.setClickable(true);
+                    back.setClickable(true);
+                    front.setClickable(true);
+                });
+            });
 
             back.setOnClickListener(v->{
 
@@ -107,11 +135,11 @@ public class OverviewFragment extends Fragment {
 
                     week = SharedPrefs.getInt(getContext(), "weekIndex");
 
-
+                    refresh.setClickable(false);
                     back.setClickable(false);
                     front.setClickable(false);
 
-
+                    refresh.setVisibility(View.INVISIBLE);
                     front.setVisibility(View.INVISIBLE);
                     back.setVisibility(View.INVISIBLE);
                     progressBarLoadTable.setVisibility(View.VISIBLE);
@@ -125,6 +153,9 @@ public class OverviewFragment extends Fragment {
                         progressBarLoadTable.setVisibility(View.INVISIBLE);
                         front.setVisibility(View.VISIBLE);
                         back.setVisibility(View.VISIBLE);
+                        refresh.setVisibility(View.VISIBLE);
+
+                        refresh.setClickable(true);
                         back.setClickable(true);
                         front.setClickable(true);
                     });
@@ -139,11 +170,11 @@ public class OverviewFragment extends Fragment {
 
                     week = SharedPrefs.getInt(getContext(), "weekIndex");
 
-
+                    refresh.setClickable(false);
                     back.setClickable(false);
                     front.setClickable(false);
 
-
+                    refresh.setVisibility(View.INVISIBLE);
                     front.setVisibility(View.INVISIBLE);
                     back.setVisibility(View.INVISIBLE);
                     progressBarLoadTable.setVisibility(View.VISIBLE);
@@ -157,7 +188,9 @@ public class OverviewFragment extends Fragment {
                         progressBarLoadTable.setVisibility(View.INVISIBLE);
                         front.setVisibility(View.VISIBLE);
                         back.setVisibility(View.VISIBLE);
+                        refresh.setVisibility(View.VISIBLE);
 
+                        refresh.setClickable(true);
                         back.setClickable(true);
                         front.setClickable(true);
                     });
@@ -197,8 +230,8 @@ public class OverviewFragment extends Fragment {
         // get different bag via code
         String dbnameSubjects = "Subject.db";
         String dbnameItems = "Items.db";
-        final Uri databaseSubjects = Uri.fromFile(requireContext().getDatabasePath(dbnameSubjects));
-        final Uri databaseItems = Uri.fromFile(requireContext().getDatabasePath(dbnameItems));
+        Uri databaseSubjects = Uri.fromFile(requireContext().getDatabasePath(dbnameSubjects));
+        Uri databaseItems = Uri.fromFile(requireContext().getDatabasePath(dbnameItems));
         new Thread(()->{
             // firebase logic
             FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -246,9 +279,11 @@ public class OverviewFragment extends Fragment {
                         updateTable(weekendOnBoolean, table,  view);
 
                         progressBarLoadTable.setVisibility(View.INVISIBLE);
+                        refresh.setVisibility(View.INVISIBLE);
                         front.setVisibility(View.INVISIBLE);
                         back.setVisibility(View.INVISIBLE);
 
+                        refresh.setClickable(false);
                         front.setClickable(false);
                         back.setClickable(false);
 

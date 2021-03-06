@@ -36,7 +36,6 @@ public class AddFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // create view
         final View mainView = inflater.inflate(R.layout.fragment_add, parent, false);
-
         // set title
         ((MainActivity)requireActivity()).getSupportActionBar().setTitle(R.string.to_add_text);
 

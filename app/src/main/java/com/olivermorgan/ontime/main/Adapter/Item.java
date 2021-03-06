@@ -9,6 +9,7 @@ public class Item {
     private String subjectName;
     private final boolean isInBag;
     private final Context context;
+    private Subject subject;
 
     public Item(String itemName, String subjectName, boolean isInBag, Context context) {
         this.subjectName = subjectName;
@@ -17,21 +18,27 @@ public class Item {
         this.context = context;
     }
 
+    public void setSubject (Subject subject){
+       this.subject = subject;
+    }
+
     public String getSubjectName() {
         return subjectName;
     }
 
     public String getItemName() {
         boolean language = SharedPrefs.getBoolean(context, "Language");
-        if (itemName.equals("items") && language) {
-            itemName = "pomůcky";
-        } else if (itemName.equals("pomůcky") && !language){
-            itemName = "items";
+        if (itemName.contains("items for ") && language) {
+            itemName = itemName.replace("items for ", "pomůcky pro ");
+        } else if (itemName.contains("pomůcky pro ") && !language){
+            itemName = itemName.replace("pomůcky pro ","items for ");
         }
         return itemName;
     }
 
     public String getNameInitialsOfSubject() {
+        if(subject!=null) return subject.getShortName();
+
         StringBuilder initials = new StringBuilder();
             initials.append(Character.toUpperCase(getSubjectName().charAt(0)));
         for (int i = 1; i < getSubjectName().length() - 1; i++) {

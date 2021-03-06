@@ -88,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
            loginLogic.getLogin().login(urlTextValidated,usernameText,passwordText, (code) -> {
                 if (code == Login.SUCCESS) {
                     Intent intent = new Intent(this, SuccessfulLoginActivity.class);
+                    // refresh the bag
                     startActivity(intent);
                     finish();
                     overridePendingTransition(R.anim.fade_out, R.anim.fade_in);

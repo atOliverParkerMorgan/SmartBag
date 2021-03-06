@@ -329,10 +329,23 @@
                 android:id="@+id/currentWeek"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view" />
+                app:layout_constraintTop_toBottomOf="@+id/refresh" />
+
+            <ImageButton
+                android:visibility="invisible"
+                android:clickable="false"
+                android:id="@+id/refresh"
+                android:background="?attr/bgColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view"
+                app:srcCompat="@drawable/ic_baseline_refresh_24" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

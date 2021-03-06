@@ -251,11 +251,12 @@ import static android.view.View.GONE;
                      AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
                      alert.setTitle("Delete Item");
                      alert.setMessage("Are you sure you want to delete " + Items.get(position).getItemName() + "?");
-                     Toast.makeText(v.getContext(), Items.get(position).getItemName() + " has been removed from your bag", Toast.LENGTH_SHORT).show();
+
                      alert.setPositiveButton(android.R.string.yes, (dialog, which) -> {
                          // continue with delete
                          FeedReaderDbHelperItems.deleteItem(v.getContext(), Items.get(position));
                          removeAt(position);
+                         Toast.makeText(v.getContext(), Items.get(position).getItemName() + " has been removed from your bag", Toast.LENGTH_SHORT).show();
 
 
                      });
