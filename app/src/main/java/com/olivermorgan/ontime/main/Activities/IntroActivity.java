@@ -38,7 +38,7 @@ public class IntroActivity extends AppIntro {
         ));
 
         addSlide(AppIntroFragment.newInstance(
-                "Schedule", "You can share your schedule with your class mates. Thanks to the unique code smart bag gives you.",
+                "Schedule", "You can share your schedule with your class mates, thanks to the unique code smart bag gives you. You can also login into your Bakaláři account.",
                 R.drawable.ic_tutorial_schedule
         ));
     }

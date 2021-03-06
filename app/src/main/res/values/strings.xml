@@ -184,4 +184,9 @@
 
      <string name="bagCode">Enter the code for sharing a bag here</string>
      <string name="bagCodeButton">Click here to load the shared bag</string>
+
+      <string name="Teacher">Teacher:</string>
+      <string name="Time">Time:</string>
+      <string name="Topic">Topic:</string>
+      <string name="serverAdress">Server Adress</string>
  </resources>

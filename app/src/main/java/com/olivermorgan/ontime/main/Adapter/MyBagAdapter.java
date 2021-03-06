@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.olivermorgan.ontime.main.Activities.EditSubject;
+import com.olivermorgan.ontime.main.Activities.EditSubjectLoggedin;
+import com.olivermorgan.ontime.main.BakalariAPI.Login;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.olivermorgan.ontime.main.R;
 
@@ -80,7 +82,10 @@ public class MyBagAdapter extends RecyclerView.Adapter<MyBagAdapter.ViewHolder>{
             holder.circle.setText(Items.get(position).getNameInitialsOfSubject());
             holder.circle.setOnClickListener(v -> {
                 // go back to main activity
-                Intent i = new Intent( v.getContext(), EditSubject.class);
+                Login login = new Login(v.getContext());
+                Intent i;
+                if(login.isLoggedIn()) i = new Intent( v.getContext(), EditSubjectLoggedin.class);
+                else i = new Intent( v.getContext(), EditSubject.class);
                 i.putExtra("subjectName", Items.get(position).getSubjectName());
                 v.getContext().startActivity(i);
             });

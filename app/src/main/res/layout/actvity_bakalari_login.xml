@@ -87,7 +87,7 @@
         android:layout_marginStart="40dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
-        android:hint="Server address"
+        android:hint="@string/serverAdress"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toEndOf="parent"

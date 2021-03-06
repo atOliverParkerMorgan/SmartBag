@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.Adapter.MyListAdapter;
-import com.olivermorgan.ontime.main.BakalariAPI.Login;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.olivermorgan.ontime.main.R;
@@ -31,6 +28,7 @@ import java.util.List;
 
 public class EditSubject extends AppCompatActivity {
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +71,7 @@ public class EditSubject extends AppCompatActivity {
         } else {
             ConstraintLayout constraintLayout = findViewById(R.id.parent);
             ConstraintSet constraintSet = new ConstraintSet();
-            constraintSet.connect(R.id.sundaySwitchEdit, ConstraintSet.BOTTOM, R.id.instructionsAddAndEdit, ConstraintSet.TOP, 64);
+            constraintSet.connect(R.id.sundaySwitchEdit, ConstraintSet.BOTTOM, R.id.textView, ConstraintSet.TOP, 64);
             constraintSet.applyTo(constraintLayout);
 
         }
@@ -107,25 +105,25 @@ public class EditSubject extends AppCompatActivity {
         viewHolder.saveButton.setOnClickListener(v -> {
             try {
                 if(subject==null){
-                    Toast.makeText(v.getContext(), R.string.anError,
+                    Toast.makeText(v.getContext(), getResources().getString(R.string.anError),
                             Toast.LENGTH_LONG).show();
                 }
                 else if(subject.equals("")) {
-                    Toast.makeText(v.getContext(),  R.string.nothingInSubjectFiled,
+                    Toast.makeText(v.getContext(),  getResources().getString(R.string.nothingInSubjectFiled),
                             Toast.LENGTH_LONG).show();
                 }
                 else if(FeedReaderDbHelperItems.subjectExists(getApplicationContext(), subject) && !subject.equals(viewHolder.subjectName.getText().toString())){
-                    Toast.makeText(v.getContext(), R.string.subject+viewHolder.subjectName.getText().toString()+R.string.alreadyExist,
+                    Toast.makeText(v.getContext(), getResources().getString(R.string.subject)+viewHolder.subjectName.getText().toString()+getResources().getString(R.string.alreadyExist),
                             Toast.LENGTH_LONG).show();
                 }else if(subject.length()>25){
-                    Toast.makeText(v.getContext(), R.string.tooLong,
+                    Toast.makeText(v.getContext(), getResources().getString(R.string.tooLong),
                             Toast.LENGTH_LONG).show();
                 }
 
                 else if(!(mon.isChecked()||
                         tue.isChecked()||wed.isChecked()||thu.isChecked()||
                         fri.isChecked()||sat.isChecked()||sun.isChecked())){
-                    Toast.makeText(v.getContext(), R.string.mustChooseAtLeastOneDay,
+                    Toast.makeText(v.getContext(), getResources().getString(R.string.mustChooseAtLeastOneDay),
                             Toast.LENGTH_LONG).show();
                 }else {
                     FeedReaderDbHelperItems.deleteSubject(v.getContext(), subject);
@@ -143,7 +141,7 @@ public class EditSubject extends AppCompatActivity {
 
                     i.putExtra("putInToBag", "null");
                     if (!FeedReaderDbHelperItems.write(v.getContext(), i, itemsDataItemsToEdit, viewHolder.subjectName.getText().toString())) {
-                        Toast.makeText(v.getContext(), R.string.databaseError,
+                        Toast.makeText(v.getContext(), getResources().getString(R.string.databaseError),
                                 Toast.LENGTH_LONG).show();
                     }
 
@@ -151,25 +149,16 @@ public class EditSubject extends AppCompatActivity {
                 }
 
             } catch (android.database.sqlite.SQLiteException e) {
-                Toast.makeText(v.getContext(), R.string.databaseError,
+                Toast.makeText(v.getContext(), getResources().getString(R.string.databaseError),
                         Toast.LENGTH_LONG).show();
             }
 
 
         });
-        Login login = new Login(this);
-
-        if(login.isLoggedIn()){
-            viewHolder.deleteButton.setClickable(false);
-            viewHolder.deleteButton.setVisibility(View.INVISIBLE);
-        }else{
-            viewHolder.deleteButton.setClickable(true);
-            viewHolder.deleteButton.setVisibility(View.VISIBLE);
-        }
 
         viewHolder.deleteButton.setOnClickListener(v -> {
             AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
-            alert.setTitle(R.string.deleteSubject);
+            alert.setTitle(getResources().getString(R.string.deleteSubject));
             alert.setMessage(getResources().getString(R.string.areYouSureDelete) + subject + " ?");
             alert.setPositiveButton(android.R.string.yes, (dialog, which) -> {
                 FeedReaderDbHelperSubjects.deleteSubject(subject, this);
@@ -192,7 +181,7 @@ public class EditSubject extends AppCompatActivity {
             String text = viewHolder.itemName.getText().toString();
             // the user has to input some text
             if (text.equals("")) {
-                Toast.makeText(v.getContext(), R.string.nothingInSubjectFiled,
+                Toast.makeText(v.getContext(), getResources().getString(R.string.nothingInSubjectFiled),
                         Toast.LENGTH_LONG).show();
             } else {
                 // also the item cannot already be in the recycle viewer
@@ -217,7 +206,7 @@ public class EditSubject extends AppCompatActivity {
                     viewHolder.itemName.setText("");
 
                 } else {
-                    Toast.makeText(v.getContext(), R.string.itemAlreadyAdded,
+                    Toast.makeText(v.getContext(), getResources().getString(R.string.itemAlreadyAdded),
                             Toast.LENGTH_LONG).show();
                 }
 

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/bgColor"
+    android:id="@+id/editTextLayout"
     android:windowSoftInputMode="stateVisible|adjustResize">
 
     <androidx.constraintlayout.widget.Guideline
@@ -59,20 +60,6 @@
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp">
 
-
-            <TextView
-                android:id="@+id/instructionsAddAndEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="64dp"
-                android:text="@string/editSubjectItemHint"
-                android:textColor="?attr/textColor"
-                android:textSize="24sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fridaySwitchEdit" />
 
             <Button
                 android:id="@+id/addItem"

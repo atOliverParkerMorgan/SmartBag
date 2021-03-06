@@ -44,7 +44,6 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
        // db.execSQL("PRAGMA schema.user_version = "+ MainActivity.userId);
 
-        db.execSQL(SQL_DELETE_ENTRIES);
         db.execSQL(SQL_CREATE_ENTRIES);
 
     }
@@ -298,14 +297,15 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
 
     }
 
-    public static void deleteItem(Context context, String itemName) throws android.database.sqlite.SQLiteException{
+    public static void deleteItem(Context context, Item itemName){
         FeedReaderDbHelperItems dbHelperItems = new FeedReaderDbHelperItems(context);
         SQLiteDatabase dbForItems = dbHelperItems.getWritableDatabase();
 
         try {
 
         String queryItems =
-                " DELETE FROM "+ TABLE_NAME + " WHERE "+ FeedEntry.COLUMN_NAME_TITLE +" = "+"'"+itemName+"'";
+                " DELETE FROM "+ TABLE_NAME + " WHERE "+ FeedEntry.COLUMN_NAME_TITLE +" = "+"'"+itemName.getItemName()+"'" + " AND " +
+                    FeedEntry.COLUMN_SUBJECT_TITLE + " = " + "'" + itemName.getSubjectName() + "'";
 
         dbForItems.execSQL(queryItems);
 

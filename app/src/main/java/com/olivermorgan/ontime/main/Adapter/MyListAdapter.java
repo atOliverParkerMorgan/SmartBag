@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.olivermorgan.ontime.main.Activities.EditSubject;
+import com.olivermorgan.ontime.main.Activities.EditSubjectLoggedin;
+import com.olivermorgan.ontime.main.Activities.MainActivity;
+import com.olivermorgan.ontime.main.BakalariAPI.Login;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.olivermorgan.ontime.main.R;
 
@@ -131,7 +135,9 @@ import static android.view.View.GONE;
 
                      @Override
                      public void afterTextChanged(Editable s) {
-                         Items.get(position).setItemName(s.toString());
+                         try {
+                             Items.get(position).setItemName(s.toString());
+                         }catch (IndexOutOfBoundsException ignored){}
                      }
                  });
 
@@ -167,7 +173,10 @@ import static android.view.View.GONE;
              if(goToEditSubject) {
                  holder.circle.setOnClickListener(v -> {
                      // go back to main activity
-                     Intent i = new Intent(v.getContext(), EditSubject.class);
+                     Intent i;
+                     Login login = new Login(v.getContext());
+                     if(login.isLoggedIn()) i = new Intent( v.getContext(), EditSubjectLoggedin.class);
+                     else i = new Intent( v.getContext(), EditSubject.class);
                      i.putExtra("subjectName", Items.get(position).getSubjectName());
                      v.getContext().startActivity(i);
                  });
@@ -242,19 +251,20 @@ import static android.view.View.GONE;
                      AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
                      alert.setTitle("Delete Item");
                      alert.setMessage("Are you sure you want to delete " + Items.get(position).getItemName() + "?");
+                     Toast.makeText(v.getContext(), Items.get(position).getItemName() + " has been removed from your bag", Toast.LENGTH_SHORT).show();
                      alert.setPositiveButton(android.R.string.yes, (dialog, which) -> {
                          // continue with delete
-                         FeedReaderDbHelperItems.deleteItem(v.getContext(), Items.get(position).getItemName());
-                         Toast.makeText(v.getContext(), Items.get(position).getItemName() + " has been removed from your bag", Toast.LENGTH_SHORT).show();
-                         Items.remove(Items.get(position));  // remove the itemAdd from list
-                         notifyItemRemoved(position); // notify the adapter about the removed itemAdd
-                         notifyItemRangeChanged(position, Items.size());
+                         FeedReaderDbHelperItems.deleteItem(v.getContext(), Items.get(position));
+                         removeAt(position);
+
+
                      });
                      alert.setNegativeButton(android.R.string.no, (dialog, which) -> {
                          // close dialog
                          dialog.cancel();
                      });
                      alert.show();
+
 
                  }
 
@@ -279,6 +289,11 @@ import static android.view.View.GONE;
              return 0;
          }
          return 1;
+     }
+     public void removeAt(int position) {
+         Items.remove(position);  // remove the itemAdd from list
+         notifyItemRemoved(position); // notify the adapter about the removed itemAdd
+         notifyItemRangeChanged(position, Items.size());
      }
 
 

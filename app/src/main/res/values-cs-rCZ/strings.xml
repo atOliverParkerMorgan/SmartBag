@@ -2,24 +2,24 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">SmartBag</string>
     <string name="title_add_button_navigation">Přidat</string>
-    <string name="title_create_subject">Vytořte předmět</string>
+    <string name="title_create_subject">Vytvořte předmět</string>
     <string name="title_remove_button_navigation">Odebrat</string>
     <string name="title_overview_button_navigation">Přehled</string>
     <string name="title_bag_button_navigation">Batoh</string>
-    <string name="title_add_item">"Přidejte pomůcky k předmětu "</string>
+    <string name="title_add_item">Přidejte pomůcky k předmětu.</string>
     <string name="none">N</string>
     <string name="days_of_the_week_text">Jaké dny v týdnu chcete tuto pomůcku v batohu?</string>
-    <string name="add_to_bag">Chcete přidat tento předmět do batohu</string>
+    <string name="add_to_bag">Chcete přidat tento předmět do batohu?</string>
     <string name="subject_input_text">Přidejte jméno předmětu</string>
     <string name="to_add_text">Přidat do batohu</string>
     <string name="title_overview">Přehled</string>
-    <string name="to_add_text_subtitle">"přidejte tyto pomůcky do batohu "</string>
+    <string name="to_add_text_subtitle">Přidejte tyto pomůcky do batohu.</string>
     <string name="to_remove_text">Odebrat z batohu</string>
-    <string name="to_remove_text_subtitle">"Vyndejte tyto pomůcky z batohu  "</string>
+    <string name="to_remove_text_subtitle">Vyndejte tyto pomůcky z batohu.</string>
     <string name="in_bag_text">Váš batoh</string>
-    <string name="in_bag_subtext">Tyto pomůcky jsou ve vašem batohu</string>
+    <string name="in_bag_subtext">Tyto pomůcky jsou ve vašem batohu.</string>
     <string name="cant_connect">Nelze připojit</string>
-    <string name="user_connected">Jste připojeni!!</string>
+    <string name="user_connected">Jste připojeni!</string>
     <string name="monday">Pondělí</string>
     <string name="tuesday">Úterý</string>
     <string name="wednesday">Středa</string>
@@ -34,22 +34,22 @@
     <string name="fridayShort">Pá</string>
     <string name="saturdayShort">So</string>
     <string name="sundayShort">Ne</string>
-    <string name="add_items_instructions">Přidejte pomůcky, které potřebujete pro tento předmět</string>
-    <string name="delete_icon_description">tlačítko k odebrání</string>
-    <string name="add_icon_description">tlačítko k odebrání</string>
+    <string name="add_items_instructions">Přidejte pomůcky, které potřebujete pro tento předmět.</string>
+    <string name="delete_icon_description">Tlačítko k odebrání</string>
+    <string name="add_icon_description">Tlačítko k odebrání</string>
     <string name="item_hint">Sešit</string>
     <string name="subjects_hint">Přidejte předmět (např. Dějepis)</string>
-    <string name="noItemsInAdd">Všechny potřebné pomůcky jsou přidány</string>
-    <string name="schoolSearch">Vyhledejte vaší školu</string>
-    <string name="noItemsInRemove">Všechny nepotřebné pomůcky jsou odebrány</string>
+    <string name="noItemsInAdd">Všechny potřebné pomůcky jsou přidány.</string>
+    <string name="schoolSearch">Vyhledejte vaší školu.</string>
+    <string name="noItemsInRemove">Všechny nepotřebné pomůcky jsou odebrány.</string>
     <string name="noItemsInBag">Váš batoh je prázdný</string>
     <string name="instructionsEditBag">Upravte pomůcky</string>
     <string name="search">Hledejte…</string>
-    <string name="connection_failed">Nelze připojit k severu</string>
-    <string name="loading_schools_info">Načítají se info o školách</string>
-    <string name="discard_button">smazat</string>
-    <string name="create_button">vytvořit</string>
-    <string name="add_button">přidat</string>
+    <string name="connection_failed">Nelze připojit k severu.</string>
+    <string name="loading_schools_info">Načítá se info o školách.</string>
+    <string name="discard_button">Smazat</string>
+    <string name="create_button">Vytvořit</string>
+    <string name="add_button">Přidat</string>
     <string name="proceed_to_add_items_button">Pokračujte k pomůckám</string>
     <string name="settings_title">Nastavení</string>
     <string name="settings">Nastavení</string>
@@ -60,9 +60,9 @@
     <string name="editItemSwitchInstructions"><b /></string>
     <string name="deleteEdit">Smazat</string>
     <string name="saveChangesEdit">Uložit</string>
-    <string name="doNotShowSaturdaySunday">Zobrazovat Soboty a Neděle</string>
+    <string name="doNotShowSaturdaySunday">Zobrazovat soboty a neděle</string>
     <string name="editSubjectItemHint">Přidat nebo upravit pomůcku</string>
-    <string name="uploadBagYourBag">nahrajte svůj batoh</string>
+    <string name="uploadBagYourBag">Nahrajte svůj batoh.</string>
     <string name="loadBag">Načtěte cizí batoh</string>
     <string name="loadButton">Načíst</string>
     <string name="yourBag">Přehled vašeho batohu</string>
@@ -70,39 +70,39 @@
     <string name="bakalari">Synchornizujte se s Bakaláři</string>
     <string name="addSubjectButtonText">Zatím jste nepřidali žadné pomůcky. Chcete-li je přidat, klikněte sem</string>
     <string name="Loading">Načítání…</string>
-    <string name="codeNameInstructions"><font size="14">Váš kód ke sdílení vašeho batohu</font></string>
+    <string name="codeNameInstructions"><font size="14">Kód ke sdílení vašeho batohu</font></string>
     <string name="updateBag">AKTULAZILUJTE SVŮJ BATOH</string>
     <string name="code">KÓD</string>
     <string name="title_single_shot">Test</string>
     <string name="switchInstructions">Jaké dny v týdnu chcete tento předmět v batohu?</string>
-    <string name="weekendText">KLINKNĚTE ABYSTE VYĎELI POMŮCKY NA PONDĚLÍ</string>
+    <string name="weekendText">KLINKNĚTE SEM, ABYSTE VIĎELI POMŮCKY NA PONDĚLÍ</string>
     <string name="user_logged_in">Uživatel %1$s je přihlášen.</string>
-    <string name="willShowWeek">bude se zobrazovat Sobota a Neděle</string>
-    <string name="willShowWeekNot">NeBude se zobrazovat Sobota a Neděle</string>
+    <string name="willShowWeek">Bude se zobrazovat sobota a neděle.</string>
+    <string name="willShowWeekNot">Nebude se zobrazovat sobota a neděle.</string>
     <string name="success">ÚSPĚCH</string>
-    <string name="subTextSuccess">úspěšně jste se přihlásili do vášeho účtu</string>
-    <string name="unexpected_response">Jejda něco se pokazilo</string>
-    <string name="invalid_login">Jejda špatně jste zadali uživatelské jméno nebo heslo</string>
-    <string name="sever_unreachable">Nelze se spojit se srveru. Zkontrolujte školní adresu.</string>
-    <string name="disabled_servises">Služby, které tato aplikace potřebuje nejsou k dispozici</string>
+    <string name="subTextSuccess">Úspěšně jste se přihlásili do vášeho účtu.</string>
+    <string name="unexpected_response">Jejda něco se pokazilo.</string>
+    <string name="invalid_login">Jejda špatně jste zadali uživatelské jméno nebo heslo.</string>
+    <string name="sever_unreachable">Nelze se spojit se serverem. Zkontrolujte školní adresu.</string>
+    <string name="disabled_servises">Služby, které tato aplikace potřebuje nejsou k dispozici.</string>
     <string name="LATER">POZDĚJI</string>
-    <string name="PREFS_SWITCH_TO_NEXT_WEEK">příští týden</string>
-    <string name="loading_timetable">Načíta se váš aktuální rozvrh</string>
-    <string name="add_a_subject_description">přidej předmět</string>
-    <string name="absolute_error">něco se pokazilo s databází</string>
+    <string name="PREFS_SWITCH_TO_NEXT_WEEK">Příští týden</string>
+    <string name="loading_timetable">Načítá se váš aktuální rozvrh.</string>
+    <string name="add_a_subject_description">Přidej předmět</string>
+    <string name="absolute_error">Něco se pokazilo v databázi.</string>
 
     <string name="info">INFORMACE</string>
     <string name="info1">• Smartbag automaticky synchronizuje pomůcky se jmény předmětů.</string>
     <string name="info2">• Defoltní pomůcka pro předmět bez žadné předem dané pomůcky je: "pomůcky"</string>
-    <string name="info3">• Můžete změnit defoltní jméno v rozvrhu v přehledu tím, že klinknete na předmět.</string>
+    <string name="info3">• Můžete změnit defoltní jméno v přehledu tím, že kliknete na předmět.</string>
     <string name="interfaceTitle">Rozhraní:</string>
     <string name="languageTitle">Jazyky: </string>
     <string name="english">Angličtina</string>
     <string name="czech">Čeština</string>
 
     <string-array name="daySpinner">
-        <item>Dnešek</item>
-        <item>Zítřek</item>
+        <item>Dnes</item>
+        <item>Zítra</item>
         <item>Pondělí</item>
         <item>Úterý</item>
         <item>Středa</item>
@@ -113,8 +113,8 @@
     </string-array>
 
     <string-array name="daySpinnerWithoutWeekend">
-        <item>Dnešek</item>
-        <item>Zítřek</item>
+        <item>Dnes</item>
+        <item>Zítra</item>
         <item>Pondělí</item>
         <item>Úterý</item>
         <item>Středa</item>
@@ -122,7 +122,7 @@
         <item>Pátek</item>
     </string-array>
     <string-array name="daySpinnerWithoutWeekendAndTomorrow">
-        <item>Dnešek</item>
+        <item>Dnes</item>
         <item>Pondělí</item>
         <item>Úterý</item>
         <item>Středa</item>
@@ -130,39 +130,39 @@
         <item>Pátek</item>
     </string-array>
 
-    <string name="nothingInSubjectFiled">Abyste mohli přidat pomůcky musíte napsat nějaký text do textového pole (Sešit).</string>
+    <string name="nothingInSubjectFiled">Pokud chete přidat pomůcky, musíte napsat text do textového pole (např. sešit).</string>
     <string name="itemAlreadyAdded">Už jste přidali tento předmět.</string>
-    <string name="atLeastOneItem">Musíte přidat alespoň jednu pomůcku</string>
-    <string name="databaseError">Nastal problém v databázy. Napište nám zprávu o tomto problému!</string>
-    <string name="anError">Vyskytla se chyba</string>
-    <string name="tooLong">Jméno předmětu je moc dlouhé. maximální počet znaků je 25 písmen</string>
+    <string name="atLeastOneItem">Musíte přidat alespoň jednu pomůcku.</string>
+    <string name="databaseError">Nastal problém v databázi. Napište nám zprávu o tomto problému!</string>
+    <string name="anError">Vyskytla se chyba.</string>
+    <string name="tooLong">Jméno předmětu je moc dlouhé. Maximální počet znaků je 25 písmen.</string>
     <string name="mustChooseAtLeastOneDay">Musíte vybrat alespoň jeden den týdnu</string>
-    <string name="subject">Předmět </string>
-    <string name="alreadyExist"> již existuje. Vyberte unikátní jméno</string>
+    <string name="subject">Předmět</string>
+    <string name="alreadyExist">Již existuje. Vyberte unikátní jméno</string>
     <string name="deleteSubject">Odebrat předmět</string>
     <string name="areYouSureDelete">Jste si jisti, že chcete odstranit</string>
-    <string name="hasBeenRemoved"> se odstraněnil z vašeho batohu</string>
-    <string name="clickHereToSelectDay">Klikněte sem abyste si vybrali pro jaký den chcete mít svojí tašku připravenou</string>
+    <string name="hasBeenRemoved">Odstraněno z vašeho batohu</string>
+    <string name="clickHereToSelectDay">Klikněte sem, abyste si vybrali pro jaký den chcete mít svojí tašku připravenou</string>
     <string name="Next">DALŠÍ</string>
-    <string name="clickHereToRemoveItemFromBag">klikněte zde abyste odstranili tento předmět z vašeho batohu</string>
+    <string name="clickHereToRemoveItemFromBag">Klikněte na ikonku, abyste odstranili tento předmět z vašeho batohu</string>
     <string name="gotIt">Rozumim</string>
-    <string name="hasBeenAddedToBag">byl přidán do batohu</string>
-    <string name="ClickIconSubject">Klikněte ikonku abyste mohli editovat předmět</string>
-    <string name="ClickHereToAddToBag">Klikněte sem abyste přidali tuto pomůcku do vašeho batoh</string>
-    <string name="itemsForSubject">pomůcky pro</string>
-    <string name="invalidCode">Nevalidní kód, kód musí být šest velkých písmen</string>
+    <string name="hasBeenAddedToBag">byl přidán do batohu.</string>
+    <string name="ClickIconSubject">Klikněte ikonku abyste mohli editovat předmět.</string>
+    <string name="ClickHereToAddToBag">Klikněte sem abyste přidali tuto pomůcku do vašeho batoh.</string>
+    <string name="itemsForSubject">Pomůcky pro</string>
+    <string name="invalidCode">Nevalidní kód, kód musí být šest velkých písmen.</string>
     <string name="downloadBag">Stáhnout batoh:</string>
-    <string name="sureAboutDownloadingBagAndLogoutBaka">Jste si jisti, že chcete stáhnout tento batoh? Toto přepíše všechny existující předměty a pomůcky. A také vás odhlásí z vašeho  Bakaláři účtu.</string>
+    <string name="sureAboutDownloadingBagAndLogoutBaka">Jste si jisti, že chcete stáhnout tento batoh? Toto přepíše všechny existující předměty a pomůcky. A také vás odhlásí z vašeho Bakaláři účtu.</string>
     <string name="sureAboutDownloadingBag">Jste si jisti, že chcete stáhnout tento batoh? Toto přepíše všechny existující předměty a pomůcky.</string>
     <string name="incorrectCodeOrNoConnection">Eror, máte špatný kód nebo nemáte připojení k internetu.</string>
-    <string name="successfulUpdateWithCode">Úspěšně jste obnovili svůj batoh s kódem:</string>
+    <string name="successfulUpdateWithCode">Úspěšně jste obnovili svůj batoh kódem:</string>
     <string name="internetConnection">Eror, zkontrolujte své připojení.</string>
     <string name="successUpload">Úspěch, váš batoh byl nahrán.</string>
-    <string name="clickIconToEdit">Klikněte ikonku abyste mohli editovat batoh</string>
+    <string name="clickIconToEdit">Klikněte na ikonku, abyste mohli editovat batoh.</string>
 
-    <string name="currentWeek">tento týden</string>
-    <string name="previousWeek">minulý týden</string>
-    <string name="nextWeek">příští týden</string>
+    <string name="currentWeek">Tento týden</string>
+    <string name="previousWeek">Minulý týden</string>
+    <string name="nextWeek">Příští týden</string>
     <string name="backWeek">týdnů zpět</string>
     <string name="forwardWeek">týdnů dopředu</string>
     <string name="backWeekCZSpecialCase">týdny zpět</string>
@@ -174,12 +174,18 @@
     <string name="UNREACHABLE">OFFLINE</string>
     <string name="UNREACHABLEsubtext">Nelze se spojit s bakalářemi. Máte připojení k internetu?</string>
     <string name="ERROR">EROR</string>
-    <string name="ERRORsubtext">jejda něco se pokazilp</string>
+    <string name="ERRORsubtext">Jejda něco se pokazilo.</string>
     <string name="OFFLINE">OFFLINE</string>
     <string name="OFFLINEsubtext">Nelze se spojit s bakalářemi. Máte připojení k internetu?</string>
     <string name="LOGINFAIL">LOGIN SELHAL</string>
-    <string name="LOGINFAILsubtext">Nelze se zaregistrovat do vašeho bakaláři účtu</string>
+    <string name="LOGINFAILsubtext">Nelze se zaregistrovat do účtu aplikace Bakaláři.</string>
 
-    <string name="bagCode">Zadejte kód pro sdílení batohu sem</string>
-    <string name="bagCodeButton">Klikněte se abyste stáhli sdílený batoh</string>
+    <string name="bagCode">Sem zadejte kód pro sdílení batohu.</string>
+    <string name="bagCodeButton">Klikněte sem, abyste stáhli sdílený batoh.</string>
+
+    <string name="Teacher">Učitel:</string>
+    <string name="Time">Čas:</string>
+    <string name="Topic">Téma:</string>
+
+    <string name="serverAdress">Adresa serveru</string>
 </resources>

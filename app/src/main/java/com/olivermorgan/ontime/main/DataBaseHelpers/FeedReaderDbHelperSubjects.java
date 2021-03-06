@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import com.olivermorgan.ontime.main.Activities.MainActivity;
 import com.olivermorgan.ontime.main.R;
@@ -51,8 +52,27 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
 
     public void onCreate(SQLiteDatabase db) {
 //        db.execSQL("PRAGMA schema.user_version = "+MainActivity.userId);
-        db.execSQL(SQL_DELETE_ENTRIES);
         db.execSQL(SQL_CREATE_ENTRIES);
+    }
+
+    public static void deleteAllSubject(Context context) throws android.database.sqlite.SQLiteException{
+        try {
+            FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(context);
+
+            // Gets the data repository in write mode
+            SQLiteDatabase dbForSubject = dbHelperForSubject.getWritableDatabase();
+
+            String querySubject =
+                    "DELETE FROM " + TABLE_NAME;
+
+            dbForSubject.execSQL(querySubject);
+
+            dbHelperForSubject.close();
+            dbForSubject.close();
+        }catch (Exception e){
+            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
+        }
+
     }
 
     public static void deleteSubject(String subjectName, Context context) throws android.database.sqlite.SQLiteException{
@@ -388,6 +408,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
     public static boolean write(Context context, Intent intent, String subject){
         FeedReaderDbHelperSubjects dbHelperForSubject =  new FeedReaderDbHelperSubjects(context);
         // Gets the data repository in write mode
+        Log.e("Subject: ",subject);
         SQLiteDatabase dbForSubject = dbHelperForSubject.getWritableDatabase();
         try {
             // adding to database

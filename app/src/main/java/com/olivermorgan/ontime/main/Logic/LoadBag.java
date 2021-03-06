@@ -50,7 +50,10 @@ public class LoadBag {
 
     private final Context context;
     private final LifecycleOwner lifecycleOwner;
-     Rozvrh rozvrh;
+    Rozvrh rozvrh;
+    Thread updateThread;
+    Thread updateThread2;
+
 
 
     public LoadBag(Context context, LifecycleOwner lifecycleOwner){
@@ -66,9 +69,10 @@ public class LoadBag {
 
 
     public void updateDatabaseWithNewBakalariTimeTable() {
-        new Thread(()-> {
+
+       new Thread(()-> {
             List<Subject> subjects = new ArrayList<>();
-            context.deleteDatabase(FeedReaderDbHelperSubjects.DATABASE_NAME);
+            FeedReaderDbHelperSubjects.deleteAllSubject(context);
             // setup current rozvrh so overview can display it
             currentRozvrh = rozvrh;
 
@@ -113,6 +117,7 @@ public class LoadBag {
                 intent.putExtra("putInToBag", false);
 
                 try {
+                    Log.d("what are you doing here", "here");
                     FeedReaderDbHelperSubjects.write(context, intent, subjects.get(i).getName());
                 }catch (Exception e){
                     ((Activity) getContext()).runOnUiThread(() -> {
@@ -142,12 +147,14 @@ public class LoadBag {
 
 
 
+
+
     }
 
     public void updateDatabaseWithNewBakalariTimeTable(Runnable runnable) {
-        new Thread(()-> {
+        FeedReaderDbHelperSubjects.deleteAllSubject(context);
+        updateThread = new Thread(()-> {
             List<Subject> subjects = new ArrayList<>();
-            context.deleteDatabase(FeedReaderDbHelperSubjects.DATABASE_NAME);
             // setup current rozvrh so overview can display it
             currentRozvrh = rozvrh;
 
@@ -177,7 +184,7 @@ public class LoadBag {
                 }
             }
 
-
+            Log.e("Subject: ", "NEWWW");
             for (int i = 0; i < subjects.size(); i++) {
                 Intent intent = new Intent();
                 if (subjects.get(i).getName().equals("")) i++; // skip free hours
@@ -205,7 +212,7 @@ public class LoadBag {
             }
             for (Subject subject : subjects) {
                 // set default item name => items/pomůcky
-                if (FeedReaderDbHelperItems.getContent(context, subject.getName()).size() == 0) {
+                if (FeedReaderDbHelperItems.getContent(context.getApplicationContext(), subject.getName()).size() == 0) {
                     Intent intent = new Intent();
                     intent.putExtra("putInToBag", false);
                     List<Item> items = new ArrayList<>();
@@ -217,7 +224,8 @@ public class LoadBag {
                 }
             }
             ((Activity)getContext()).runOnUiThread(runnable);
-        }).start();
+        });
+        updateThread.start();
 
 
 
@@ -230,7 +238,7 @@ public class LoadBag {
 
         //what week is it from now (0: this, 1: next, -1: last, Integer.MAX_VALUE: permanent)
 
-        new Thread(()-> {
+        updateThread2 = new Thread(()-> {
             if (weekIndex == Integer.MAX_VALUE)
                 week = null;
             else
@@ -271,8 +279,7 @@ public class LoadBag {
                     }
                 });
             });
-        }).start();
-
+        });
         //debug timing: Log.d(TAG_TIMER, "displayWeek end " + Utils.getDebugTime());
     }
 
@@ -315,7 +322,6 @@ public class LoadBag {
     private void onNetResponse(int code, Rozvrh rozvrh, Runnable runnable) {
         //check if fragment was not removed while loading
         //check if fragment was not removed while loading
-        Log.e("HERE","HERE");
         if (rozvrh != null) {
             Log.e("1","1");
             rozvrhAPI.clearMemory();
@@ -325,7 +331,7 @@ public class LoadBag {
         //onNetLoaded
         if (code == SUCCESS) {
             if (offline) {
-                Log.e("2","2");
+
                 rozvrhAPI.clearMemory();
                 this.rozvrh = rozvrh;
                 MainActivity.showAlert(context,context.getResources().getString(R.string.OFFLINE), context.getResources().getString(R.string.OFFLINEsubtext));
@@ -333,7 +339,7 @@ public class LoadBag {
             }
             else {
                 if (rozvrh == null){
-                    Log.e("3","3");
+
                     runnable.run();
                 }
                 offline = false;
@@ -365,6 +371,7 @@ public class LoadBag {
         //check if fragment was not removed while loading
         if (code == SUCCESS) {
             this.rozvrh = rozvrh;
+            Log.d("HERE1","HERE");
             updateDatabaseWithNewBakalariTimeTable();
 
         }
@@ -378,11 +385,8 @@ public class LoadBag {
             week = null;
         else
             week = Utils.getDisplayWeekMonday(getContext()).plusWeeks(weekIndex);
-
         rozvrhAPI.refresh(week, rw -> {
-            /*if (rw.getCode() != SUCCESS){
-                displayWeek(weekIndex, false);
-            }else {*/
+
             onNetResponse(rw.getCode(), rw.getRozvrh(),runnable);
             /*}*/
         });

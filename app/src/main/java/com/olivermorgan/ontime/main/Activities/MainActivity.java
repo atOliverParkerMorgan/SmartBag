@@ -163,8 +163,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(login.isLoggedIn()) menu.removeGroup(R.id.subject);
         getMenuInflater().inflate(R.menu.top_nav_main_menu, menu);
+        if(login.isLoggedIn()){
+            MenuItem item = menu.findItem(R.id.subject);
+            item.setVisible(false);
+        }
         return true;
     }
 
