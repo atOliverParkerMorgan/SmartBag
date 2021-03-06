@@ -9,7 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import com.olivermorgan.ontime.main.Activities.MainActivity;
 import com.olivermorgan.ontime.main.Adapter.Item;
+import com.olivermorgan.ontime.main.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +43,10 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
 
     public void onCreate(SQLiteDatabase db) {
        // db.execSQL("PRAGMA schema.user_version = "+ MainActivity.userId);
+
+        db.execSQL(SQL_DELETE_ENTRIES);
         db.execSQL(SQL_CREATE_ENTRIES);
+
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -66,39 +71,47 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
         FeedReaderDbHelperItems dbHelperForItem = new FeedReaderDbHelperItems(context);
         SQLiteDatabase dbForItem = dbHelperForItem.getReadableDatabase();
 
-        // Define a projection that specifies which columns from the database
-        // you will actually use after this query.
-        final String[] projectionItem = {
-                BaseColumns._ID,
-                FeedEntry.COLUMN_NAME_TITLE,
-                FeedEntry.COLUMN_SUBJECT_TITLE
-        };
-        // subset is initialized in switch statement
-        String selectionItem = FeedEntry.COLUMN_SUBJECT_TITLE + " = ?";
-        final String[] selectionArgsItem = {subjectName};
+        try {
+            // Define a projection that specifies which columns from the database
+            // you will actually use after this query.
+            final String[] projectionItem = {
+                    BaseColumns._ID,
+                    FeedEntry.COLUMN_NAME_TITLE,
+                    FeedEntry.COLUMN_SUBJECT_TITLE
+            };
+            // subset is initialized in switch statement
+            String selectionItem = FeedEntry.COLUMN_SUBJECT_TITLE + " = ?";
+            final String[] selectionArgsItem = {subjectName};
 
-        // How you want the results sorted in the resulting Cursor
-        String sortOrderItem =
-                FeedEntry.COLUMN_NAME_TITLE + " DESC";
+            // How you want the results sorted in the resulting Cursor
+            String sortOrderItem =
+                    FeedEntry.COLUMN_NAME_TITLE + " DESC";
 
-        Cursor cursorItem = dbForItem.query(
-                TABLE_NAME,   // The table to query
-                projectionItem,             // The array of columns to return (pass null to get all)
-                selectionItem,              // The columns for the WHERE clause
-                selectionArgsItem,          // The values for the WHERE clause
-                null,                   // don't group the rows
-                null,                   // don't filter by row groups
-                sortOrderItem               // The sort order
-        );
-        List<String> subjectNames = new ArrayList<>();
-        while(cursorItem.moveToNext()) {
-            String subject = cursorItem.getString(
-                    cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_TITLE));
-            subjectNames.add(subject);
+            Cursor cursorItem = dbForItem.query(
+                    TABLE_NAME,   // The table to query
+                    projectionItem,             // The array of columns to return (pass null to get all)
+                    selectionItem,              // The columns for the WHERE clause
+                    selectionArgsItem,          // The values for the WHERE clause
+                    null,                   // don't group the rows
+                    null,                   // don't filter by row groups
+                    sortOrderItem               // The sort order
+            );
+            List<String> subjectNames = new ArrayList<>();
+            while (cursorItem.moveToNext()) {
+                String subject = cursorItem.getString(
+                        cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_TITLE));
+                subjectNames.add(subject);
+            }
+            cursorItem.close();
+
+            return subjectNames;
+        }catch (Exception e){
+            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
+            return new ArrayList<>();
+        }finally {
+            dbForItem.close();
+            dbHelperForItem.close();
         }
-        cursorItem.close();
-
-        return subjectNames;
     }
 
 
@@ -112,25 +125,34 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
         SQLiteDatabase dbForItems = dbHelperForItems.getWritableDatabase();
 
         // Create a new map of values, where column names are the keys
+        try {
+            // adding data to table
 
-        // adding data to table
-
-        for (Item item : defaultItemsDataItemsToAdd) {
-            ContentValues valuesForItems = new ContentValues();
-            valuesForItems.put(FeedEntry.COLUMN_NAME_TITLE, item.getItemName());
-            valuesForItems.put(FeedEntry.COLUMN_SUBJECT_TITLE, item.getSubjectName());
-            if("null".equals(String.valueOf(intent.getSerializableExtra("putInToBag")))) {
-                valuesForItems.put(FeedEntry.IS_IN_BAG, String.valueOf(item.isInBag()));
-            }else{
-                valuesForItems.put(FeedEntry.IS_IN_BAG, String.valueOf(intent.getSerializableExtra("putInToBag")));
+            for (Item item : defaultItemsDataItemsToAdd) {
+                ContentValues valuesForItems = new ContentValues();
+                valuesForItems.put(FeedEntry.COLUMN_NAME_TITLE, item.getItemName());
+                valuesForItems.put(FeedEntry.COLUMN_SUBJECT_TITLE, item.getSubjectName());
+                if ("null".equals(String.valueOf(intent.getSerializableExtra("putInToBag")))) {
+                    valuesForItems.put(FeedEntry.IS_IN_BAG, String.valueOf(item.isInBag()));
+                } else {
+                    valuesForItems.put(FeedEntry.IS_IN_BAG, String.valueOf(intent.getSerializableExtra("putInToBag")));
+                }
+                // Insert the new row, returning the primary key value of the new row
+                if (dbForItems.insert(TABLE_NAME, null, valuesForItems) < 0) {
+                    dbHelperForItems.close();
+                    dbForItems.close();
+                    return false;
+                }
             }
-            // Insert the new row, returning the primary key value of the new row
-            if (dbForItems.insert(TABLE_NAME, null, valuesForItems)<0){
+            return true;
+        }catch (Exception e){
                 return false;
-            }
+        }finally {
+            dbHelperForItems.close();
+            dbForItems.close();
         }
         // the method was successful
-        return true;
+
 
     } public static boolean write(Context context, Intent intent, final List<Item> defaultItemsDataItemsToAdd, String subjectName){
 
@@ -140,6 +162,7 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
         // Gets the data repository in write mode
         SQLiteDatabase dbForItems = dbHelperForItems.getWritableDatabase();
 
+        try{
         // Create a new map of values, where column names are the keys
 
         // adding data to table
@@ -161,20 +184,38 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
         }
         // the method was successful
         return true;
+        }catch (Exception e){
+            return false;
+        }finally {
+            dbHelperForItems.close();
+            dbForItems.close();
+        }
 
     }
 
     public static boolean isInBag(Context context, String itemName){
         FeedReaderDbHelperItems dbHelperForItem = new FeedReaderDbHelperItems(context);
         SQLiteDatabase dbForItem = dbHelperForItem.getReadableDatabase();
+
+        try {
+
         String Query = "Select * from " + TABLE_NAME + " where " + IS_IN_BAG + " = " + "'true'"+ " AND "+ COLUMN_NAME_TITLE + " = " + "'"+itemName+"'";
         Cursor cursor = dbForItem.rawQuery(Query, null);
         if(cursor.getCount() <= 0){
             cursor.close();
+            dbHelperForItem.close();
+            dbForItem.close();
             return false;
         }
         cursor.close();
+
         return true;
+        }catch (Exception e){
+            return false;
+        }finally {
+            dbHelperForItem.close();
+            dbForItem.close();
+        }
 
     }
 
@@ -182,23 +223,32 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
         FeedReaderDbHelperItems dbHelperForItem = new FeedReaderDbHelperItems(context);
         SQLiteDatabase dbForItem = dbHelperForItem.getReadableDatabase();
 
-        // subset is initialized in switch statement
-        String selectionItem = "SELECT * FROM "+ FeedEntry.TABLE_NAME+" WHERE "+FeedReaderDbHelperItems.FeedEntry.IS_IN_BAG+" = "+"'true'";
+        try {
 
-        Cursor  cursorItem = dbForItem.rawQuery(selectionItem,null);
+            // subset is initialized in switch statement
+            String selectionItem = "SELECT * FROM " + FeedEntry.TABLE_NAME + " WHERE " + FeedReaderDbHelperItems.FeedEntry.IS_IN_BAG + " = " + "'true'";
 
-        // get all the subjects that have today marked as true
-        List<String[]> subjectNames = new ArrayList<>();
-        while(cursorItem.moveToNext()) {
-            String item = cursorItem.getString(
-                    cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_TITLE));
-            String subject = cursorItem.getString(
-                    cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_SUBJECT_TITLE));
-            subjectNames.add(new String[]{item,subject});
+            Cursor cursorItem = dbForItem.rawQuery(selectionItem, null);
+
+            // get all the subjects that have today marked as true
+            List<String[]> subjectNames = new ArrayList<>();
+            while (cursorItem.moveToNext()) {
+                String item = cursorItem.getString(
+                        cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_TITLE));
+                String subject = cursorItem.getString(
+                        cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_SUBJECT_TITLE));
+                subjectNames.add(new String[]{item, subject});
+            }
+            cursorItem.close();
+            return subjectNames;
+
+        }catch (Exception e){
+            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
+            return new ArrayList<>();
+        }finally {
+            dbHelperForItem.close();
+            dbForItem.close();
         }
-        cursorItem.close();
-
-        return subjectNames;
     }
 
 
@@ -207,13 +257,22 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
     public static void editBag(Context context, Item item, boolean add){
         FeedReaderDbHelperItems dbHelperItems = new FeedReaderDbHelperItems(context);
         SQLiteDatabase dbForItems = dbHelperItems.getWritableDatabase();
-        String queryItems =
-                "UPDATE "+ TABLE_NAME+" SET "+
-                        FeedReaderDbHelperItems.FeedEntry.IS_IN_BAG+" = "+"'"+add+"'"+
-                        " WHERE "+ FeedEntry.COLUMN_NAME_TITLE+" = "+"'"+item.getItemName()+"' AND "+
-                        FeedEntry.COLUMN_SUBJECT_TITLE+" = "+"'"+item.getSubjectName()+"'";
+        try {
 
-        dbForItems.execSQL(queryItems);
+            String queryItems =
+                    "UPDATE " + TABLE_NAME + " SET " +
+                            FeedReaderDbHelperItems.FeedEntry.IS_IN_BAG + " = " + "'" + add + "'" +
+                            " WHERE " + FeedEntry.COLUMN_NAME_TITLE + " = " + "'" + item.getItemName() + "' AND " +
+                            FeedEntry.COLUMN_SUBJECT_TITLE + " = " + "'" + item.getSubjectName() + "'";
+
+            dbForItems.execSQL(queryItems);
+        }catch (Exception e){
+            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
+        }finally {
+            dbHelperItems.close();
+            dbForItems.close();
+        }
+
     }
 
 
@@ -221,32 +280,62 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
     public static void deleteSubject(Context context, String subjectName) throws android.database.sqlite.SQLiteException{
         FeedReaderDbHelperItems dbHelperItems = new FeedReaderDbHelperItems(context);
         SQLiteDatabase dbForItems = dbHelperItems.getWritableDatabase();
-        String queryItems =
-                " DELETE FROM "+ TABLE_NAME + " WHERE "+ FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE +" = "+"'"+subjectName+"'";
 
-        dbForItems.execSQL(queryItems);
+        try {
+            String queryItems =
+                    " DELETE FROM " + TABLE_NAME + " WHERE " + FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE + " = " + "'" + subjectName + "'";
+
+            dbForItems.execSQL(queryItems);
+
+            dbHelperItems.close();
+            dbForItems.close();
+        }catch (Exception e){
+            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
+        }finally {
+            dbHelperItems.close();
+            dbForItems.close();
+        }
 
     }
 
     public static void deleteItem(Context context, String itemName) throws android.database.sqlite.SQLiteException{
         FeedReaderDbHelperItems dbHelperItems = new FeedReaderDbHelperItems(context);
         SQLiteDatabase dbForItems = dbHelperItems.getWritableDatabase();
+
+        try {
+
         String queryItems =
                 " DELETE FROM "+ TABLE_NAME + " WHERE "+ FeedEntry.COLUMN_NAME_TITLE +" = "+"'"+itemName+"'";
 
         dbForItems.execSQL(queryItems);
+
+        }catch (Exception e){
+            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
+        }finally {
+            dbHelperItems.close();
+            dbForItems.close();
+        }
 
     }
 
     public static void edit(Context context, String subjectName, String oldSubjectName) throws android.database.sqlite.SQLiteException{
         FeedReaderDbHelperItems dbHelperItems = new FeedReaderDbHelperItems(context);
         SQLiteDatabase dbForItems = dbHelperItems.getWritableDatabase();
-        String queryItems =
-                "UPDATE "+ TABLE_NAME+" SET "+
-                        FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE+" = "+"'"+subjectName+"'"+
-                        " WHERE "+ FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE+" = "+"'"+oldSubjectName+"'";
 
-        dbForItems.execSQL(queryItems);
+        try {
+            String queryItems =
+                    "UPDATE " + TABLE_NAME + " SET " +
+                            FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE + " = " + "'" + subjectName + "'" +
+                            " WHERE " + FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE + " = " + "'" + oldSubjectName + "'";
+
+            dbForItems.execSQL(queryItems);
+        }catch (Exception e){
+            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
+        }finally {
+            dbHelperItems.close();
+            dbForItems.close();
+        }
+
     }
     public static boolean subjectExists(Context context, String subjectName){
         FeedReaderDbHelperItems dbHelperForItem = new FeedReaderDbHelperItems(context);
@@ -258,10 +347,14 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
                 return false;
             }
             cursor.close();
+
             return true;
         }catch (android.database.sqlite.SQLiteException e){
             Log.d("Error", String.valueOf(e));
             return false;
+        }finally {
+            dbHelperForItem.close();
+            dbForItem.close();
         }
     }
 

@@ -9,6 +9,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
+import com.olivermorgan.ontime.main.Activities.MainActivity;
+import com.olivermorgan.ontime.main.R;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -48,20 +51,28 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
 
     public void onCreate(SQLiteDatabase db) {
 //        db.execSQL("PRAGMA schema.user_version = "+MainActivity.userId);
+        db.execSQL(SQL_DELETE_ENTRIES);
         db.execSQL(SQL_CREATE_ENTRIES);
     }
 
     public static void deleteSubject(String subjectName, Context context) throws android.database.sqlite.SQLiteException{
-        FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(context);
+        try {
+            FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(context);
 
-        // Gets the data repository in write mode
-        SQLiteDatabase dbForSubject = dbHelperForSubject.getWritableDatabase();
+            // Gets the data repository in write mode
+            SQLiteDatabase dbForSubject = dbHelperForSubject.getWritableDatabase();
 
-        String querySubject =
-                "DELETE FROM "+TABLE_NAME+ " WHERE "+ COLUMN_NAME_TITLE+" = "+"'"+subjectName+"'";
-        FeedReaderDbHelperItems.deleteSubject(context, subjectName); // delete all items of this subject
+            String querySubject =
+                    "DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_TITLE + " = " + "'" + subjectName + "'";
+            FeedReaderDbHelperItems.deleteSubject(context, subjectName); // delete all items of this subject
 
-        dbForSubject.execSQL(querySubject);
+            dbForSubject.execSQL(querySubject);
+
+            dbHelperForSubject.close();
+            dbForSubject.close();
+        }catch (Exception e){
+            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
+        }
 
     }
 
@@ -90,6 +101,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
     public static String[] getDaysOfSubjects(Context context, String subjectName){
         FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(context);
         SQLiteDatabase dbForSubject = dbHelperForSubject.getReadableDatabase();
+        try {
 
         final String[] projectionSubject = {
                 FeedEntry.COLUMN_NAME_MONDAY,
@@ -129,12 +141,22 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
         }
 
         return daysValue;
+        }catch (Exception e){
+            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
+            return new String[]{};
+        }finally {
+            dbHelperForSubject.close();
+            dbForSubject.close();
+        }
     }
 
 
     public static List<List<String>> getContent(Context context, boolean getAll){
         FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(context);
         SQLiteDatabase dbForSubject = dbHelperForSubject.getReadableDatabase();
+
+        try {
+
         List<List<String>> subjectNames = new ArrayList<>();
 
         if(!getAll) {
@@ -234,12 +256,21 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
         }
 
         return subjectNames;
+        }catch (Exception e){
+            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
+            return new ArrayList<>();
+        }finally {
+            dbHelperForSubject.close();
+            dbForSubject.close();
+        }
     }
 
     public static List<List<String>> getContent(Context context, int calendar){ // overloading method fo getting subjects for specific days
         FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(context);
         SQLiteDatabase dbForSubject = dbHelperForSubject.getReadableDatabase();
-        List<List<String>> subjectNames = new ArrayList<>();
+        try {
+
+            List<List<String>> subjectNames = new ArrayList<>();
 
 
             // Define a projection that specifies which columns from the database
@@ -261,7 +292,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
             final String[] selectionArgsSubject = {"true"};
 
 
-            if(calendar==-1){ // -1 is tomorrow
+            if (calendar == -1) { // -1 is tomorrow
                 Calendar calendarDay = Calendar.getInstance();
 
                 switch (calendarDay.getTime().toString().substring(0, 2)) {
@@ -287,8 +318,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
                         selectionSubject = FeedEntry.COLUMN_NAME_MONDAY + " = ?";
                         break;
                 }
-            }
-            else {
+            } else {
                 switch (calendar) {
                     case 2:
                         selectionSubject = FeedEntry.COLUMN_NAME_MONDAY + " = ?";
@@ -343,18 +373,25 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
                 subjectNames.add(subject);
             }
             cursorSubject.close();
+            return subjectNames;
+        }catch (Exception e){
+            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
+            return new ArrayList<>();
+        }finally {
+            dbHelperForSubject.close();
+            dbForSubject.close();
+        }
 
 
-        return subjectNames;
     }
 
     public static boolean write(Context context, Intent intent, String subject){
+        FeedReaderDbHelperSubjects dbHelperForSubject =  new FeedReaderDbHelperSubjects(context);
+        // Gets the data repository in write mode
+        SQLiteDatabase dbForSubject = dbHelperForSubject.getWritableDatabase();
         try {
             // adding to database
             // DataBase work
-            FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(context);
-            // Gets the data repository in write mode
-            SQLiteDatabase dbForSubject = dbHelperForSubject.getWritableDatabase();
             // Create a new map of values, where column names are the keys
             ContentValues valuesForSubject = new ContentValues();
             valuesForSubject.put(COLUMN_NAME_TITLE, subject);
@@ -366,11 +403,17 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
             valuesForSubject.put(FeedEntry.COLUMN_NAME_SATURDAY, (String) intent.getSerializableExtra("Saturday"));
             valuesForSubject.put(FeedEntry.COLUMN_NAME_SUNDAY, (String) intent.getSerializableExtra("Sunday"));
 
-
             // Insert the new row, returning the primary key value of the new row
             return dbForSubject.insert(TABLE_NAME, null, valuesForSubject)>0;
-        }catch (Exception e){
+        }
+
+        catch (Exception e){
+            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
             return false;
+
+        }finally {
+            dbHelperForSubject.close();
+            dbForSubject.close();
         }
 
 
@@ -389,6 +432,9 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
         // Gets the data repository in write mode
         SQLiteDatabase dbForSubject = dbHelperForSubject.getWritableDatabase();
 
+        try {
+
+
         String query =
                 "UPDATE "+TABLE_NAME+" SET "+
                 COLUMN_NAME_TITLE+" = "+"'"+newSubjectName+"'"+", "+
@@ -404,16 +450,25 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
 
         FeedReaderDbHelperItems.edit(context, newSubjectName, oldSubjectName); // edit all items of this subject
         dbForSubject.execSQL(query);
+
+        }catch (Exception e){
+            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
+        }finally {
+            dbHelperForSubject.close();
+            dbForSubject.close();
+        }
+
     }
 
     public static void edit(Context context, String oldSubjectName, String newSubjectName) throws android.database.sqlite.SQLiteException{
-
-        // adding to database
         // DataBase work
         FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(context);
 
         // Gets the data repository in write mode
         SQLiteDatabase dbForSubject = dbHelperForSubject.getWritableDatabase();
+
+        try{
+        // adding to database
 
         String query =
                 "UPDATE "+TABLE_NAME+" SET "+
@@ -424,5 +479,11 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
         FeedReaderDbHelperItems.edit(context, newSubjectName, oldSubjectName); // edit all items of this subject
         dbForSubject.execSQL(query);
 
+        }catch (Exception e){
+            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
+        }finally {
+            dbHelperForSubject.close();
+            dbForSubject.close();
+        }
     }
 }

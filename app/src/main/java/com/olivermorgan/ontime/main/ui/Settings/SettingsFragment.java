@@ -84,12 +84,11 @@ public class SettingsFragment extends Fragment{
             czech.setChecked(true);
             restart();
         });
-
+        Login login = new Login(getContext());
         // is logged in
         new Thread(()-> {
 
             ImageView loginButton = mainView.findViewById(R.id.bakalariLoginButton);
-            Login login = new Login(getContext());
             if (login.isLoggedIn()) {
                 TextView name = mainView.findViewById(R.id.bakalari);
                 name.setText(SharedPrefs.getString(getContext(), SharedPrefs.NAME));
@@ -126,6 +125,18 @@ public class SettingsFragment extends Fragment{
             });
 
             @SuppressLint("UseSwitchCompatOrMaterialCode") Switch weekendOn = mainView.findViewById(R.id.deleteSundayAndSaturdaySwitch);
+            TextView weekendOnText = mainView.findViewById(R.id.doNotShowSaturdayAndSundayText);
+
+            if(login.isLoggedIn()){
+                weekendOn.setClickable(false);
+                weekendOn.setVisibility(View.INVISIBLE);
+                weekendOnText.setVisibility(View.INVISIBLE);
+            }else{
+                weekendOn.setClickable(true);
+                weekendOn.setVisibility(View.VISIBLE);
+                weekendOnText.setVisibility(View.VISIBLE);
+            }
+
             weekendOn.setChecked(!weekendOnBoolean);
             weekendOn.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 //declare the shardPreferences variable..

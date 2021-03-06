@@ -54,7 +54,7 @@ public class AddItem extends AppCompatActivity {
 
 
             if(text.equals("")){
-                Toast.makeText(v.getContext(), R.string.nothingInSubjectFiled,
+                Toast.makeText(v.getContext(), getResources().getString(R.string.nothingInSubjectFiled),
                         Toast.LENGTH_LONG).show();
             }else {
                 // also the item cannot already be in the recycle viewer

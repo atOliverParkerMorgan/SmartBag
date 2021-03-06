@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.Adapter.MyListAdapter;
+import com.olivermorgan.ontime.main.BakalariAPI.Login;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.olivermorgan.ontime.main.R;
@@ -154,7 +157,15 @@ public class EditSubject extends AppCompatActivity {
 
 
         });
+        Login login = new Login(this);
 
+        if(login.isLoggedIn()){
+            viewHolder.deleteButton.setClickable(false);
+            viewHolder.deleteButton.setVisibility(View.INVISIBLE);
+        }else{
+            viewHolder.deleteButton.setClickable(true);
+            viewHolder.deleteButton.setVisibility(View.VISIBLE);
+        }
 
         viewHolder.deleteButton.setOnClickListener(v -> {
             AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());

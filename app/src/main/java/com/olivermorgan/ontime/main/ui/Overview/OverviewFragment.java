@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,7 @@ import java.util.List;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+
 
 
 public class OverviewFragment extends Fragment {
@@ -101,18 +103,28 @@ public class OverviewFragment extends Fragment {
             refresh.setOnClickListener(v->{
                 week = SharedPrefs.getInt(getContext(), "weekIndex");
 
+                refresh.setClickable(false);
+                back.setClickable(false);
+                front.setClickable(false);
+
+                refresh.setVisibility(View.INVISIBLE);
                 front.setVisibility(View.INVISIBLE);
                 back.setVisibility(View.INVISIBLE);
                 progressBarLoadTable.setVisibility(View.VISIBLE);
 
                 MainActivity.loadBag.refresh(week,()->{
-                    MainActivity.loadBag.updateDatabaseWithNewBakalariTimeTable();
-                    updateTable(weekendOnBoolean,table,view);
-                },()->{
                     setWeekText(week, weekDisplay);
+
+                    updateTable(weekendOnBoolean,table,view);
+
                     progressBarLoadTable.setVisibility(View.INVISIBLE);
                     front.setVisibility(View.VISIBLE);
                     back.setVisibility(View.VISIBLE);
+                    refresh.setVisibility(View.VISIBLE);
+
+                    refresh.setClickable(true);
+                    back.setClickable(true);
+                    front.setClickable(true);
                 });
             });
 
@@ -122,19 +134,29 @@ public class OverviewFragment extends Fragment {
 
                     week = SharedPrefs.getInt(getContext(), "weekIndex");
 
+                    refresh.setClickable(false);
+                    back.setClickable(false);
+                    front.setClickable(false);
+
+                    refresh.setVisibility(View.INVISIBLE);
                     front.setVisibility(View.INVISIBLE);
                     back.setVisibility(View.INVISIBLE);
                     progressBarLoadTable.setVisibility(View.VISIBLE);
 
                     MainActivity.loadBag.refresh(week-1,()->{
-                        MainActivity.loadBag.updateDatabaseWithNewBakalariTimeTable();
-                        updateTable(weekendOnBoolean,table,view);
-                    },()->{
                         SharedPrefs.setInt(getContext(), "weekIndex", week-1);
                         setWeekText(week-1, weekDisplay);
+
+                        updateTable(weekendOnBoolean,table,view);
+
                         progressBarLoadTable.setVisibility(View.INVISIBLE);
                         front.setVisibility(View.VISIBLE);
                         back.setVisibility(View.VISIBLE);
+                        refresh.setVisibility(View.VISIBLE);
+
+                        refresh.setClickable(true);
+                        back.setClickable(true);
+                        front.setClickable(true);
                     });
 
 
@@ -147,19 +169,29 @@ public class OverviewFragment extends Fragment {
 
                     week = SharedPrefs.getInt(getContext(), "weekIndex");
 
+                    refresh.setClickable(false);
+                    back.setClickable(false);
+                    front.setClickable(false);
+
+                    refresh.setVisibility(View.INVISIBLE);
                     front.setVisibility(View.INVISIBLE);
                     back.setVisibility(View.INVISIBLE);
                     progressBarLoadTable.setVisibility(View.VISIBLE);
 
                     MainActivity.loadBag.refresh(week+1,()->{
-                        MainActivity.loadBag.updateDatabaseWithNewBakalariTimeTable();
-                        updateTable(weekendOnBoolean,table,view);
-                    },()->{
                         SharedPrefs.setInt(getContext(), "weekIndex", week+1);
                         setWeekText(week+1, weekDisplay);
+
+                        updateTable(weekendOnBoolean,table,view);
+
                         progressBarLoadTable.setVisibility(View.INVISIBLE);
                         front.setVisibility(View.VISIBLE);
                         back.setVisibility(View.VISIBLE);
+                        refresh.setVisibility(View.VISIBLE);
+
+                        refresh.setClickable(true);
+                        back.setClickable(true);
+                        front.setClickable(true);
                     });
                 }
             });
@@ -240,6 +272,19 @@ public class OverviewFragment extends Fragment {
                     itemRef.getFile(databaseItems).addOnSuccessListener(taskSnapshot -> {
                         Toast.makeText(getContext(), getActivity().getResources().getString(R.string.successfulUpdateWithCode)+" " + code.getText().toString(), Toast.LENGTH_LONG).show();
                         updateTable(weekendOnBoolean, table,  view);
+
+                        progressBarLoadTable.setVisibility(View.INVISIBLE);
+                        refresh.setVisibility(View.INVISIBLE);
+                        front.setVisibility(View.INVISIBLE);
+                        back.setVisibility(View.INVISIBLE);
+
+                        refresh.setClickable(false);
+                        front.setClickable(false);
+                        back.setClickable(false);
+
+                        weekDisplay.setText("");
+
+
                         Handler handler = new Handler();
                         handler.postDelayed(() -> progressBar.setProgress(0), 1500);
 
@@ -265,7 +310,6 @@ public class OverviewFragment extends Fragment {
 
         //can only be placed into thread if context is valid
         if(SharedPrefs.getBoolean(getContext(),"updateTableInThread")) {
-
             // create thread to post logic in
             Handler mainHandler = new Handler(Looper.getMainLooper());
             mainHandler.post(() -> updateTable(weekendOnBoolean, table, view));
@@ -350,6 +394,7 @@ public class OverviewFragment extends Fragment {
     @SuppressLint("SetTextI18n")
     private void updateTable(boolean weekendOnBoolean, TableLayout table, View view){
         // reset table
+
         table.removeAllViews();
 
         int max = Integer.MIN_VALUE;

@@ -38,7 +38,7 @@ public class AddFragment extends Fragment {
         final View mainView = inflater.inflate(R.layout.fragment_add, parent, false);
 
         // set title
-        ((MainActivity)getActivity()).getSupportActionBar().setTitle(R.string.to_add_text);
+        ((MainActivity)requireActivity()).getSupportActionBar().setTitle(R.string.to_add_text);
 
         // tutorial
         final String SHOWCASE_ID = "firstTutorial1";
@@ -51,7 +51,7 @@ public class AddFragment extends Fragment {
         sequence.setConfig(config);
 
         sequence.addSequenceItem(mainView.findViewById(R.id.daySpinner),
-                getActivity().getResources().getString(R.string.clickHereToSelectDay), getActivity().getResources().getString(R.string.Next));
+                requireActivity().getResources().getString(R.string.clickHereToSelectDay), requireActivity().getResources().getString(R.string.Next));
 
         sequence.start();
 

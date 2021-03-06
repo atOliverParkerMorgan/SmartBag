@@ -1,78 +1,78 @@
  <resources>
-    <string name="app_name">SmartBag</string>
-    <string name="title_add_button_navigation">Add</string>
-    <string name="title_create_subject">Create a subject</string>
-    <string name="title_remove_button_navigation">Remove</string>
-    <string name="title_overview_button_navigation">Overview</string>
-    <string name="title_bag_button_navigation">Bag</string>
-    <string name="title_add_item">Add items to Subject</string>
-    <string name="delete_icon_description">delete item button</string>
-    <string name="add_icon_description">add item button</string>
-    <string name="none">N</string>
-    <string name="days_of_the_week_text">What days of the week do you want this subject in your bag?</string>
-    <string name="add_to_bag">Do you want to add this subject into your bag?</string>
-    <string name="subject_input_text">Add the name of the subject.</string>
-    <string name="to_add_text">Add to bag</string>
-    <string name="title_overview">Overview</string>
-    <string name="to_add_text_subtitle">put these items into your bag</string>
-    <string name="to_remove_text">Remove from bag</string>
-    <string name="to_remove_text_subtitle">remove these items from your bag</string>
-    <string name="in_bag_text">Your bag</string>
-    <string name="in_bag_subtext">these items are in your bag</string>
-    <string name="cant_connect">Can\'t connect</string>
-    <string name="user_connected">You are connected!!</string>
-    <string name="monday">Monday</string>
-    <string name="tuesday">Tuesday</string>
-    <string name="wednesday">Wednesday</string>
-    <string name="thursday">Thursday</string>
-    <string name="friday">Friday</string>
-    <string name="saturday">Saturday</string>
-    <string name="sunday">Sunday</string>
-    <string name="mondayShort">Mon</string>
-    <string name="tuesdayShort">Tue</string>
-    <string name="wednesdayShort">Wed</string>
-    <string name="thursdayShort">Thu</string>
-    <string name="fridayShort">Fri</string>
-    <string name="saturdayShort">Sat</string>
-    <string name="sundayShort">Sun</string>
+     <string name="app_name">SmartBag</string>
+     <string name="title_add_button_navigation">Add</string>
+     <string name="title_create_subject">Create a subject</string>
+     <string name="title_remove_button_navigation">Remove</string>
+     <string name="title_overview_button_navigation">Overview</string>
+     <string name="title_bag_button_navigation">Bag</string>
+     <string name="title_add_item">Add items to Subject</string>
+     <string name="delete_icon_description">delete item button</string>
+     <string name="add_icon_description">add item button</string>
+     <string name="none">N</string>
+     <string name="days_of_the_week_text">What days of the week do you want this subject in your bag?</string>
+     <string name="add_to_bag">Do you want to add this subject into your bag?</string>
+     <string name="subject_input_text">Add the name of the subject.</string>
+     <string name="to_add_text">Add to bag</string>
+     <string name="title_overview">Overview</string>
+     <string name="to_add_text_subtitle">put these items into your bag</string>
+     <string name="to_remove_text">Remove from bag</string>
+     <string name="to_remove_text_subtitle">remove these items from your bag</string>
+     <string name="in_bag_text">Your bag</string>
+     <string name="in_bag_subtext">these items are in your bag</string>
+     <string name="cant_connect">Can\'t connect</string>
+     <string name="user_connected">You are connected!!</string>
+     <string name="monday">Monday</string>
+     <string name="tuesday">Tuesday</string>
+     <string name="wednesday">Wednesday</string>
+     <string name="thursday">Thursday</string>
+     <string name="friday">Friday</string>
+     <string name="saturday">Saturday</string>
+     <string name="sunday">Sunday</string>
+     <string name="mondayShort">Mon</string>
+     <string name="tuesdayShort">Tue</string>
+     <string name="wednesdayShort">Wed</string>
+     <string name="thursdayShort">Thu</string>
+     <string name="fridayShort">Fri</string>
+     <string name="saturdayShort">Sat</string>
+     <string name="sundayShort">Sun</string>
 
-    <string name="add_items_instructions">add the items that you need for this subject</string>
-    <string name="item_hint">Textbook</string>
-    <string name="subjects_hint">Add a subject name (i.e. History)</string>
-    <string name="noItemsInAdd">There aren\'t any items to add</string>
-    <string name="schoolSearch">Search for school</string>
-    <string name="noItemsInRemove">There aren\'t any items to remove</string>
-    <string name="noItemsInBag">There aren\'t any items in your bag</string>
-    <string name="instructionsEditBag">edit items</string>
+     <string name="add_items_instructions">add the items that you need for this subject</string>
+     <string name="item_hint">Textbook</string>
+     <string name="subjects_hint">Add a subject name (e.g. History)</string>
+     <string name="noItemsInAdd">There aren\'t any items to add</string>
+     <string name="schoolSearch">Search for school</string>
+     <string name="noItemsInRemove">There aren\'t any items to remove</string>
+     <string name="noItemsInBag">There aren\'t any items in your bag</string>
+     <string name="instructionsEditBag">edit items</string>
 
-    <string name="search">Search…</string>
-    <string name="connection_failed">Could not connect to server</string>
-    <string name="loading_schools_info">Loading schools info…</string>
-    <string name="discard_button">discard</string>
-    <string name="create_button">create</string>
-    <string name="add_button">add</string>
-    <string name="proceed_to_add_items_button">Proceed to add Items</string>
+     <string name="search">Search…</string>
+     <string name="connection_failed">Could not connect to server</string>
+     <string name="loading_schools_info">Loading school info…</string>
+     <string name="discard_button">discard</string>
+     <string name="create_button">create</string>
+     <string name="add_button">add</string>
+     <string name="proceed_to_add_items_button">Proceed to add Items</string>
 
-    <string name="settings_title">Settings</string>
-    <string name="settings">Settings</string>
-    <string name="login">LOGIN</string>
-    <string name="back">BACK</string>
-    <string name="dark_mode">Enable dark mode</string>
-    <string name="doNotShowSaturdaySunday">Show Saturday and Sunday</string>
-    <string name="loginTitle">Log in</string>
-    <string name="editItemSwitchInstructions"><b>Edit when you need this subject</b></string>
-    <string name="deleteEdit">Delete</string>
-    <string name="saveChangesEdit">Save</string>
-    <string name="weekendText">CLICK TO SHOW ITEMS FOR MONDAY</string>
-    <string name="editSubjectItemHint">Add and Edit Items</string>
-    <string name="uploadBagYourBag">upload your bag</string>
-    <string name="loadBag">Load Another Bag</string>
-    <string name="loadButton">Load</string>
-    <string name="yourBag">Your Bag Overview</string>
-    <string name="theItemsAreDue">Items for:</string>
-    <string name="bakalari">Synch with Bakaláři</string>
-    <string name="addSubjectButtonText">You haven\'t added any items yet. Click to add!</string>
-    <string-array name="daySpinner">
+     <string name="settings_title">Settings</string>
+     <string name="settings">Settings</string>
+     <string name="login">LOGIN</string>
+     <string name="back">BACK</string>
+     <string name="dark_mode">Enable dark mode</string>
+     <string name="doNotShowSaturdaySunday">Show Saturday and Sunday</string>
+     <string name="loginTitle">Log in</string>
+     <string name="editItemSwitchInstructions"><b>Edit when you need this subject</b></string>
+     <string name="deleteEdit">Delete</string>
+     <string name="saveChangesEdit">Save</string>
+     <string name="weekendText">CLICK TO SHOW ITEMS FOR MONDAY</string>
+     <string name="editSubjectItemHint">Add and Edit Items</string>
+     <string name="uploadBagYourBag">Upload your bag</string>
+     <string name="loadBag">Load Another Bag</string>
+     <string name="loadButton">Load</string>
+     <string name="yourBag">Your Bag Overview</string>
+     <string name="theItemsAreDue">Items for:</string>
+     <string name="bakalari">Sync with Bakaláři</string>
+     <string name="addSubjectButtonText">You haven\'t added any items yet. Click to add!</string>
+     <string-array name="daySpinner">
          <item>Today</item>
          <item>Tomorrow</item>
          <item>Monday</item>
@@ -82,84 +82,84 @@
          <item>Friday</item>
          <item>Saturday</item>
          <item>Sunday</item>
-    </string-array>
+     </string-array>
 
-    <string-array name="daySpinnerWithoutWeekend">
+     <string-array name="daySpinnerWithoutWeekend">
          <item>Today</item>
          <item>Tomorrow</item>
-         <item>Monday</item>00
+         <item>Monday</item>
          <item>Tuesday</item>
          <item>Wednesday</item>
          <item>Thursday</item>
          <item>Friday</item>
-    </string-array>
-    <string-array name="daySpinnerWithoutWeekendAndTomorrow">
+     </string-array>
+     <string-array name="daySpinnerWithoutWeekendAndTomorrow">
          <item>Today</item>
          <item>Monday</item>
          <item>Tuesday</item>
          <item>Wednesday</item>
          <item>Thursday</item>
          <item>Friday</item>
-    </string-array>
-    <string name="Loading">Loading…</string>
-    <string name="codeNameInstructions"><font size="14">Your code for sharing your bag: </font></string>
-    <string name="updateBag">UPDATE YOUR BAG</string>
-    <string name="code">CODE</string>
+     </string-array>
+     <string name="Loading">Loading…</string>
+     <string name="codeNameInstructions"><font size="14">Your code for sharing your bag: </font></string>
+     <string name="updateBag">UPDATE YOUR BAG</string>
+     <string name="code">CODE</string>
 
      <!-- Tutorial -->
-    <string name="title_single_shot">Test</string>
-    <string name="switchInstructions">Which days of the week do you want this subject in your bag?</string>
-    <string name="user_logged_in">User %1$s is now logged in.</string>
-    <string name="willShowWeek">Will show items for Saturday and Sunday</string>
-    <string name="willShowWeekNot">Will show not items for Saturday and Sunday</string>
-    <string name="success">SUCCESS</string>
-    <string name="subTextSuccess">You have successfully logged into your Bakaláři account</string>
-    <string name="unexpected_response">Oops something went wrong. We got an unexpected response.</string>
-    <string name="invalid_login">Oops your username or password is incorrect</string>
-    <string name="sever_unreachable">The servers are unreachable. Check your connection and your school address.</string>
-    <string name="disabled_servises">The servises this app needs are unavailable</string>
-    <string name="LATER">LATER</string>
-    <string name="PREFS_SWITCH_TO_NEXT_WEEK">next week</string>
-    <string name="loading_timetable">Loading your timetable from Bakaláři</string>
-    <string name="add_a_subject_description">add a Subject</string>
-    <string name="absolute_error">something went terribly wrong with your database</string>
-    <string name="info">INFORMATION</string>
-    <string name="info1">• Smartbag automatically synchronises items within the same subject names.</string>
-    <string name="info2">• The default item for subjects without any pre-defined items is: "items"</string>
-    <string name="info3">• You can change the default name in the timetable in overview by clicking on a subject</string>
-    <string name="bakaTitle" translatable="false">Bakaláři:</string>
-    <string name="interfaceTitle">Interface:</string>
-    <string name="languageTitle">Languages: </string>
-    <string name="english">English</string>
-    <string name="czech">Czech</string>
-    <string name="nothingInSubjectFiled">To add an item write some text into the text field (Textbook).</string>
-    <string name="itemAlreadyAdded">You have already added this item.</string>
-    <string name="atLeastOneItem">You must add at least one item</string>
-    <string name="databaseError">An error has occurred in the database report this issue</string>
-    <string name="anError">An error occurred</string>
-    <string name="tooLong">The subject name is too long. The maximum length is 25 characters</string>
-    <string name="mustChooseAtLeastOneDay">You have to choose at least one day of the week</string>
-    <string name="subject">The subject </string>
-    <string name="alreadyExist"> already exists. Pick an unique name</string>
-    <string name="deleteSubject">Delete Subject</string>
-    <string name="areYouSureDelete">Are you sure you want to delete </string>
-    <string name="hasBeenRemoved">has been removed from your bag</string>
-    <string name="clickHereToSelectDay">Click here to select which day do you want to prepare your bag for</string>
-    <string name="Next">NEXT</string>
-    <string name="clickHereToRemoveItemFromBag">Click here to remove this item from your bag</string>
-    <string name="gotIt">GOT IT</string>
-    <string name="hasBeenAddedToBag">has been added to your bag</string>
-    <string name="ClickIconSubject">Click the icon edit this subject</string>
-    <string name="ClickHereToAddToBag">Click here to add this item to your bag</string>
+     <string name="title_single_shot">Test</string>
+     <string name="switchInstructions">Which days of the week do you want this subject in your bag?</string>
+     <string name="user_logged_in">User %1$s is now logged in.</string>
+     <string name="willShowWeek">Will show items for Saturday and Sunday</string>
+     <string name="willShowWeekNot">Will not show items for Saturday and Sunday</string>
+     <string name="success">SUCCESS</string>
+     <string name="subTextSuccess">You have successfully logged into your Bakaláři account</string>
+     <string name="unexpected_response">Oops something went wrong. We got an unexpected response.</string>
+     <string name="invalid_login">Oops your username or password is incorrect</string>
+     <string name="sever_unreachable">The servers are unreachable. Check your connection and your school address.</string>
+     <string name="disabled_servises">The servises this app needs are unavailable</string>
+     <string name="LATER">LATER</string>
+     <string name="PREFS_SWITCH_TO_NEXT_WEEK">next week</string>
+     <string name="loading_timetable">Loading your timetable from Bakaláři</string>
+     <string name="add_a_subject_description">add a Subject</string>
+     <string name="absolute_error">Something went terribly wrong with your database</string>
+     <string name="info">INFORMATION</string>
+     <string name="info1">• Smartbag automatically synchronises items within the same subject names.</string>
+     <string name="info2">• The default item for subjects without any pre-defined items is: "items"</string>
+     <string name="info3">• You can change the default name in the timetable in overview by clicking on a subject</string>
+     <string name="bakaTitle" translatable="false">Bakaláři:</string>
+     <string name="interfaceTitle">Interface:</string>
+     <string name="languageTitle">Languages: </string>
+     <string name="english">English</string>
+     <string name="czech">Czech</string>
+     <string name="nothingInSubjectFiled">To add an item write something into the text field (Textbook).</string>
+     <string name="itemAlreadyAdded">You have already added this item.</string>
+     <string name="atLeastOneItem">You must add at least one item</string>
+     <string name="databaseError">An error has occurred in the database. Report this issue</string>
+     <string name="anError">An error occurred</string>
+     <string name="tooLong">The subject name is too long. The maximum length is 25 characters</string>
+     <string name="mustChooseAtLeastOneDay">You have to choose at least one day of the week</string>
+     <string name="subject">The subject </string>
+     <string name="alreadyExist"> already exists. Pick a unique name</string>
+     <string name="deleteSubject">Delete Subject</string>
+     <string name="areYouSureDelete">Are you sure you want to delete </string>
+     <string name="hasBeenRemoved">has been removed from your bag</string>
+     <string name="clickHereToSelectDay">Click here to select which day you want to prepare your bag for</string>
+     <string name="Next">NEXT</string>
+     <string name="clickHereToRemoveItemFromBag">Click here to remove this item from your bag</string>
+     <string name="gotIt">GOT IT</string>
+     <string name="hasBeenAddedToBag">has been added to your bag</string>
+     <string name="ClickIconSubject">Click the icon to edit this subject</string>
+     <string name="ClickHereToAddToBag">Click here to add this item to your bag</string>
      <string name="itemsForSubject">items for</string>
      <string name="invalidCode">Invalid code, must contain six upper-case letters.</string>
      <string name="downloadBag">Download bag:</string>
-     <string name="sureAboutDownloadingBagAndLogoutBaka">Are you sure you want to download another bag? This is will override all existing subjects and items. It will also log you out of your Bakaláři account.</string>
-     <string name="sureAboutDownloadingBag">Are you sure you want to download another bag? This is will override all existing subjects and items.</string>
-    <string name="incorrectCodeOrNoConnection">Error, your code is incorrect or you do not have an internet connection.</string>
-     <string name="successfulUpdateWithCode">You have successfully update your bag with the code:</string>
-     <string name="internetConnection">Error, check your internet connection.</string>
-     <string name="successUpload">Success, your bag has been uploaded.</string>
+     <string name="sureAboutDownloadingBagAndLogoutBaka">Are you sure you want to download another bag? This will override all existing subjects and items. It will also log you out of your Bakaláři account.</string>
+     <string name="sureAboutDownloadingBag">Are you sure you want to download another bag? This will override all existing subjects and items.</string>
+     <string name="incorrectCodeOrNoConnection">Error, your code is incorrect or you do not have an internet connection.</string>
+     <string name="successfulUpdateWithCode">You have successfully updated your bag with the code:</string>
+     <string name="internetConnection">Error. Check your internet connection.</string>
+     <string name="successUpload">Success. Your bag has been uploaded.</string>
      <string name="clickIconToEdit">Click the icon to edit this subject</string>
 
      <string name="currentWeek">current week</string>
@@ -182,6 +182,6 @@
      <string name="LOGINFAIL">LOGIN FAIL</string>
      <string name="LOGINFAILsubtext">Smartbag cannot login into your bakaláři account.</string>
 
-     <string name="bagCode">Put the code for sharing a bag here</string>
+     <string name="bagCode">Enter the code for sharing a bag here</string>
      <string name="bagCodeButton">Click here to load the shared bag</string>
  </resources>

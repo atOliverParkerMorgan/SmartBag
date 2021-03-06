@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     @SuppressLint("StaticFieldLeak")
     public static LoadBag loadBag;
-
+    private Login login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (userPreferences.getBoolean("first", true)) {
             SharedPrefs.setInt(this,"weekIndex", 0);
+            SharedPrefs.setBoolean(this, SharedPrefs.WEEKEND_ON, true);
+
             overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
             startActivity(new Intent(this, IntroActivity.class));
             SharedPreferences.Editor edit = userPreferences.edit();
@@ -51,7 +53,12 @@ public class MainActivity extends AppCompatActivity {
         // prevents database from updating
         boolean backSettings = getIntent().getBooleanExtra("dontUpdateDatabase", false);
 
-        Login login = new Login(this);
+        String language = SharedPrefs.getBoolean(this,"Language")?"cs":"en";
+        SettingsFragment.setLocale(this, language);
+
+        login = new Login(this);
+        if(login.isLoggedIn()) SharedPrefs.setBoolean(this, SharedPrefs.WEEKEND_ON, true);
+
         if(login.isLoggedIn()&&!activityIsBeingRestartedFromOverView&&!fromSettings&&!backSettings) {
             loadBag = new LoadBag(this, this);
             loadBag.getRozvrh(SharedPrefs.getInt(this,"weekIndex"));
@@ -67,8 +74,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             setTheme(R.style.LIGHT);
         }
-        String language = SharedPrefs.getBoolean(this,"Language")?"cs":"en";
-        SettingsFragment.setLocale(this, language);
+
 
 
 
@@ -131,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // show tool bar
                 setSupportActionBar(toolbar);
-                getSupportActionBar().show();
+                Objects.requireNonNull(getSupportActionBar()).show();
 
 
                 Fragment selectedFragment = null;
@@ -157,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        if(login.isLoggedIn()) menu.removeGroup(R.id.subject);
         getMenuInflater().inflate(R.menu.top_nav_main_menu, menu);
         return true;
     }
@@ -178,13 +185,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private Login login = null;
-    public Login getLogin() {
-        if (login == null){
-            login = new Login(this.getApplicationContext());
-        }
-        return login;
-    }
 
 
     public static void showAlert(Context context, String message, String text){
