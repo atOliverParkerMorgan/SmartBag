@@ -93,7 +93,7 @@
 
     <string name="info">INFORMACE</string>
     <string name="info1">• Smartbag automaticky synchronizuje pomůcky se jmény předmětů.</string>
-    <string name="info2">• Defoltní pomůcka pro předmět bez žadné předem dané pomůcky je: "pomůcky"</string>
+    <string name="info2">• Defoltní pomůcka pro předmět bez žadné předem dané pomůcky je: "pomůcky pro…"</string>
     <string name="info3">• Můžete změnit defoltní jméno v přehledu tím, že kliknete na předmět.</string>
     <string name="interfaceTitle">Rozhraní:</string>
     <string name="languageTitle">Jazyky: </string>

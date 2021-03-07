@@ -61,8 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(login.isLoggedIn()&&!activityIsBeingRestartedFromOverView&&!fromSettings&&!backSettings) {
             loadBag = new LoadBag(this, this);
-            loadBag.getRozvrhVariable(SharedPrefs.getInt(this,"weekIndex"));
-
+            loadBag.getRozvrh(SharedPrefs.getInt(this,"weekIndex"));
         }
 
 

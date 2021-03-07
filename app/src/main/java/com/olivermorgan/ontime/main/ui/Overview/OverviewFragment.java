@@ -101,6 +101,7 @@ public class OverviewFragment extends Fragment {
             back.setClickable(true);
             front.setClickable(true);
 
+
             refresh.setOnClickListener(v->{
                 week = SharedPrefs.getInt(getContext(), "weekIndex");
 
@@ -112,6 +113,7 @@ public class OverviewFragment extends Fragment {
                 front.setVisibility(View.INVISIBLE);
                 back.setVisibility(View.INVISIBLE);
                 progressBarLoadTable.setVisibility(View.VISIBLE);
+                MainActivity.loadBag.setDatabasehasBeenUpdated(false);
 
                 MainActivity.loadBag.refresh(week,()->{
                     setWeekText(week, weekDisplay);
@@ -126,6 +128,7 @@ public class OverviewFragment extends Fragment {
                     refresh.setClickable(true);
                     back.setClickable(true);
                     front.setClickable(true);
+                    MainActivity.loadBag.setDatabasehasBeenUpdated(true);
                 });
             });
 
@@ -143,6 +146,7 @@ public class OverviewFragment extends Fragment {
                     front.setVisibility(View.INVISIBLE);
                     back.setVisibility(View.INVISIBLE);
                     progressBarLoadTable.setVisibility(View.VISIBLE);
+                    MainActivity.loadBag.setDatabasehasBeenUpdated(false);
 
                     MainActivity.loadBag.refresh(week-1,()->{
                         SharedPrefs.setInt(getContext(), "weekIndex", week-1);
@@ -158,6 +162,7 @@ public class OverviewFragment extends Fragment {
                         refresh.setClickable(true);
                         back.setClickable(true);
                         front.setClickable(true);
+                        MainActivity.loadBag.setDatabasehasBeenUpdated(true);
                     });
 
 
@@ -178,7 +183,7 @@ public class OverviewFragment extends Fragment {
                     front.setVisibility(View.INVISIBLE);
                     back.setVisibility(View.INVISIBLE);
                     progressBarLoadTable.setVisibility(View.VISIBLE);
-
+                    MainActivity.loadBag.setDatabasehasBeenUpdated(false);
                     MainActivity.loadBag.refresh(week+1,()->{
                         SharedPrefs.setInt(getContext(), "weekIndex", week+1);
                         setWeekText(week+1, weekDisplay);
@@ -193,6 +198,8 @@ public class OverviewFragment extends Fragment {
                         refresh.setClickable(true);
                         back.setClickable(true);
                         front.setClickable(true);
+
+                        MainActivity.loadBag.setDatabasehasBeenUpdated(true);
                     });
                 }
             });
@@ -328,7 +335,6 @@ public class OverviewFragment extends Fragment {
 
         return view;
     }
-
 
     private void uploadDatabase()
     {

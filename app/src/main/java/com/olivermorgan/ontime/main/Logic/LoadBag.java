@@ -48,7 +48,7 @@ public class LoadBag {
     private LocalDate week = null;
     private boolean offline = false;
     private RozvrhAPI rozvrhAPI = null;
-    private boolean databasehasBeenUpdated = false;
+    private boolean databasehasBeenUpdated = true;
 
     private final Context context;
 
@@ -241,7 +241,7 @@ public class LoadBag {
     }
 
 
-    public void getRozvrhVariable(int weekIndex) {
+    public void getRozvrh(int weekIndex) {
 
         //what week is it from now (0: this, 1: next, -1: last, Integer.MAX_VALUE: permanent)
 
@@ -332,7 +332,6 @@ public class LoadBag {
         //check if fragment was not removed while loading
         Log.e("HERE","HERE");
         if (rozvrh != null) {
-            Log.e("1","1");
             rozvrhAPI.clearMemory();
             this.rozvrh = rozvrh;
             updateDatabaseWithNewBakalariTimeTable(runnable);
@@ -340,7 +339,6 @@ public class LoadBag {
         //onNetLoaded
         if (code == SUCCESS) {
             if (offline) {
-                Log.e("2","2");
                 rozvrhAPI.clearMemory();
                 this.rozvrh = rozvrh;
                 MainActivity.showAlert(context,context.getResources().getString(R.string.OFFLINE), context.getResources().getString(R.string.OFFLINEsubtext));
@@ -348,14 +346,12 @@ public class LoadBag {
             }
             else {
                 if (rozvrh == null){
-                    Log.e("3","3");
                     runnable.run();
                 }
                 offline = false;
             }
 
         } else {
-            Log.e("4","4");
             offline = true;
             //displayInfo.setLoadingState(DisplayInfo.ERROR);
 
@@ -405,8 +401,25 @@ public class LoadBag {
         return currentRozvrh;
     }
 
+    public static RozvrhHodina getRozvrhHodinaFromRozvrh(String name){
+        int row = getCurrentRozvrh().getDny().size();
+        for (int i = 0; i < row; i++) {
+            RozvrhDen den = getCurrentRozvrh().getDny().get(i);
 
+            for (int j = 0; j < den.getHodiny().size(); j++) {
+                RozvrhHodina item = den.getHodiny().get(j);
+                if (item.getPr().equals(name)) {
+                    return item;
+                }
+            }
 
+        }
+        return null;
+    }
+
+    public void setDatabasehasBeenUpdated(boolean databasehasBeenUpdated) {
+        this.databasehasBeenUpdated = databasehasBeenUpdated;
+    }
 }
 
 

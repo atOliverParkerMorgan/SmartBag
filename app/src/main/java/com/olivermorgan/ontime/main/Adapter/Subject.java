@@ -6,7 +6,6 @@ public class Subject {
     private final String shortName;
 
 
-
     public Subject(String name, String shortName) {
         this.week = new boolean[7];
         this.name = name;
