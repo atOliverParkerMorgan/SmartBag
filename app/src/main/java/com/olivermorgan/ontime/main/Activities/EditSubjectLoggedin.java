@@ -69,31 +69,16 @@ public class EditSubjectLoggedin extends AppCompatActivity {
         // 4. set adapter
         viewHolder.editItemsRecycleView.setAdapter(mAdapterItemsToAdd);
         // 5. set itemAdd animator to DefaultAnimator
-        new Thread(()-> {
-            boolean end = false;
-            int row = LoadBag.getCurrentRozvrh().getDny().size();
-            for (int i = 0; i < row; i++) {
-                RozvrhDen den = LoadBag.getCurrentRozvrh().getDny().get(i);
+
+        TextView info = findViewById(R.id.info);
+        String teacher = getIntent().getStringExtra("teacher").equals("")?"":getResources().getString(R.string.Teacher)+" "+getIntent().getStringExtra("teacher")+"\n";
+        String topic = getIntent().getStringExtra("topic").equals("")?"":getResources().getString(R.string.Topic)+" "+getIntent().getStringExtra("topic")+"\n";
+        String time = getIntent().getStringExtra("time1").equals("")?"":getResources().getString(R.string.Time)+" "+getIntent().getStringExtra("time1")+" - "+getIntent().getStringExtra("time2")+"\n";
+        info.setText(teacher+topic+time);
 
 
-                for (int j = 0; j < den.getHodiny().size(); j++) {
-                    RozvrhHodina item = den.getHodiny().get(j);
-                    if(item.getPr().equals(subject)){
-                        runOnUiThread(()->{
-                            TextView info = findViewById(R.id.info);
-                            String teacher = item.getUc().equals("")?"":getResources().getString(R.string.Teacher)+" "+item.getUc()+"\n";
-                            String topic = item.getTema().equals("")?"":getResources().getString(R.string.Topic)+" "+item.getTema()+"\n";
-                            String time = item.getBegintime().equals("")?"":getResources().getString(R.string.Time)+" "+item.getBegintime()+" - "+item.getEndtime()+"\n";
-                            info.setText(teacher+topic+time);
-                        });
-                        end = true;
-                        break;
-                    }
 
-                }
-                if (end) break;
-            }
-        }).start();
+
 
         // delete and save buttons
         viewHolder.saveButton.setOnClickListener(v -> {

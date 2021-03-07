@@ -32,11 +32,15 @@ import com.olivermorgan.ontime.main.Activities.EditSubjectLoggedin;
 import com.olivermorgan.ontime.main.Activities.MainActivity;
 import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.BakalariAPI.Login;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.Rozvrh;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.RozvrhDen;
+import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.RozvrhHodina;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.google.firebase.storage.FirebaseStorage;
 
 import com.google.firebase.storage.StorageReference;
 
+import com.olivermorgan.ontime.main.Logic.LoadBag;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
 
@@ -408,99 +412,218 @@ public class OverviewFragment extends Fragment {
 
         table.removeAllViews();
 
-        int max = Integer.MIN_VALUE;
-        int current = 0;
-        for (int i = 1; i < 8; i++) {
-            for (List<String> list : FeedReaderDbHelperSubjects.getContent(getActivity(), true)) {
-                if (list.get(i).equals("true")) {
-                    current++;
-                }
-            }
-            if (max < current) {
-                max = current;
-            }
-            current = 0;
-        }
-        final boolean donNotShare = max == 0;
-        max = Math.max(max, 4);
         boolean first = true;
+        final boolean donNotShare;
+        if (login.isLoggedIn()) {
+                int max = Integer.MIN_VALUE;
+                int current = 0;
 
-        for (int i = 1; i < (weekendOnBoolean ? 6 : 8); i++) {
-            TableRow row = new TableRow(getContext());
-            row.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            row.setPadding(0, 0, 0, 0);
-
-            int addedRows = 0;
-            final boolean isDarkMode = SharedPrefs.getDarkMode(getContext());
-            for (List<String> list : FeedReaderDbHelperSubjects.getContent(getContext(), true)) {
-                final Item item = new Item("null", list.get(0), false, getContext());
-
-                // days of the week logic
-
-                if (list.get(i).equals("true")) {
-                    addedRows++;
-                    Button button = new Button(getContext());
-
-                    if (first) {
-                        // tutorial
-                        ShowcaseConfig config = new ShowcaseConfig();
-                        config.setDelay(200); // half second between each showcase view
-                        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "recyclerViewerTutorialOverviewTableItem");
-                        sequence.setConfig(config);
-                        sequence.addSequenceItem(button,
-                                getActivity().getResources().getString(R.string.clickIconToEdit),  getActivity().getResources().getString(R.string.gotIt));
-                        sequence.start();
-                        first = false;
+                RozvrhDen rozvrhDenMax = null;
+                for (int k = 0; k < LoadBag.getCurrentRozvrh().getDny().size(); k++) {
+                    RozvrhDen den = LoadBag.getCurrentRozvrh().getDny().get(k);
+                    current = den.getHodiny().size();
+                    if (max < current) {
+                        rozvrhDenMax = den;
+                        max = current;
                     }
 
-                    button.setMinimumWidth(0);
-                    button.setMinimumHeight(0);
-                    button.setBackgroundResource(R.drawable.rounded_textview_padding);
-                    button.setGravity(Gravity.CENTER);
-                    button.setText(item.getNameInitialsOfSubject());
-                    if (isDarkMode) {
-                        button.setTextColor(getResources().getColor(android.R.color.white));
-                    } else {
-                        button.setTextColor(getResources().getColor(android.R.color.black));
+                }
+                donNotShare = max == 0;
+                max = Math.max(max, 4);
+
+                // add time
+
+                if(rozvrhDenMax!=null) {
+                    TableRow time = new TableRow(getContext());
+                    for (int i = 0; i < rozvrhDenMax.getHodiny().size(); i++) {
+                        RozvrhHodina rh = rozvrhDenMax.getHodiny().get(i);
+
+                        TextView textTime = new TextView(getContext());
+                        textTime.setMinimumWidth(0);
+                        textTime.setMinimumHeight(0);
+                        textTime.setTextSize(12);
+                        textTime.setFontFeatureSettings("bold");
+                        textTime.setBackgroundResource(R.drawable.circle_white_half);
+                        textTime.setGravity(Gravity.CENTER);
+                        textTime.setText(rh.getBegintime()+" - "+rh.getEndtime());
+                        time.addView(textTime);
+                    }
+                    table.addView(time);
+                }
+
+
+                for (int k = 0; k < LoadBag.getCurrentRozvrh().getDny().size(); k++) {
+                    RozvrhDen den = LoadBag.getCurrentRozvrh().getDny().get(k);
+                    TableRow row = new TableRow(getContext());
+                    row.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    row.setPadding(0, 0, 0, 0);
+
+                    int addedRows = 0;
+                    final boolean isDarkMode = SharedPrefs.getDarkMode(getContext());
+
+                    for (int j = 0; j < den.getHodiny().size(); j++) {
+                        RozvrhHodina item = den.getHodiny().get(j);
+                        addedRows++;
+                        Button button = new Button(getContext());
+
+                        if (first) {
+                            // tutorial
+                            ShowcaseConfig config = new ShowcaseConfig();
+                            config.setDelay(200); // half second between each showcase view
+                            MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "recyclerViewerTutorialOverviewTableItem");
+                            sequence.setConfig(config);
+                            sequence.addSequenceItem(button,
+                                    getActivity().getResources().getString(R.string.clickIconToEdit), getActivity().getResources().getString(R.string.gotIt));
+                            sequence.start();
+                            first = false;
+                        }
+
+                        button.setMinimumWidth(0);
+                        button.setMinimumHeight(0);
+                        button.setBackgroundResource(R.drawable.rounded_textview_padding);
+                        button.setGravity(Gravity.CENTER);
+                        button.setText(item.getZkrpr());
+                        if (isDarkMode) {
+                            button.setTextColor(getResources().getColor(android.R.color.white));
+                        } else {
+                            button.setTextColor(getResources().getColor(android.R.color.black));
+                        }
+
+                        button.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+                        button.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+                        button.setTextSize(30);
+
+                        button.setOnClickListener(v -> {
+                            // go back to main activity
+                            if (!item.getPr().equals("")) {
+                                Intent i1;
+                                i1 = new Intent(getActivity(), EditSubjectLoggedin.class);
+
+                                i1.putExtra("subjectName", item.getPr());
+                                i1.putExtra("teacher", item.getUc());
+                                i1.putExtra("topic", item.getTema());
+                                i1.putExtra("time1", item.getBegintime());
+                                i1.putExtra("time2", item.getEndtime());
+
+                                startActivity(i1);
+                            }
+                        });
+                        row.addView(button);
+                    }
+                    if (addedRows < max) {
+                        for (int j = 0; j < max - addedRows; j++) {
+                            Button padding = new Button(getContext());
+                            padding.setMinimumWidth(0);
+                            padding.setMinimumHeight(0);
+                            padding.setBackgroundResource(R.drawable.round_textview_padding_holiday);
+                            padding.setGravity(Gravity.CENTER);
+                            padding.setTextColor(Color.WHITE);
+                            padding.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+                            padding.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+                            padding.setText("");
+                            padding.setTextSize(30);
+                            row.addView(padding);
+                        }
+                    }
+                    table.addView(row);
+                }
+
+        } else {
+
+            view.findViewById(R.id.timeRow).setVisibility(View.GONE);
+            int max = Integer.MIN_VALUE;
+            int current = 0;
+            for (int i = 1; i < 8; i++) {
+                for (List<String> list : FeedReaderDbHelperSubjects.getContent(getActivity(), true)) {
+                    if (list.get(i).equals("true")) {
+                        current++;
+                    }
+                }
+                if (max < current) {
+                    max = current;
+                }
+                current = 0;
+            }
+            donNotShare = max == 0;
+            max = Math.max(max, 4);
+
+            for (int i = 1; i < (weekendOnBoolean ? 6 : 8); i++) {
+                TableRow row = new TableRow(getContext());
+                row.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                row.setPadding(0, 0, 0, 0);
+
+                int addedRows = 0;
+                final boolean isDarkMode = SharedPrefs.getDarkMode(getContext());
+
+                for (List<String> list : FeedReaderDbHelperSubjects.getContent(getContext(), true)) {
+                    final Item item = new Item("null", list.get(0), false, getContext());
+
+                    // days of the week logic
+
+                    if (list.get(i).equals("true")) {
+                        addedRows++;
+                        Button button = new Button(getContext());
+
+                        if (first) {
+                            // tutorial
+                            ShowcaseConfig config = new ShowcaseConfig();
+                            config.setDelay(200); // half second between each showcase view
+                            MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "recyclerViewerTutorialOverviewTableItem");
+                            sequence.setConfig(config);
+                            sequence.addSequenceItem(button,
+                                    getActivity().getResources().getString(R.string.clickIconToEdit), getActivity().getResources().getString(R.string.gotIt));
+                            sequence.start();
+                            first = false;
+                        }
+
+                        button.setMinimumWidth(0);
+                        button.setMinimumHeight(0);
+                        button.setBackgroundResource(R.drawable.rounded_textview_padding);
+                        button.setGravity(Gravity.CENTER);
+                        button.setText(item.getNameInitialsOfSubject());
+                        if (isDarkMode) {
+                            button.setTextColor(getResources().getColor(android.R.color.white));
+                        } else {
+                            button.setTextColor(getResources().getColor(android.R.color.black));
+                        }
+
+                        button.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+                        button.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+                        button.setTextSize(30);
+
+                        button.setOnClickListener(v -> {
+                            // go back to main activity
+                            Intent i1;
+                            i1 = new Intent(getActivity(), EditSubject.class);
+
+                            i1.putExtra("subjectName", item.getSubjectName());
+                            startActivity(i1);
+                        });
+
+                        row.addView(button);
+
+
                     }
 
-                    button.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-                    button.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-                    button.setTextSize(30);
-
-                    button.setOnClickListener(v -> {
-                        // go back to main activity
-                        Intent i1;
-                        if(login.isLoggedIn()) i1 = new Intent(getActivity(), EditSubjectLoggedin.class);
-                        else i1 = new Intent(getActivity(), EditSubject.class);
-
-                        i1.putExtra("subjectName", item.getSubjectName());
-                        startActivity(i1);
-                    });
-
-                    row.addView(button);
-
-
                 }
+                if (addedRows < max) {
+                    for (int j = 0; j < max - addedRows; j++) {
+                        Button padding = new Button(getContext());
+                        padding.setMinimumWidth(0);
+                        padding.setMinimumHeight(0);
+                        padding.setBackgroundResource(R.drawable.round_textview_padding_holiday);
+                        padding.setGravity(Gravity.CENTER);
+                        padding.setTextColor(Color.WHITE);
+                        padding.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+                        padding.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+                        padding.setText("");
+                        padding.setTextSize(30);
+                        row.addView(padding);
+                    }
+                }
+                table.addView(row);
 
             }
-            if (addedRows < max) {
-                for (int j = 0; j < max - addedRows; j++) {
-                    Button padding = new Button(getContext());
-                    padding.setMinimumWidth(0);
-                    padding.setMinimumHeight(0);
-                    padding.setBackgroundResource(R.drawable.round_textview_padding_holiday);
-                    padding.setGravity(Gravity.CENTER);
-                    padding.setTextColor(Color.WHITE);
-                    padding.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-                    padding.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-                    padding.setText("");
-                    padding.setTextSize(30);
-                    row.addView(padding);
-                }
-            }
-            table.addView(row);
-
         }
         table.requestLayout();     // Not sure if this is needed.
         Button addSubjectButton = view.findViewById(R.id.showButton);
@@ -585,6 +708,7 @@ public class OverviewFragment extends Fragment {
         else if(week>1&&week<5) weekDisplay.setText(week +" "+getActivity().getResources().getString(R.string.forwardWeekbackWeekCZSpecialCase));
         else weekDisplay.setText(week +" "+getActivity().getResources().getString(R.string.forwardWeek));
     }
+
 
 
 
