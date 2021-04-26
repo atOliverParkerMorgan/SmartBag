@@ -17,7 +17,8 @@ import org.joda.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.olivermorgan.ontime.main.BakalariAPI.rozvrh.ResponseCode.*;
+import static com.olivermorgan.ontime.main.BakalariAPI.rozvrh.ResponseCode.NO_CACHE;
+import static com.olivermorgan.ontime.main.BakalariAPI.rozvrh.ResponseCode.SUCCESS;
 
 
 /**
@@ -37,7 +38,17 @@ import static com.olivermorgan.ontime.main.BakalariAPI.rozvrh.ResponseCode.*;
 public class RozvrhAPI {
     private static final String TAG = RozvrhAPI.class.getSimpleName();
     public static final String TAG_TIMER = TAG + "-timer";
-
+    private final HashMap<LocalDate, Rozvrh> saved = new HashMap<>();
+    private final Context context;
+    private final Map<LocalDate, LocalTime> lastUpdated = new HashMap<>();
+    private final HashMap<LocalDate, MutableLiveData<RozvrhWrapper>> liveDatas = new HashMap<>();
+    private final MutableLiveData<RozvrhWrapper> currentWeekLiveData;
+    private final RozvrhLoader rozvrhLoader;
+    public RozvrhAPI(RequestQueue requestQueue, Context context) {
+        this.context = context;
+        rozvrhLoader = new RozvrhLoader(context, requestQueue);
+        currentWeekLiveData = new MutableLiveData<>();
+    }
 
     public static int getRememberedRows(Context context) {
         if (!SharedPrefs.contains(context, SharedPrefs.REMEMBERED_ROWS))
@@ -59,19 +70,6 @@ public class RozvrhAPI {
         SharedPrefs.setInt(context, SharedPrefs.REMEMBERED_COLUMNS, columns);
     }
 
-    private final HashMap<LocalDate, Rozvrh> saved = new HashMap<>();
-    private final Context context;
-    private final Map<LocalDate, LocalTime> lastUpdated = new HashMap<>();
-    private final HashMap<LocalDate, MutableLiveData<RozvrhWrapper>> liveDatas = new HashMap<>();
-    private final MutableLiveData<RozvrhWrapper> currentWeekLiveData;
-    private final RozvrhLoader rozvrhLoader;
-
-    public RozvrhAPI(RequestQueue requestQueue, Context context) {
-        this.context = context;
-        rozvrhLoader = new RozvrhLoader(context, requestQueue);
-        currentWeekLiveData = new MutableLiveData<>();
-    }
-
     public LiveData<RozvrhWrapper> getLiveData(LocalDate monday) {
         MutableLiveData<RozvrhWrapper> ld = liveDatas.get(monday);
         if (ld == null) {
@@ -81,9 +79,9 @@ public class RozvrhAPI {
 
         final MutableLiveData<RozvrhWrapper> fld = ld;
 
-        //update live data
+        // obnovovat živá data
         Rozvrh rozvrh = getFromMemory(monday);
-        // if the rozvrh is already in memory, don't fetch anything from net
+        // jestliže je rozvh v paměti neobnovovat
         if (rozvrh == null) {
             final Mutable<Boolean> netFinishedSucessfully = new Mutable<>(false);
             getFromCacheAndSave(monday, rozvrhWrapper -> {
@@ -93,7 +91,6 @@ public class RozvrhAPI {
             });
             getFromNetAndSave(monday, rozvrhWrapper -> {
                 if (rozvrhWrapper.getCode() == SUCCESS) {
-                   // Toast.makeText(context, R.string.subTextSuccess, Toast.LENGTH_LONG).show();
                     updateLiveData(monday, rozvrhWrapper);
                     netFinishedSucessfully.setValue(true);
                 } else {
@@ -141,7 +138,7 @@ public class RozvrhAPI {
             ld.postValue(rw);
         }
 
-        if (monday != null && Utils.getWeekMonday(monday).equals(Utils.getCurrentMonday())){
+        if (monday != null && Utils.getWeekMonday(monday).equals(Utils.getCurrentMonday())) {
             currentWeekLiveData.setValue(rw);
         }
     }
@@ -195,7 +192,7 @@ public class RozvrhAPI {
     /**
      * Returns live data that are updated always with the current week (even if new week begins after getting them).
      */
-    public LiveData<RozvrhWrapper> getCurrentWeekLiveData(){
+    public LiveData<RozvrhWrapper> getCurrentWeekLiveData() {
         return currentWeekLiveData;
     }
 
@@ -302,6 +299,7 @@ public class RozvrhAPI {
 
     /**
      * Return he time when notification and widgets should be updated. It also checks the next week if the lessons of current week are already over, but it hasn't ended yet.
+     *
      * @param listener Listener using which data is returned.
      */
     public void getNextCurrentLessonChangeTime(TimeListener listener) {
@@ -329,7 +327,7 @@ public class RozvrhAPI {
         });
     }
 
-    public static interface TimeListener {
-        public void method(LocalDateTime updateTime);
+    public interface TimeListener {
+        void method(LocalDateTime updateTime);
     }
 }
