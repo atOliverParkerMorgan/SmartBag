@@ -31,7 +31,8 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
                     FeedReaderDbHelperItems.FeedEntry._ID + " INTEGER PRIMARY KEY," +
                     FeedReaderDbHelperItems.FeedEntry.COLUMN_NAME_TITLE + " TEXT," +
                     FeedReaderDbHelperItems.FeedEntry.COLUMN_SUBJECT_TITLE + " TEXT,"+
-                    FeedEntry.IS_IN_BAG + " TEXT)";
+                    FeedEntry.IS_IN_BAG + " TEXT,"+
+                    FeedEntry.TYPE + " TEXT)";
 
 
     private static final String SQL_DELETE_ENTRIES =
@@ -63,6 +64,7 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
         public static final String COLUMN_NAME_TITLE = "name";
         public static final String COLUMN_SUBJECT_TITLE = "subject";
         public static final String IS_IN_BAG = "inBag";
+        public static final String TYPE = "type";
 
 
     }
@@ -113,6 +115,31 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
         }
     }
 
+    public static String getType(Context context, final String itemName){
+        FeedReaderDbHelperItems dbHelperForItem = new FeedReaderDbHelperItems(context);
+        SQLiteDatabase dbForItem = dbHelperForItem.getReadableDatabase();
+
+        try {
+
+            String Query = "Select * from " + TABLE_NAME + " where " + COLUMN_NAME_TITLE + " = " + "'"+itemName+"'";
+            Cursor cursor = dbForItem.rawQuery(Query, null);
+
+            // get all the subjects that have today marked as true
+            List<String[]> subjectNames = new ArrayList<>();
+            cursor.moveToNext();
+            String type = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.TYPE));
+            cursor.close();
+            return type;
+
+        }catch (Exception e){
+            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
+            return "subject";
+        }finally {
+            dbHelperForItem.close();
+            dbForItem.close();
+        }
+    }
+
 
 
     public static boolean write(Context context, Intent intent, final List<Item> defaultItemsDataItemsToAdd){
@@ -136,6 +163,7 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
                 } else {
                     valuesForItems.put(FeedEntry.IS_IN_BAG, String.valueOf(intent.getSerializableExtra("putInToBag")));
                 }
+                valuesForItems.put(FeedEntry.TYPE, item.getType());
                 // Insert the new row, returning the primary key value of the new row
                 if (dbForItems.insert(TABLE_NAME, null, valuesForItems) < 0) {
                     dbHelperForItems.close();
@@ -176,6 +204,7 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
             }else{
                 valuesForItems.put(FeedEntry.IS_IN_BAG, String.valueOf(intent.getSerializableExtra("putInToBag")));
             }
+            valuesForItems.put(FeedEntry.TYPE, item.getType());
             // Insert the new row, returning the primary key value of the new row
             if (dbForItems.insert(TABLE_NAME, null, valuesForItems)<0){
                 return false;

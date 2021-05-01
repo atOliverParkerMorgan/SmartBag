@@ -7,19 +7,21 @@ import com.olivermorgan.ontime.main.SharedPrefs;
 public class Item {
     private String itemName;
     private String subjectName;
+    private String type;
     private final boolean isInBag;
     private final Context context;
-    private Subject subject;
+    private MainTitle mainTitle;
 
-    public Item(String itemName, String subjectName, boolean isInBag, Context context) {
+    public Item(String itemName, String subjectName, boolean isInBag, String type, Context context) {
         this.subjectName = subjectName;
         this.itemName = itemName;
         this.isInBag = isInBag;
         this.context = context;
+        this.type = type;
     }
 
-    public void setSubject (Subject subject){
-       this.subject = subject;
+    public void setMainTitle(MainTitle mainTitle){
+       this.mainTitle = mainTitle;
     }
 
     public String getSubjectName() {
@@ -36,8 +38,12 @@ public class Item {
         return itemName;
     }
 
+    public String getType() {
+        return type;
+    }
+
     public String getNameInitialsOfSubject() {
-        if(subject!=null) return subject.getShortName();
+        if(mainTitle !=null) return mainTitle.getShortName();
 
         StringBuilder initials = new StringBuilder();
             initials.append(Character.toUpperCase(getSubjectName().charAt(0)));

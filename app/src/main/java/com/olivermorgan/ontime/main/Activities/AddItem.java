@@ -2,8 +2,10 @@ package com.olivermorgan.ontime.main.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -17,6 +19,7 @@ import com.olivermorgan.ontime.main.Adapter.MyListAdapter;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AddItem extends AppCompatActivity {
 
@@ -34,6 +37,35 @@ public class AddItem extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbarAddItems);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
+
+        EditText input = findViewById(R.id.editItem);
+        TextView title = findViewById(R.id.toolbar_title);
+        Button mark = findViewById(R.id.mark2);
+
+        final String type = (String) getIntent().getSerializableExtra("type");
+
+        Item helper = new Item(getString(R.string.title_add_item), type, false, null, this);
+
+        switch(Objects.requireNonNull(type)){
+            case "subject":
+                mark.setBackgroundResource(R.drawable.circle_default);
+                break;
+            case "snack":
+                mark.setBackgroundResource(R.drawable.square_default);
+                input.setHint(R.string.snack_hint);
+                helper = new Item(getString(R.string.title_add_food),type, false, null, this);;
+                break;
+            case "pencilCase":
+                mark.setBackgroundResource(R.drawable.hexagon_default);
+                input.setHint(R.string.pencilCase_hint);
+                helper = new Item(getString(R.string.title_add_pens),type , false, null, this);;
+
+                break;
+        }
+
+        title.setText(helper.getItemName());
+        mark.setText(helper.getNameInitialsOfSubject());
+
 
         // Get subject from AddFragment
         final String subject = (String) getIntent().getSerializableExtra("Subject");
@@ -68,7 +100,7 @@ public class AddItem extends AppCompatActivity {
                 if(!found) {
                     // this is data for recycler view
 
-                    mAdapterItemsToAdd.add(new Item(viewHolder.itemName.getText().toString(), subject, FeedReaderDbHelperItems.isInBag(getApplicationContext(), viewHolder.itemName.getText().toString()),this));
+                    mAdapterItemsToAdd.add(new Item(viewHolder.itemName.getText().toString(), subject, FeedReaderDbHelperItems.isInBag(getApplicationContext(), viewHolder.itemName.getText().toString()), type,this));
 
 
                     // set adapter

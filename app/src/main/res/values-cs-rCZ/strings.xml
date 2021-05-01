@@ -7,9 +7,13 @@
     <string name="title_overview_button_navigation">Přehled</string>
     <string name="title_bag_button_navigation">Batoh</string>
     <string name="title_add_item">Přidejte pomůcky k předmětu.</string>
+    <string name="title_add_food">Přidejte jídlo do svačiny.</string>
+    <string name="title_add_pens">Přidejte tužky do penálu.</string>
     <string name="none">N</string>
     <string name="days_of_the_week_text">Jaké dny v týdnu chcete tuto pomůcku v batohu?</string>
-    <string name="add_to_bag">Chcete přidat tento předmět do batohu?</string>
+    <string name="add_to_bag_subject">Chcete přidat tento předmět do batohu?</string>
+    <string name="add_to_bag_snack">Chcete přidat tuto svačinu do batohu?</string>
+    <string name="add_to_bag_pencilCase">Chcete přidat tento penál do batohu?</string>
     <string name="subject_input_text">Přidejte jméno předmětu</string>
     <string name="to_add_text">Přidat do batohu</string>
     <string name="title_overview">Přehled</string>
@@ -39,6 +43,8 @@
     <string name="add_icon_description">Tlačítko k odebrání</string>
     <string name="item_hint">Sešit</string>
     <string name="subjects_hint">Přidejte předmět (např. Dějepis)</string>
+    <string name="snack_hint">Přidejte svačinu (např. Moje svačina)</string>
+    <string name="pencilCase_hint">Přidejte penál (např. Můj penál)</string>
     <string name="noItemsInAdd">Všechny potřebné pomůcky jsou přidány.</string>
     <string name="schoolSearch">Vyhledejte vaší školu.</string>
     <string name="noItemsInRemove">Všechny nepotřebné pomůcky jsou odebrány.</string>
@@ -131,16 +137,18 @@
     </string-array>
 
     <string name="nothingInSubjectFiled">Pokud chete přidat pomůcky, musíte napsat text do textového pole (např. sešit).</string>
+    <string name="nothingInSnackedFiled">Pokud chete přidat položky, musíte napsat text do textového pole (např. moje svačina).</string>
+    <string name="nothingInPencilCaseFiled">Pokud chete přidat položky, musíte napsat text do textového pole (např. můj penál).</string>
     <string name="itemAlreadyAdded">Už jste přidali tento předmět.</string>
     <string name="atLeastOneItem">Musíte přidat alespoň jednu pomůcku.</string>
     <string name="databaseError">Nastal problém v databázi. Napište nám zprávu o tomto problému!</string>
     <string name="anError">Vyskytla se chyba.</string>
     <string name="tooLong">Jméno předmětu je moc dlouhé. Maximální počet znaků je 25 písmen.</string>
     <string name="mustChooseAtLeastOneDay">Musíte vybrat alespoň jeden den týdnu</string>
-    <string name="subject">Předmět</string>
+    <string name="mainTitle">Předmět</string>
     <string name="alreadyExist">Již existuje. Vyberte unikátní jméno</string>
     <string name="deleteSubject">Odebrat předmět</string>
-    <string name="areYouSureDelete">Jste si jisti, že chcete odstranit</string>
+    <string name="areYouSureDelete">Jste si jisti, že chcete odstranit </string>
     <string name="hasBeenRemoved">Odstraněno z vašeho batohu</string>
     <string name="clickHereToSelectDay">Klikněte sem, abyste si vybrali pro jaký den chcete mít svojí tašku připravenou</string>
     <string name="Next">DALŠÍ</string>
@@ -188,4 +196,13 @@
     <string name="Topic">Téma:</string>
 
     <string name="serverAdress">Adresa serveru</string>
+    <string name="noConnection">žádné připojení</string>
+    <string name="backOnline">Zpět online</string>
+    <string name="whatToAdd">Co chcete přidat?</string>
+    <string name="choseAnOption">Vyberte si z níže uvedených nabídek</string>
+    <string name="subject">Předmět</string>
+    <string name="snack">Svačina</string>
+    <string name="pencilCase">Penál</string>
+    <string name="title_create_snack">Vytvořit svačinu</string>
+    <string name="title_create_pencilCase">Vytvořit penál</string>
 </resources>

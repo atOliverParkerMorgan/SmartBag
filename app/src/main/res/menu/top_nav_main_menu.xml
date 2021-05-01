@@ -5,7 +5,7 @@
     tools:context=".MainActivity"
     >
     <item
-        android:id="@+id/subject"
+        android:id="@+id/mainTitle"
         android:icon="?attr/ic_to_add_subject"
         android:title="@string/subjects_hint"
         app:showAsAction="ifRoom"/>

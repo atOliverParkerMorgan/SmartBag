@@ -2,6 +2,7 @@ package com.olivermorgan.ontime.main.Adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,8 @@ public class MyBagAdapter extends RecyclerView.Adapter<MyBagAdapter.ViewHolder>{
         List<String> subjectsToAdd = new ArrayList<>();
         if(showSubjectTitle) {
             // add title
-            String currentSubjectName = null;            for (int i = 0; i < this.Items.size(); i++) {
+            String currentSubjectName = null;
+            for (int i = 0; i < this.Items.size(); i++) {
                 if (currentSubjectName == null || !currentSubjectName.equals(this.Items.get(i).getSubjectName())) {
                     currentSubjectName = this.Items.get(i).getSubjectName();
                     indexToAdd.add(i);
@@ -51,7 +53,7 @@ public class MyBagAdapter extends RecyclerView.Adapter<MyBagAdapter.ViewHolder>{
                 }
             }
             for (int i = 0; i < indexToAdd.size(); i++) {
-                this.Items.add(indexToAdd.get(i) + i, new Item(subjectsToAdd.get(i), null, false, mainActivity));
+                this.Items.add(indexToAdd.get(i) + i, new Item(subjectsToAdd.get(i), null, false, "subject",mainActivity));
             }
         }
     }
@@ -80,7 +82,17 @@ public class MyBagAdapter extends RecyclerView.Adapter<MyBagAdapter.ViewHolder>{
                 sequence.start();
             }
 
+            switch (Items.get(position).getType()){
+                case "snack":
+                    holder.circle.setBackgroundResource(R.drawable.square_default);
+                    break;
+                case "pencilCase":
+                    holder.circle.setBackgroundResource(R.drawable.hexagon_default);
+                    break;
+            }
+
             holder.textView.setText(Items.get(position).getItemName());
+
             holder.circle.setText(Items.get(position).getNameInitialsOfSubject());
             holder.circle.setOnClickListener(v -> {
                 // go back to main activity

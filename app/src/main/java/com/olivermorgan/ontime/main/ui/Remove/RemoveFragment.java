@@ -22,6 +22,7 @@ import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.Adapter.MyListAdapter;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
+import com.olivermorgan.ontime.main.Logic.LoadBag;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
 
@@ -79,8 +80,9 @@ public class RemoveFragment extends Fragment {
             // přidat všechny položky, které jsou v databázi zaznamenané do batohu
             final List<String[]> myBagItems = FeedReaderDbHelperItems.getItemsInBag(context);
             for (String[] item : myBagItems) {
-                inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(context, item[0]), context));
+                inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(context, item[0]), FeedReaderDbHelperItems.getType(context, item[0]), context));
             }
+
 
             // projít všechny relevatní předměty
             for (String subject : subjectNames) {
@@ -103,7 +105,7 @@ public class RemoveFragment extends Fragment {
                     }
                     // přidat prvky do databáze
                     if (inBag) {
-                        itemsDataItemsToRemove.add(new Item(foundItem, subject, FeedReaderDbHelperItems.isInBag(context, foundItem), context));
+                        itemsDataItemsToRemove.add(new Item(foundItem, subject, FeedReaderDbHelperItems.isInBag(context, foundItem), FeedReaderDbHelperItems.getType(context, foundItem), context));
                     }
 
 

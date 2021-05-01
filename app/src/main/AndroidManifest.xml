@@ -48,10 +48,13 @@
             android:name="com.olivermorgan.ontime.main.Activities.AddItem" >
         </activity>
         <activity
-            android:name="com.olivermorgan.ontime.main.Activities.AddSubject" >
+            android:name="com.olivermorgan.ontime.main.Activities.AddSubjectOrOther" >
         </activity>
         <activity
             android:name="com.olivermorgan.ontime.main.Activities.EditSubject" >
+        </activity>
+        <activity
+            android:name="com.olivermorgan.ontime.main.Activities.WhatToAdd" >
         </activity>
         <activity
             android:name="com.olivermorgan.ontime.main.Activities.EditSubjectLoggedin" >

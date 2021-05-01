@@ -260,7 +260,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
             Cursor  cursorItem = dbForSubject.rawQuery(selectionItem,null);
             while (cursorItem.moveToNext()) {
                 List<String> subject = new ArrayList<>();
-               subject.add(cursorItem.getString(cursorItem.getColumnIndexOrThrow(COLUMN_NAME_TITLE)));
+                subject.add(cursorItem.getString(cursorItem.getColumnIndexOrThrow(COLUMN_NAME_TITLE)));
                 subject.add(cursorItem.getString(cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_MONDAY)));
                 subject.add(cursorItem.getString(cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_TUESDAY)));
                 subject.add(cursorItem.getString(cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_WEDNESDAY)));

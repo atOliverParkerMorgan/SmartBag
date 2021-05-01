@@ -1,12 +1,12 @@
 package com.olivermorgan.ontime.main.Adapter;
 
-public class Subject {
+public class MainTitle {
     private final boolean[] week;
     private final String name;
     private final String shortName;
 
 
-    public Subject(String name, String shortName) {
+    public MainTitle(String name, String shortName) {
         this.week = new boolean[7];
         this.name = name;
         this.shortName = shortName;

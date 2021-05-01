@@ -28,7 +28,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.olivermorgan.ontime.main.Activities.AddSubject;
+import com.olivermorgan.ontime.main.Activities.AddSubjectOrOther;
 import com.olivermorgan.ontime.main.Activities.EditSubject;
 import com.olivermorgan.ontime.main.Activities.EditSubjectLoggedin;
 import com.olivermorgan.ontime.main.Activities.MainActivity;
@@ -558,7 +558,7 @@ public class OverviewFragment extends Fragment {
                 final boolean isDarkMode = SharedPrefs.getDarkMode(getContext());
 
                 for (List<String> list : FeedReaderDbHelperSubjects.getContent(getContext(), true)) {
-                    final Item item = new Item("null", list.get(0), false, getContext());
+                    final Item item = new Item("null", list.get(0), false,"subject", getContext());
 
                     // days of the week logic
 
@@ -667,8 +667,8 @@ public class OverviewFragment extends Fragment {
                 view.findViewById(R.id.codeText).setVisibility(View.INVISIBLE);
                 addSubjectButton.setOnClickListener(v -> {
                     // setting add Subject first to falls to avoid error
-                    AddSubject.firstViewOfActivity = true;
-                    Intent intent = new Intent(getActivity(), AddSubject.class);
+                    AddSubjectOrOther.firstViewOfActivity = true;
+                    Intent intent = new Intent(getActivity(), AddSubjectOrOther.class);
                     startActivity(intent);
                 });
             }

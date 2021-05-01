@@ -2,16 +2,22 @@
      <string name="app_name">SmartBag</string>
      <string name="title_add_button_navigation">Add</string>
      <string name="title_create_subject">Create a subject</string>
+      <string name="title_create_snack">Create a snack</string>
+      <string name="title_create_pencilCase">Create a pencil case</string>
      <string name="title_remove_button_navigation">Remove</string>
      <string name="title_overview_button_navigation">Overview</string>
      <string name="title_bag_button_navigation">Bag</string>
      <string name="title_add_item">Add items to Subject</string>
+     <string name="title_add_food">Add food to your Snack</string>
+     <string name="title_add_pens">Add pens to pencil case</string>
      <string name="delete_icon_description">delete item button</string>
      <string name="add_icon_description">add item button</string>
      <string name="none">N</string>
-     <string name="days_of_the_week_text">What days of the week do you want this subject in your bag?</string>
-     <string name="add_to_bag">Do you want to add this subject into your bag?</string>
-     <string name="subject_input_text">Add the name of the subject.</string>
+     <string name="days_of_the_week_text">What days of the week do you want this mainTitle in your bag?</string>
+     <string name="add_to_bag_subject">Do you want to add this subject into your bag?</string>
+      <string name="add_to_bag_snack">Do you want to add this snack into your bag?</string>
+      <string name="add_to_bag_pencilCase">Do you want to add this pencil case into your bag?</string>
+     <string name="subject_input_text">Add the name of the mainTitle.</string>
      <string name="to_add_text">Add to bag</string>
      <string name="title_overview">Overview</string>
      <string name="to_add_text_subtitle">put these items into your bag</string>
@@ -39,6 +45,8 @@
      <string name="add_items_instructions">add the items that you need for this subject</string>
      <string name="item_hint">Textbook</string>
      <string name="subjects_hint">Add a subject name (e.g. History)</string>
+      <string name="snack_hint">Add a snack name (e.g. My Snack)</string>
+      <string name="pencilCase_hint">Add a pencil Case name (e.g. My Pencil case)</string>
      <string name="noItemsInAdd">There aren\'t any items to add</string>
      <string name="schoolSearch">Search for school</string>
      <string name="noItemsInRemove">There aren\'t any items to remove</string>
@@ -125,7 +133,7 @@
      <string name="absolute_error">Something went terribly wrong with your database</string>
      <string name="info">INFORMATION</string>
      <string name="info1">• Smartbag automatically synchronises items within the same subject names.</string>
-     <string name="info2">• The default item for subjects without any pre-defined items is: "items for…"</string>
+     <string name="info2">• The default item for subject without any pre-defined items is: "items for…"</string>
      <string name="info3">• You can change the default name in the timetable in overview by clicking on a subject</string>
      <string name="bakaTitle" translatable="false">Bakaláři:</string>
      <string name="interfaceTitle">Interface:</string>
@@ -133,13 +141,15 @@
      <string name="english">English</string>
      <string name="czech">Czech</string>
      <string name="nothingInSubjectFiled">To add an item write something into the text field (Textbook).</string>
+     <string name="nothingInSnackedFiled">To add an item write something into the text field (My snack).</string>
+     <string name="nothingInPencilCaseFiled">To add an item write something into the text field (My pencil case).</string>
      <string name="itemAlreadyAdded">You have already added this item.</string>
      <string name="atLeastOneItem">You must add at least one item</string>
      <string name="databaseError">An error has occurred in the database. Report this issue</string>
      <string name="anError">An error occurred</string>
      <string name="tooLong">The subject name is too long. The maximum length is 25 characters</string>
      <string name="mustChooseAtLeastOneDay">You have to choose at least one day of the week</string>
-     <string name="subject">The subject </string>
+     <string name="mainTitle">The subject </string>
      <string name="alreadyExist"> already exists. Pick a unique name</string>
      <string name="deleteSubject">Delete Subject</string>
      <string name="areYouSureDelete">Are you sure you want to delete </string>
@@ -154,8 +164,8 @@
      <string name="itemsForSubject">items for</string>
      <string name="invalidCode">Invalid code, must contain six upper-case letters.</string>
      <string name="downloadBag">Download bag:</string>
-     <string name="sureAboutDownloadingBagAndLogoutBaka">Are you sure you want to download another bag? This will override all existing subjects and items. It will also log you out of your Bakaláři account.</string>
-     <string name="sureAboutDownloadingBag">Are you sure you want to download another bag? This will override all existing subjects and items.</string>
+     <string name="sureAboutDownloadingBagAndLogoutBaka">Are you sure you want to download another bag? This will override all existing subject and items. It will also log you out of your Bakaláři account.</string>
+     <string name="sureAboutDownloadingBag">Are you sure you want to download another bag? This will override all existing subject and items.</string>
      <string name="incorrectCodeOrNoConnection">Error, your code is incorrect or you do not have an internet connection.</string>
      <string name="successfulUpdateWithCode">You have successfully updated your bag with the code:</string>
      <string name="internetConnection">Error. Check your internet connection.</string>
@@ -189,4 +199,11 @@
       <string name="Time">Time:</string>
       <string name="Topic">Topic:</string>
       <string name="serverAdress">Server Adress</string>
+      <string name="noConnection">no connection</string>
+      <string name="backOnline">back online</string>
+      <string name="whatToAdd">What do want to add?</string>
+      <string name="choseAnOption">Chose one of the options bellow</string>
+      <string name="subject">Subject</string>
+      <string name="snack">Snack</string>
+      <string name="pencilCase">Pencil case</string>
  </resources>

@@ -60,7 +60,7 @@ public class EditSubjectLoggedin extends AppCompatActivity {
         final List<Item> itemsDataItemsToEdit = new ArrayList<>();
         final List<String> itemNames = FeedReaderDbHelperItems.getContent(this, subject);
         for (String item : itemNames) {
-            itemsDataItemsToEdit.add(new Item(item, subject, FeedReaderDbHelperItems.isInBag(getApplicationContext(), item), this));
+            itemsDataItemsToEdit.add(new Item(item, subject, FeedReaderDbHelperItems.isInBag(getApplicationContext(), item), FeedReaderDbHelperItems.getType(this, item), this));
         }
 
 
@@ -121,7 +121,7 @@ public class EditSubjectLoggedin extends AppCompatActivity {
                 }
                 if (!found) {
                     // this is data for recycler view
-                    itemsDataItemsToEdit.add(new Item(viewHolder.itemName.getText().toString(), subject, false, this));
+                    itemsDataItemsToEdit.add(new Item(viewHolder.itemName.getText().toString(), subject, false, FeedReaderDbHelperItems.getType(this, viewHolder.itemName.getText().toString()), this));
 
                     // create an adapter
                     @SuppressLint("CutPasteId") MyListAdapter mAdapterItemsToAdd1 = new MyListAdapter(itemsDataItemsToEdit, (byte) -10, findViewById(android.R.id.content), false, true, false, EditSubjectLoggedin.this);

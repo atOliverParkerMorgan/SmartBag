@@ -11,7 +11,7 @@ import androidx.lifecycle.LiveData;
 
 import com.olivermorgan.ontime.main.Activities.MainActivity;
 import com.olivermorgan.ontime.main.Adapter.Item;
-import com.olivermorgan.ontime.main.Adapter.Subject;
+import com.olivermorgan.ontime.main.Adapter.MainTitle;
 import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.AppSingleton;
 import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.RozvrhAPI;
 import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.RozvrhWrapper;
@@ -75,7 +75,7 @@ public class LoadBag {
     public void updateDatabaseWithNewBakalariTimeTable() {
 
        new Thread(()-> {
-            List<Subject> subjects = new ArrayList<>();
+            List<MainTitle> mainTitles = new ArrayList<>();
             FeedReaderDbHelperSubjects.deleteAllSubject(context);
             // setup current rozvrh so overview can display it
             currentRozvrh = rozvrh;
@@ -90,7 +90,7 @@ public class LoadBag {
 
                     // check if database already has element
                     boolean found = false;
-                    for (Subject s : subjects) {
+                    for (MainTitle s : mainTitles) {
                         if (s.getName().equals(item.getPr())) {
                             s.setDay(i);
                             found = true;
@@ -98,30 +98,30 @@ public class LoadBag {
                         }
                     }
                     if (!found) {
-                        Subject s = new Subject(item.getPr(), item.getZkrpr());
+                        MainTitle s = new MainTitle(item.getPr(), item.getZkrpr());
                         s.setDay(i);
-                        subjects.add(s);
+                        mainTitles.add(s);
 
                     }
                 }
             }
 
 
-            for (int i = 0; i < subjects.size(); i++) {
+            for (int i = 0; i < mainTitles.size(); i++) {
                 Intent intent = new Intent();
-                if (subjects.get(i).getName().equals("")) i++; // skip free hours
+                if (mainTitles.get(i).getName().equals("")) i++; // skip free hours
 
-                intent.putExtra("Monday", Boolean.toString(subjects.get(i).getWeek()[0]));
-                intent.putExtra("Tuesday", Boolean.toString(subjects.get(i).getWeek()[1]));
-                intent.putExtra("Wednesday", Boolean.toString(subjects.get(i).getWeek()[2]));
-                intent.putExtra("Thursday", Boolean.toString(subjects.get(i).getWeek()[3]));
-                intent.putExtra("Friday", Boolean.toString(subjects.get(i).getWeek()[4]));
-                intent.putExtra("Saturday", Boolean.toString(subjects.get(i).getWeek()[5]));
-                intent.putExtra("Sunday", Boolean.toString(subjects.get(i).getWeek()[6]));
+                intent.putExtra("Monday", Boolean.toString(mainTitles.get(i).getWeek()[0]));
+                intent.putExtra("Tuesday", Boolean.toString(mainTitles.get(i).getWeek()[1]));
+                intent.putExtra("Wednesday", Boolean.toString(mainTitles.get(i).getWeek()[2]));
+                intent.putExtra("Thursday", Boolean.toString(mainTitles.get(i).getWeek()[3]));
+                intent.putExtra("Friday", Boolean.toString(mainTitles.get(i).getWeek()[4]));
+                intent.putExtra("Saturday", Boolean.toString(mainTitles.get(i).getWeek()[5]));
+                intent.putExtra("Sunday", Boolean.toString(mainTitles.get(i).getWeek()[6]));
                 intent.putExtra("putInToBag", false);
 
                 try {
-                    FeedReaderDbHelperSubjects.write(context, intent, subjects.get(i).getName());
+                    FeedReaderDbHelperSubjects.write(context, intent, mainTitles.get(i).getName());
                 }catch (Exception e){
                     ((Activity) getContext()).runOnUiThread(() -> {
                         if (SharedPrefs.getBoolean(getContext(), "Languages")) {
@@ -132,14 +132,14 @@ public class LoadBag {
                     });
                 }
             }
-            for (Subject subject : subjects) {
+            for (MainTitle mainTitle : mainTitles) {
                 // set default item name => items/pomůcky
-                if (FeedReaderDbHelperItems.getContent(context, subject.getName()).size() == 0) {
+                if (FeedReaderDbHelperItems.getContent(context, mainTitle.getName()).size() == 0) {
                     Intent intent = new Intent();
                     intent.putExtra("putInToBag", false);
                     List<Item> items = new ArrayList<>();
-                    Item i = new Item("items for "+subject.getShortName(), subject.getName(),false, context);
-                    i.setSubject(subject);
+                    Item i = new Item("items for "+ mainTitle.getShortName(), mainTitle.getName(),false,"subject", context);
+                    i.setMainTitle(mainTitle);
                     items.add(i);
                     if (!FeedReaderDbHelperItems.write(context, intent, items)) {
                         Toast.makeText(context, context.getResources().getString(R.string.databaseError),
@@ -159,7 +159,7 @@ public class LoadBag {
     public void updateDatabaseWithNewBakalariTimeTable(Runnable runnable) {
         FeedReaderDbHelperSubjects.deleteAllSubject(context);
         Thread updateThread = new Thread(()-> {
-            List<Subject> subjects = new ArrayList<>();
+            List<MainTitle> mainTitles = new ArrayList<>();
             // setup current rozvrh so overview can display it
             currentRozvrh = rozvrh;
 
@@ -173,7 +173,7 @@ public class LoadBag {
 
                     // check if database already has element
                     boolean found = false;
-                    for (Subject s : subjects) {
+                    for (MainTitle s : mainTitles) {
                         if (s.getName().equals(item.getPr())) {
                             s.setDay(i);
                             found = true;
@@ -181,30 +181,30 @@ public class LoadBag {
                         }
                     }
                     if (!found) {
-                        Subject s = new Subject(item.getPr(), item.getZkrpr());
+                        MainTitle s = new MainTitle(item.getPr(), item.getZkrpr());
                         s.setDay(i);
-                        subjects.add(s);
+                        mainTitles.add(s);
 
                     }
                 }
             }
 
             Log.e("Subject: ", "NEWWW");
-            for (int i = 0; i < subjects.size(); i++) {
+            for (int i = 0; i < mainTitles.size(); i++) {
                 Intent intent = new Intent();
-                if (subjects.get(i).getName().equals("")) i++; // skip free hours
+                if (mainTitles.get(i).getName().equals("")) i++; // skip free hours
 
-                intent.putExtra("Monday", Boolean.toString(subjects.get(i).getWeek()[0]));
-                intent.putExtra("Tuesday", Boolean.toString(subjects.get(i).getWeek()[1]));
-                intent.putExtra("Wednesday", Boolean.toString(subjects.get(i).getWeek()[2]));
-                intent.putExtra("Thursday", Boolean.toString(subjects.get(i).getWeek()[3]));
-                intent.putExtra("Friday", Boolean.toString(subjects.get(i).getWeek()[4]));
-                intent.putExtra("Saturday", Boolean.toString(subjects.get(i).getWeek()[5]));
-                intent.putExtra("Sunday", Boolean.toString(subjects.get(i).getWeek()[6]));
+                intent.putExtra("Monday", Boolean.toString(mainTitles.get(i).getWeek()[0]));
+                intent.putExtra("Tuesday", Boolean.toString(mainTitles.get(i).getWeek()[1]));
+                intent.putExtra("Wednesday", Boolean.toString(mainTitles.get(i).getWeek()[2]));
+                intent.putExtra("Thursday", Boolean.toString(mainTitles.get(i).getWeek()[3]));
+                intent.putExtra("Friday", Boolean.toString(mainTitles.get(i).getWeek()[4]));
+                intent.putExtra("Saturday", Boolean.toString(mainTitles.get(i).getWeek()[5]));
+                intent.putExtra("Sunday", Boolean.toString(mainTitles.get(i).getWeek()[6]));
                 intent.putExtra("putInToBag", false);
 
                 try {
-                    FeedReaderDbHelperSubjects.write(context, intent, subjects.get(i).getName());
+                    FeedReaderDbHelperSubjects.write(context, intent, mainTitles.get(i).getName());
                 }catch (Exception e){
                     ((Activity) getContext()).runOnUiThread(() -> {
                         if (SharedPrefs.getBoolean(getContext(), "Languages")) {
@@ -215,14 +215,14 @@ public class LoadBag {
                     });
                 }
             }
-            for (Subject subject : subjects) {
+            for (MainTitle subject : mainTitles) {
                 // set default item name => items/pomůcky
                 if (FeedReaderDbHelperItems.getContent(context.getApplicationContext(), subject.getName()).size() == 0) {
                     Intent intent = new Intent();
                     intent.putExtra("putInToBag", false);
                     List<Item> items = new ArrayList<>();
-                    Item i = new Item("items for "+subject.getShortName(), subject.getName(),false, context);
-                    i.setSubject(subject);
+                    Item i = new Item("items for "+subject.getShortName(), subject.getName(),false,"subject", context);
+                    i.setMainTitle(subject);
                     items.add(i);
                     if (!FeedReaderDbHelperItems.write(context, intent, items)) {
                         Toast.makeText(context, context.getResources().getString(R.string.databaseError),

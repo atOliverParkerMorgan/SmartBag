@@ -7,19 +7,23 @@ import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+
+import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
 
+import java.util.Objects;
 
 
-public class AddSubject extends AppCompatActivity {
+public class AddSubjectOrOther extends AppCompatActivity {
     public static boolean firstViewOfActivity = true;
 
     @Override
@@ -32,20 +36,44 @@ public class AddSubject extends AppCompatActivity {
             setTheme(R.style.LIGHT);
         }
         setContentView(R.layout.activivty_add_subject);
+        TextView title = findViewById(R.id.toolbar_title);
+
+        EditText input = findViewById(R.id.editSubject);
+        TextView textView = findViewById(R.id.addToBag);
+
+        Item helper = new Item((String) getIntent().getSerializableExtra("name"), getString(R.string.subject), false, null, this);
+        Button mark = findViewById(R.id.mark);
+
+        final String type = (String) getIntent().getSerializableExtra("type");
+        final String nameType = (String) getIntent().getSerializableExtra("name");
+
+
+        switch(Objects.requireNonNull(type)){
+            case "subject":
+                mark.setBackgroundResource(R.drawable.circle_default);
+                break;
+            case "snack":
+                mark.setBackgroundResource(R.drawable.square_default);
+                input.setHint(R.string.snack_hint);
+                textView.setText(R.string.add_to_bag_snack);
+                helper = new Item(nameType, getString(R.string.snack), false, null, this);
+                break;
+            case "pencilCase":
+                mark.setBackgroundResource(R.drawable.hexagon_default);
+                input.setHint(R.string.pencilCase_hint);
+                textView.setText(R.string.add_to_bag_pencilCase);
+                helper = new Item(nameType, getString(R.string.pencilCase), false, null, this);
+                break;
+        }
+
+        title.setText(helper.getItemName());
+        mark.setText(helper.getNameInitialsOfSubject());
+
 
         final ViewHolder viewHolder = new ViewHolder();
 
         Toolbar toolbar = findViewById(R.id.toolbarAddSubject);
-        toolbar.setNavigationOnClickListener(v -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            // if the database is updated while activities are changed => app crashes
-            // this prevents it
-            // checkout MainActivity
-            intent.putExtra("dontUpdateDatabase", true);
-            startActivity(intent);
-            finish();
-            overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
-        });
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
 
         // main logic thread
@@ -72,7 +100,7 @@ public class AddSubject extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
             else if(FeedReaderDbHelperItems.subjectExists(getApplicationContext(), s)){
-                Toast.makeText(v.getContext(), R.string.subject+" "+s+" "+R.string.alreadyExist,
+                Toast.makeText(v.getContext(), R.string.mainTitle+" "+s+" "+R.string.alreadyExist,
                 Toast.LENGTH_LONG).show();
             }else if(s.length()>25){
                 Toast.makeText(v.getContext(), R.string.tooLong,
@@ -88,8 +116,10 @@ public class AddSubject extends AppCompatActivity {
 
             else{
 
-                Intent i = new Intent(AddSubject.this, AddItem.class);
+                Intent i = new Intent(AddSubjectOrOther.this, AddItem.class);
                 i.putExtra("Subject", s);
+                i.putExtra("type", type);
+                i.putExtra("name", nameType);
                 i.putExtra("Monday",Boolean.toString(viewHolder.monday.isChecked()));
                 i.putExtra("Tuesday",Boolean.toString(viewHolder.tuesday.isChecked()));
                 i.putExtra("Wednesday",Boolean.toString(viewHolder.wednesday.isChecked()));

@@ -65,7 +65,7 @@ public class Rozvrh {
     }
     private void fillEmptyLessons(){
         for (RozvrhDen den :dny) {
-            LinkedList<RozvrhHodina> newHodiny = new LinkedList();
+            LinkedList newHodiny = new LinkedList();
             int hodinaIndex = 0;
             int captionIndex = 0;
             boolean lastOk = false;

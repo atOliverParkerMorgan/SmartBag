@@ -73,7 +73,7 @@ public class AddFragment extends Fragment {
         // projít všechny položky v batohu
         for (String[] item : myBagItems) {
             // přidat novou položku do pole
-            inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(context, item[0]), context));
+            inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(context, item[0]), FeedReaderDbHelperItems.getType(context, item[0]), context));
         }
         // logika pro zpracování daného dne
         if (doNotShow || spinnerIndex != 0) {
@@ -94,7 +94,7 @@ public class AddFragment extends Fragment {
                     }
                     // přidat položky do databáze
                     if (!found) {
-                        itemsDataItemsToAdd.add(new Item(item, subject, FeedReaderDbHelperItems.isInBag(context, item), context));
+                        itemsDataItemsToAdd.add(new Item(item, subject, FeedReaderDbHelperItems.isInBag(context, item), FeedReaderDbHelperItems.getType(context, item), context));
                     }
                 }
 

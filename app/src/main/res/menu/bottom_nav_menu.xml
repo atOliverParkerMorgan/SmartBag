@@ -21,5 +21,9 @@
     android:id="@+id/navigation_overview"
     android:icon="@drawable/ic_to_add_bag_overview"
     android:title="@string/title_overview_button_navigation" />
+<item
+    android:id="@+id/navigation_QRCode"
+    android:icon="@drawable/ic_baseline_qr_code_24"
+    android:title="@string/title_overview_button_navigation" />
 
 </menu>

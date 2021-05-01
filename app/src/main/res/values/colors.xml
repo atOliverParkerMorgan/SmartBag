@@ -13,5 +13,7 @@
     <color name="loggedInBakalari">#F9AA33</color>
     <color name="splashScreenBackgroundColor">#fd9803</color>
 
+    <color name="green">#4BB543</color>
+
     <color name="bgColor" />
     </resources>

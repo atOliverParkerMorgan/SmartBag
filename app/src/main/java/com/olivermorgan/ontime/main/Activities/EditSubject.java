@@ -91,7 +91,7 @@ public class EditSubject extends AppCompatActivity {
         final List<Item> itemsDataItemsToEdit = new ArrayList<>();
         final List<String> itemNames = FeedReaderDbHelperItems.getContent(this, subject);
         for (String item : itemNames) {
-            itemsDataItemsToEdit.add(new Item(item, subject, FeedReaderDbHelperItems.isInBag(getApplicationContext(), item), this));
+            itemsDataItemsToEdit.add(new Item(item, subject, FeedReaderDbHelperItems.isInBag(getApplicationContext(), item),FeedReaderDbHelperItems.getType(this, item), this));
         }
 
 
@@ -113,7 +113,7 @@ public class EditSubject extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                 }
                 else if(FeedReaderDbHelperItems.subjectExists(getApplicationContext(), subject) && !subject.equals(viewHolder.subjectName.getText().toString())){
-                    Toast.makeText(v.getContext(), getResources().getString(R.string.subject)+viewHolder.subjectName.getText().toString()+getResources().getString(R.string.alreadyExist),
+                    Toast.makeText(v.getContext(), getResources().getString(R.string.mainTitle)+viewHolder.subjectName.getText().toString()+getResources().getString(R.string.alreadyExist),
                             Toast.LENGTH_LONG).show();
                 }else if(subject.length()>25){
                     Toast.makeText(v.getContext(), getResources().getString(R.string.tooLong),
@@ -159,7 +159,7 @@ public class EditSubject extends AppCompatActivity {
         viewHolder.deleteButton.setOnClickListener(v -> {
             AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
             alert.setTitle(getResources().getString(R.string.deleteSubject));
-            alert.setMessage(getResources().getString(R.string.areYouSureDelete) + subject + " ?");
+            alert.setMessage(getResources().getString(R.string.areYouSureDelete) +" "+ subject + "?");
             alert.setPositiveButton(android.R.string.yes, (dialog, which) -> {
                 FeedReaderDbHelperSubjects.deleteSubject(subject, this);
                 Intent i = new Intent(EditSubject.this, MainActivity.class);
@@ -194,7 +194,7 @@ public class EditSubject extends AppCompatActivity {
                 }
                 if (!found) {
                     // this is data for recycler view
-                    itemsDataItemsToEdit.add(new Item(viewHolder.itemName.getText().toString(), subject, false, this));
+                    itemsDataItemsToEdit.add(new Item(viewHolder.itemName.getText().toString(), subject, false,FeedReaderDbHelperItems.getType(this, viewHolder.itemName.getText().toString()), this));
 
                     // create an adapter
                     @SuppressLint("CutPasteId") MyListAdapter mAdapterItemsToAdd1 = new MyListAdapter(itemsDataItemsToEdit, (byte) -10, findViewById(android.R.id.content), false, true, false, EditSubject.this);

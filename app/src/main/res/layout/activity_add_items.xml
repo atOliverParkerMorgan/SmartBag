@@ -7,6 +7,23 @@
     android:layout_height="match_parent"
     android:background="?attr/bgColor">
 
+    <Button
+        android:id="@+id/mark2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_textview_default"
+        android:gravity="center"
+        android:text="@string/none"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarAddItems"
         android:layout_width="match_parent"

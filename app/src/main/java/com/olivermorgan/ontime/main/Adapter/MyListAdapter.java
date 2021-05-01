@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.olivermorgan.ontime.main.Activities.EditSubject;
 import com.olivermorgan.ontime.main.Activities.EditSubjectLoggedin;
-import com.olivermorgan.ontime.main.Activities.MainActivity;
 import com.olivermorgan.ontime.main.BakalariAPI.Login;
-import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.Rozvrh;
 import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.RozvrhHodina;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.olivermorgan.ontime.main.Logic.LoadBag;
@@ -68,7 +65,7 @@ import static android.view.View.GONE;
                 }
             }
             for (int i = 0; i < indexToAdd.size(); i++) {
-                this.Items.add(indexToAdd.get(i) + i, new Item(subjectsToAdd.get(i), null, false, mainActivity));
+                this.Items.add(indexToAdd.get(i) + i, new Item(subjectsToAdd.get(i), null, false,"subject", mainActivity));
             }
         }
         this.view = view;
@@ -117,9 +114,43 @@ import static android.view.View.GONE;
 
      @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+
          if (holder.getItemViewType() == 0) {
              holder.textView.setText(Items.get(position).getItemName());
          }else{
+
+             switch (Items.get(position).getType()){
+                 case "snack":
+                     switch (add){
+                         case 1:
+                             holder.circle.setBackgroundResource(R.drawable.square_add);
+                             break;
+                         case 0:
+                             holder.circle.setBackgroundResource(R.drawable.square_remove);
+                             break;
+                         case -1:
+                         case -10:
+                             holder.circle.setBackgroundResource(R.drawable.square_default);
+                             break;
+                     }
+
+                     break;
+                 case "pencilCase":
+                     switch (add){
+                         case 1:
+                             holder.circle.setBackgroundResource(R.drawable.hexagon_add);
+                             break;
+                         case 0:
+                             holder.circle.setBackgroundResource(R.drawable.hexagon_remove);
+                             break;
+                         case -1:
+                         case -10:
+                             holder.circle.setBackgroundResource(R.drawable.hexagon_default);
+                             break;
+                     }
+                     break;
+             }
+
              if (editTextBoolean) {
                  holder.textView.setVisibility(GONE);
                  holder.editText.setVisibility(View.VISIBLE);
