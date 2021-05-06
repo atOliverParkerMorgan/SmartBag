@@ -1,4 +1,4 @@
-package com.olivermorgan.ontime.main.ui.Bag;
+package com.olivermorgan.ontime.main.Fragments.Bag;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

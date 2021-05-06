@@ -1,4 +1,4 @@
-package com.olivermorgan.ontime.main.ui.Remove;
+package com.olivermorgan.ontime.main.Fragments.Add;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -22,7 +23,6 @@ import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.Adapter.MyListAdapter;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
-import com.olivermorgan.ontime.main.Logic.LoadBag;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
 
@@ -30,11 +30,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class RemoveFragment extends Fragment {
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+
+public class AddFragment extends Fragment {
 
     private static void loadRecyclerViewer(final Context context, int spinnerIndex, View view, final Activity activity, boolean doNotShow, boolean tomorrowOff) {
         // no items
-        TextView noItems = view.findViewById(R.id.noItemsTextRemove);
+        TextView noItems = view.findViewById(R.id.noItemsTextAdd);
         noItems.setAlpha(1.0f);
 
         List<List<String>> subjectsAccordingToSpinner;
@@ -49,105 +52,109 @@ public class RemoveFragment extends Fragment {
                 subjectsAccordingToSpinner = FeedReaderDbHelperSubjects.getContent(context, spinnerIndex);
         }
 
-        // get subject names that aren't for today
+        // init database
         final List<String> subjectNames = new ArrayList<>();
-        if (doNotShow || spinnerIndex != 0) {
-            for (List<String> list : FeedReaderDbHelperSubjects.getContent(context, true)) {
-                boolean found = false;
-                for (List<String> list2 : subjectsAccordingToSpinner) {
-                    if (list.equals(list2)) {
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    subjectNames.add(list.get(0));
-                }
-            }
+        for (List<String> list : subjectsAccordingToSpinner) {
+            subjectNames.add(list.get(0));
         }
 
-        final RecyclerView ItemsToRemoveRecycleView = view.findViewById(R.id.ItemsToRemove);
-        ItemsToRemoveRecycleView.setLayoutManager(new LinearLayoutManager(activity));
 
-        // this is data for recycler view
+        final RecyclerView ItemsToAddRecycleView = view.findViewById(R.id.ItemsToAdd);
+        ItemsToAddRecycleView.setLayoutManager(new LinearLayoutManager(activity));
+
 
         // pomocné pole
-        List<Item> inMyBag = new ArrayList<>();
-        List<Item> itemsDataItemsToRemove = new ArrayList<>();
+        List<Item> inMyBag = new ArrayList<>(); // pole co mám v batohu
+        List<Item> itemsDataItemsToAdd = new ArrayList<>(); // pole co si přidat do
 
-        // logika pro zpracování danáho dne
+        // získat pole co mám v batohu z databáze
+        final List<String[]> myBagItems = FeedReaderDbHelperItems.getItemsInBag(context);
+
+        // projít všechny položky v batohu
+        for (String[] item : myBagItems) {
+            // přidat novou položku do pole
+            inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(context, item[0]), FeedReaderDbHelperItems.getType(context, item[0]), context));
+        }
+        // logika pro zpracování daného dne
         if (doNotShow || spinnerIndex != 0) {
-            // přidat všechny položky, které jsou v databázi zaznamenané do batohu
-            final List<String[]> myBagItems = FeedReaderDbHelperItems.getItemsInBag(context);
-            for (String[] item : myBagItems) {
-                inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(context, item[0]), FeedReaderDbHelperItems.getType(context, item[0]), context));
-            }
 
-
-            // projít všechny relevatní předměty
+            // kalkulace => co potřebuji do batohu přidat - co mám v batohu
             for (String subject : subjectNames) {
+                // získat položky předmětů z databáze
+                final List<String> itemNames = FeedReaderDbHelperItems.getContent(context, subject);
+                for (String item : itemNames) {
 
-                // vyčíst z databáze jaké položky potřebuji pro dnešek
-                final List<String> itemsNotForToday = FeedReaderDbHelperItems.getContent(context, subject);
-                // projít pomocné pole
-                for (Item itemInBag : inMyBag) {
-                    // logika pro získání co z batohu odebrat
-                    boolean inBag = false;
-                    String foundItem = "";
-                    for (String item : itemsNotForToday) {
-                        foundItem = item;
+                    // zkontrolovat jestli položka není už v batohu
+                    boolean found = false;
+                    for (Item itemInBag : inMyBag) {
                         if (itemInBag.getItemName().equals(item) && itemInBag.getSubjectName().equals(subject)) {
-
-                            inBag = true;
+                            found = true;
                             break;
                         }
-
                     }
-                    // přidat prvky do databáze
-                    if (inBag) {
-                        itemsDataItemsToRemove.add(new Item(foundItem, subject, FeedReaderDbHelperItems.isInBag(context, foundItem), FeedReaderDbHelperItems.getType(context, foundItem), context));
+                    // přidat položky do databáze
+                    if (!found) {
+                        itemsDataItemsToAdd.add(new Item(item, subject, FeedReaderDbHelperItems.isInBag(context, item), FeedReaderDbHelperItems.getType(context, item), context));
                     }
-
-
                 }
 
             }
         }
 
-        // 3. create an adapter
-        MyListAdapter mAdapterItemsToRemove = new MyListAdapter(itemsDataItemsToRemove, (byte) 0, view, true, false, true, activity);
-        // 4. set adapter
-        ItemsToRemoveRecycleView.setAdapter(mAdapterItemsToRemove);
-        // 5. set item to remove animator to DefaultAnimator
-        ItemsToRemoveRecycleView.setItemAnimator(new DefaultItemAnimator());
 
-        if (itemsDataItemsToRemove.size() > 0) {
+        // 3. create an adapter
+        MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToAdd, (byte) 1, view, true, false, true, activity);
+        // 4. set adapter
+        ItemsToAddRecycleView.setAdapter(mAdapterItemsToAdd);
+        // 5. set itemAdd animator to DefaultAnimator
+        ItemsToAddRecycleView.setItemAnimator(new DefaultItemAnimator());
+
+        if (itemsDataItemsToAdd.size() > 0) {
             noItems.setAlpha(0.0f);
+
         } else {
-            noItems.setText(R.string.noItemsInRemove);
+            noItems.setText(R.string.noItemsInAdd);
         }
+
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // create view
-        final View mainView = inflater.inflate(R.layout.fragment_remove, parent, false);
-
+        final View mainView = inflater.inflate(R.layout.fragment_add, parent, false);
         // set title
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.to_remove_text);
+        ((MainActivity) requireActivity()).getSupportActionBar().setTitle(R.string.to_add_text);
+
+        // tutorial
+        final String SHOWCASE_ID = "firstTutorial1";
+        // sequence example
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(200); // half second between each showcase view
+
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), SHOWCASE_ID);
+
+        sequence.setConfig(config);
+
+        sequence.addSequenceItem(mainView.findViewById(R.id.daySpinner),
+                requireActivity().getResources().getString(R.string.clickHereToSelectDay), requireActivity().getResources().getString(R.string.Next));
+
+        sequence.start();
 
         // Spinner logic
         int spinnerIndex = SharedPrefs.getInt(getContext(), SharedPrefs.SPINNER);
+
         // show weekend
+
         boolean weekendOnBoolean = SharedPrefs.getBoolean(getContext(), SharedPrefs.WEEKEND_ON);
         Calendar calendar = Calendar.getInstance();
         final boolean doNotShow = !((weekendOnBoolean && calendar.getTime().toString().startsWith("Sa"))
                 || (weekendOnBoolean && calendar.getTime().toString().startsWith("Su")));
 
-        boolean tomorrowOff = false;
         Spinner spinner = mainView.findViewById(R.id.daySpinner);
         ArrayAdapter<CharSequence> adapter;
+
+        boolean tomorrowOff = false;
         if (weekendOnBoolean && calendar.getTime().toString().startsWith("Sa")) {
             // Create an ArrayAdapter using the string array and a default spinner layout
             adapter = ArrayAdapter.createFromResource(requireContext(),
@@ -161,8 +168,10 @@ public class RemoveFragment extends Fragment {
                     R.array.daySpinner, android.R.layout.simple_spinner_item);
         }
 
+
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
         spinner.setSelection(spinnerIndex);
 
@@ -170,7 +179,9 @@ public class RemoveFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 SharedPrefs.setInt(getContext(), SharedPrefs.SPINNER, pos);
+                // reload recyclerViewer
                 loadRecyclerViewer(getContext(), pos, mainView, getActivity(), doNotShow, finalTomorrowOff);
+
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -181,4 +192,6 @@ public class RemoveFragment extends Fragment {
 
         return mainView;
     }
+
+
 }

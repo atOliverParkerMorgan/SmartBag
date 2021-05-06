@@ -1,4 +1,4 @@
-package com.olivermorgan.ontime.main.ui.SchoolList;
+package com.olivermorgan.ontime.main.Fragments.SchoolList;
 
 
 import android.os.Bundle;

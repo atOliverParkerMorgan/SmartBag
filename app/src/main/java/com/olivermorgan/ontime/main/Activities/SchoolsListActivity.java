@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
-import com.olivermorgan.ontime.main.ui.SchoolList.SchoolsListFragment;
+import com.olivermorgan.ontime.main.Fragments.SchoolList.SchoolsListFragment;
 
 public class SchoolsListActivity extends AppCompatActivity {
     public static final int RESULT_OK = 0;

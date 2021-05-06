@@ -1,4 +1,4 @@
-package com.olivermorgan.ontime.main.ui.Overview;
+package com.olivermorgan.ontime.main.Fragments.Overview;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -32,6 +32,7 @@ import com.olivermorgan.ontime.main.Activities.AddSubjectOrOther;
 import com.olivermorgan.ontime.main.Activities.EditSubject;
 import com.olivermorgan.ontime.main.Activities.EditSubjectLoggedin;
 import com.olivermorgan.ontime.main.Activities.MainActivity;
+import com.olivermorgan.ontime.main.Activities.WhatToAdd;
 import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.BakalariAPI.Login;
 import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.RozvrhDen;
@@ -416,7 +417,7 @@ public class OverviewFragment extends Fragment {
 
         boolean first = true;
         final boolean donNotShare;
-        if (login.isLoggedIn()) {
+        if (login.isLoggedIn()&&LoadBag.getCurrentRozvrh()!=null) {
             int max = Integer.MIN_VALUE;
             int current;
 
@@ -668,7 +669,7 @@ public class OverviewFragment extends Fragment {
                 addSubjectButton.setOnClickListener(v -> {
                     // setting add Subject first to falls to avoid error
                     AddSubjectOrOther.firstViewOfActivity = true;
-                    Intent intent = new Intent(getActivity(), AddSubjectOrOther.class);
+                    Intent intent = new Intent(getActivity(), WhatToAdd.class);
                     startActivity(intent);
                 });
             }

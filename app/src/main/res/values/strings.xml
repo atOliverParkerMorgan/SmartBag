@@ -198,7 +198,7 @@
       <string name="Teacher">Teacher:</string>
       <string name="Time">Time:</string>
       <string name="Topic">Topic:</string>
-      <string name="serverAdress">Server Adress</string>
+      <string name="serverAdress">Server Address</string>
       <string name="noConnection">no connection</string>
       <string name="backOnline">back online</string>
       <string name="whatToAdd">What do want to add?</string>
@@ -206,4 +206,6 @@
       <string name="subject">Subject</string>
       <string name="snack">Snack</string>
       <string name="pencilCase">Pencil case</string>
+      <string name="grantCameraPremission">You must grant camera permission to use this function!</string>
+        <string name="nothingFound">Nothing Found…</string>
  </resources>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">SmartBag</string>
     <string name="title_add_button_navigation">Přidat</string>
     <string name="title_create_subject">Vytvořte předmět</string>
@@ -205,4 +205,6 @@
     <string name="pencilCase">Penál</string>
     <string name="title_create_snack">Vytvořit svačinu</string>
     <string name="title_create_pencilCase">Vytvořit penál</string>
+    <string name="grantCameraPremission">Musíte souhlasit s požitím kamery abyste mohli používat tuto funkci!</string>
+    <string name="nothingFound">Nic nebylo nalezeno…</string>
 </resources>

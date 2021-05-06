@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.olivermorgan.ontime.main.R;
-import com.olivermorgan.ontime.main.ui.SchoolList.SchoolsListFragment;
+import com.olivermorgan.ontime.main.Fragments.SchoolList.SchoolsListFragment;
 
 
 public class SchoolsAdapter extends PagedListAdapter<SchoolInfo, SchoolsAdapter.ViewHolder> {

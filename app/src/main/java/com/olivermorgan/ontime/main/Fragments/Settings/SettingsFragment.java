@@ -1,4 +1,4 @@
-package com.olivermorgan.ontime.main.ui.Settings;
+package com.olivermorgan.ontime.main.Fragments.Settings;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

@@ -5,8 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,12 +14,12 @@ import com.olivermorgan.ontime.main.BakalariAPI.Login;
 import com.olivermorgan.ontime.main.Logic.LoadBag;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
-import com.olivermorgan.ontime.main.ui.Add.AddFragment;
-import com.olivermorgan.ontime.main.ui.Bag.BagFragment;
-import com.olivermorgan.ontime.main.ui.Overview.OverviewFragment;
-import com.olivermorgan.ontime.main.ui.Remove.RemoveFragment;
+import com.olivermorgan.ontime.main.Fragments.Add.AddFragment;
+import com.olivermorgan.ontime.main.Fragments.Bag.BagFragment;
+import com.olivermorgan.ontime.main.Fragments.Overview.OverviewFragment;
+import com.olivermorgan.ontime.main.Fragments.Remove.RemoveFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.olivermorgan.ontime.main.ui.Settings.SettingsFragment;
+import com.olivermorgan.ontime.main.Fragments.Settings.SettingsFragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import java.util.Objects;
@@ -32,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     public static LoadBag loadBag;
     private Login login;
-    private boolean hideConnectionStatus;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.navigation_overview:
                         selectedFragment = new OverviewFragment();
                         break;
+
                 }
 
 
@@ -199,14 +198,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-    }
-
-    public static boolean isConnected(Context context) {
-        ConnectivityManager cm =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
     }
 
 
