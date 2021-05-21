@@ -79,7 +79,7 @@ public class RemoveFragment extends Fragment {
             // přidat všechny položky, které jsou v databázi zaznamenané do batohu
             final List<String[]> myBagItems = FeedReaderDbHelperItems.getItemsInBag(context);
             for (String[] item : myBagItems) {
-                inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(context, item[0]), FeedReaderDbHelperItems.getType(context, item[0]), context));
+                inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(context, item[0]), FeedReaderDbHelperSubjects.getType(context, item[1]), context));
             }
 
 
@@ -104,7 +104,7 @@ public class RemoveFragment extends Fragment {
                     }
                     // přidat prvky do databáze
                     if (inBag) {
-                        itemsDataItemsToRemove.add(new Item(foundItem, subject, FeedReaderDbHelperItems.isInBag(context, foundItem), FeedReaderDbHelperItems.getType(context, foundItem), context));
+                        itemsDataItemsToRemove.add(new Item(foundItem, subject, FeedReaderDbHelperItems.isInBag(context, foundItem), FeedReaderDbHelperSubjects.getType(context, subject), context));
                     }
 
 

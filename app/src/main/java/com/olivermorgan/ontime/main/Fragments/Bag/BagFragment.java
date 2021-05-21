@@ -18,6 +18,7 @@ import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.Adapter.MyBagAdapter;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperItems;
 
+import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.olivermorgan.ontime.main.R;
 
 
@@ -47,7 +48,7 @@ public class BagFragment extends Fragment {
 
         final List<String[]> myBagItems = FeedReaderDbHelperItems.getItemsInBag(getContext());
         for (String[] item : myBagItems) {
-            inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(getContext(), item[0]), FeedReaderDbHelperItems.getType(getContext(), item[0]), getContext()));
+            inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(getContext(), item[0]), FeedReaderDbHelperSubjects.getType(getContext(), item[1]), getContext()));
         }
 
         // loop through all relevant subjects

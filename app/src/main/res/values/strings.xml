@@ -207,5 +207,6 @@
       <string name="snack">Snack</string>
       <string name="pencilCase">Pencil case</string>
       <string name="grantCameraPremission">You must grant camera permission to use this function!</string>
-        <string name="nothingFound">Nothing Found…</string>
+      <string name="nothingFound">Nothing Found…</string>
+     <string name="thisTimeTabledoesntExist">This timetable doesn\'t exist</string>
  </resources>

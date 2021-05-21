@@ -36,7 +36,9 @@ public class AddItem extends AppCompatActivity {
         setContentView(R.layout.activity_add_items);
 
         Toolbar toolbar = findViewById(R.id.toolbarAddItems);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        toolbar.setNavigationOnClickListener(v ->{
+        Intent i = new Intent(AddItem.this, WhatToAdd.class);
+        startActivity(i);});
 
         EditText input = findViewById(R.id.editItem);
         TextView title = findViewById(R.id.toolbar_title);
@@ -128,7 +130,7 @@ public class AddItem extends AppCompatActivity {
                 // Insert the new row, returning the primary key value of the new row
 
                 // false means an Error has occurred
-                if ( !FeedReaderDbHelperItems.write(v.getContext(),  getIntent(),  mAdapterItemsToAdd.getItems())|| !FeedReaderDbHelperSubjects.write(v.getContext(), getIntent(), subject)) {
+                if ( !FeedReaderDbHelperItems.write(v.getContext(),  getIntent(),  mAdapterItemsToAdd.getItems())|| !FeedReaderDbHelperSubjects.write(v.getContext(), getIntent(), subject, type)) {
                     Toast.makeText(v.getContext(), R.string.databaseError,
                             Toast.LENGTH_LONG).show();
                 }

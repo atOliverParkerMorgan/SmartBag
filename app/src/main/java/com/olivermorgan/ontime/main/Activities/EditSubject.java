@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -62,6 +64,49 @@ public class EditSubject extends AppCompatActivity {
         @SuppressLint("UseSwitchCompatOrMaterialCode")
         final Switch sun = findViewById(R.id.sundaySwitchEdit);
 
+        final RadioButton subjectType = findViewById(R.id.radioButtonSubject);
+        final RadioButton snackType = findViewById(R.id.radioButtonSnacks);
+        final RadioButton pencilCaseaType = findViewById(R.id.radioButtonPecnilCase);
+
+        switch (FeedReaderDbHelperSubjects.getType(this,subject)){
+            case "subject":
+                subjectType.setChecked(true);
+                break;
+            case "snack":
+                snackType.setChecked(true);
+                break;
+            case "pencilCase":
+                pencilCaseaType.setChecked(true);
+                break;
+        }
+
+        subjectType.setOnClickListener((v)->{
+            if(subjectType.isChecked()){
+                FeedReaderDbHelperSubjects.setType(this,subject,"subject");
+                subjectType.setChecked(true);
+                snackType.setChecked(false);
+                pencilCaseaType.setChecked(false);
+            }
+        });
+        snackType.setOnClickListener((v)->{
+            if(snackType.isChecked()){
+
+                FeedReaderDbHelperSubjects.setType(this,subject,"snack");
+                subjectType.setChecked(false);
+                snackType.setChecked(true);
+                pencilCaseaType.setChecked(false
+                );
+            }
+        });
+        pencilCaseaType.setOnClickListener((v)->{
+            if(pencilCaseaType.isChecked()){
+                FeedReaderDbHelperSubjects.setType(this,subject,"pencilCase");
+                subjectType.setChecked(false);
+                snackType.setChecked(false);
+                pencilCaseaType.setChecked(true);
+            }
+        });
+
         // hide weekend
         boolean weekendOnBoolean = SharedPrefs.getBoolean(this, SharedPrefs.WEEKEND_ON);
 
@@ -91,7 +136,7 @@ public class EditSubject extends AppCompatActivity {
         final List<Item> itemsDataItemsToEdit = new ArrayList<>();
         final List<String> itemNames = FeedReaderDbHelperItems.getContent(this, subject);
         for (String item : itemNames) {
-            itemsDataItemsToEdit.add(new Item(item, subject, FeedReaderDbHelperItems.isInBag(getApplicationContext(), item),FeedReaderDbHelperItems.getType(this, item), this));
+            itemsDataItemsToEdit.add(new Item(item, subject, FeedReaderDbHelperItems.isInBag(getApplicationContext(), item),FeedReaderDbHelperSubjects.getType(this, subject), this));
         }
 
 
@@ -186,7 +231,9 @@ public class EditSubject extends AppCompatActivity {
             } else {
                 // also the item cannot already be in the recycle viewer
                 boolean found = false;
+
                 for (Item item : itemsDataItemsToEdit) {
+
                     if (item.getItemName().equals(viewHolder.itemName.getText().toString())) {
                         found = true;
                         break;
@@ -194,7 +241,8 @@ public class EditSubject extends AppCompatActivity {
                 }
                 if (!found) {
                     // this is data for recycler view
-                    itemsDataItemsToEdit.add(new Item(viewHolder.itemName.getText().toString(), subject, false,FeedReaderDbHelperItems.getType(this, viewHolder.itemName.getText().toString()), this));
+                    itemsDataItemsToEdit.add(new Item(viewHolder.itemName.getText().toString(), subject, false, FeedReaderDbHelperSubjects.getType(this, subject), this));
+
 
                     // create an adapter
                     @SuppressLint("CutPasteId") MyListAdapter mAdapterItemsToAdd1 = new MyListAdapter(itemsDataItemsToEdit, (byte) -10, findViewById(android.R.id.content), false, true, false, EditSubject.this);

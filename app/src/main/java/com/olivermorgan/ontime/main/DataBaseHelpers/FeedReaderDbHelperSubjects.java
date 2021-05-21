@@ -26,15 +26,17 @@ import static com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSub
 import static com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_TUESDAY;
 import static com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.COLUMN_NAME_WEDNESDAY;
 import static com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.TABLE_NAME;
+import static com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects.FeedEntry.TYPE;
 
 public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "Subject.db";
+    public static final int DATABASE_VERSION = 2;
+    public static final String DATABASE_NAME = "subject_smartbag.db";
     private final static String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + " (" +
                 FeedEntry._ID + " INTEGER PRIMARY KEY," +
                 COLUMN_NAME_TITLE + " TEXT," +
+                FeedEntry.TYPE + " TEXT,"+
                 FeedEntry.COLUMN_NAME_MONDAY + " TEXT,"+
                 FeedEntry.COLUMN_NAME_TUESDAY + " TEXT,"+
                 FeedEntry.COLUMN_NAME_WEDNESDAY + " TEXT,"+
@@ -116,6 +118,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
         public static final String COLUMN_NAME_FRIDAY = "friday";
         public static final String COLUMN_NAME_SATURDAY = "saturday";
         public static final String COLUMN_NAME_SUNDAY = "sunday";
+        public static final String TYPE = "type";
 
     }
     public static String[] getDaysOfSubjects(Context context, String subjectName){
@@ -405,7 +408,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
 
     }
 
-    public static boolean write(Context context, Intent intent, String subject){
+    public static boolean write(Context context, Intent intent, String subject, String type){
         FeedReaderDbHelperSubjects dbHelperForSubject =  new FeedReaderDbHelperSubjects(context);
         // Gets the data repository in write mode
         Log.e("Subject: ",subject);
@@ -423,7 +426,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
             valuesForSubject.put(FeedEntry.COLUMN_NAME_FRIDAY, (String) intent.getSerializableExtra("Friday"));
             valuesForSubject.put(FeedEntry.COLUMN_NAME_SATURDAY, (String) intent.getSerializableExtra("Saturday"));
             valuesForSubject.put(FeedEntry.COLUMN_NAME_SUNDAY, (String) intent.getSerializableExtra("Sunday"));
-
+            valuesForSubject.put(FeedEntry.TYPE, type);
             // Insert the new row, returning the primary key value of the new row
             return dbForSubject.insert(TABLE_NAME, null, valuesForSubject)>0;
         }
@@ -499,6 +502,49 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
 
         FeedReaderDbHelperItems.edit(context, newSubjectName, oldSubjectName); // edit all items of this subject
         dbForSubject.execSQL(query);
+
+        }catch (Exception e){
+            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
+        }finally {
+            dbHelperForSubject.close();
+            dbForSubject.close();
+        }
+    }
+    public static String getType(Context context, final String subjectName){
+        FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(context);
+        SQLiteDatabase dbForSubject = dbHelperForSubject.getReadableDatabase();
+
+        try {
+
+            String Query = "SELECT * FROM " + FeedEntry.TABLE_NAME + " WHERE " + COLUMN_NAME_TITLE + " = " + "'"+subjectName+"'";
+            Cursor cursor = dbForSubject.rawQuery(Query, null);
+
+            // get all the subjects that have today marked as true
+            List<String[]> subjectNames = new ArrayList<>();
+            cursor.moveToNext();
+            String type = cursor.getString(cursor.getColumnIndexOrThrow(FeedEntry.TYPE));
+            cursor.close();
+            return type;
+
+        }catch (Exception e){
+            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
+            return "subject";
+        }finally {
+            dbHelperForSubject.close();
+            dbForSubject.close();
+        }
+    }
+
+    public static void setType(Context context, final String subjectName, final  String subjectType){
+        FeedReaderDbHelperSubjects dbHelperForSubject = new FeedReaderDbHelperSubjects(context);
+        SQLiteDatabase dbForSubject = dbHelperForSubject.getReadableDatabase();
+
+        try {
+            String Query = " UPDATE " + TABLE_NAME + " SET " + TYPE + " = " + "'"+subjectType+"'"+
+                    " WHERE "+ COLUMN_NAME_TITLE+" = "+"'"+subjectName+"'";
+
+            dbForSubject.execSQL(Query);
+
 
         }catch (Exception e){
             MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));

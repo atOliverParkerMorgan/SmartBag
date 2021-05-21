@@ -296,7 +296,7 @@ public class OverviewFragment extends Fragment {
                     // for items
                     StorageReference itemRef = storageReference.child("items/" + code.getText().toString() + ".db");
                     itemRef.getFile(databaseItems).addOnSuccessListener(taskSnapshot -> {
-                        Toast.makeText(getContext(), getActivity().getResources().getString(R.string.successfulUpdateWithCode) + " " + code.getText().toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), getContext().getResources().getString(R.string.successfulUpdateWithCode) + " " + code.getText().toString(), Toast.LENGTH_LONG).show();
                         updateTable(weekendOnBoolean, table, view);
 
                         progressBarLoadTable.setVisibility(View.INVISIBLE);
@@ -314,7 +314,7 @@ public class OverviewFragment extends Fragment {
                         Handler handler = new Handler();
                         handler.postDelayed(() -> progressBar.setProgress(0), 1500);
 
-                    }).addOnFailureListener(exception -> Toast.makeText(getContext(), getActivity().getResources().getString(R.string.incorrectCodeOrNoConnection), Toast.LENGTH_LONG).show()).addOnProgressListener(snapshot -> {
+                    }).addOnFailureListener(exception ->  MainActivity.showAlert(getContext(),getContext().getResources().getString(R.string.ERROR),getContext().getResources().getString(R.string.thisTimeTabledoesntExist))).addOnProgressListener(snapshot -> {
                         double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
                         progressBar.setProgress((int) progress);
                     });

@@ -295,8 +295,9 @@ import static android.view.View.GONE;
                      alert.setPositiveButton(android.R.string.yes, (dialog, which) -> {
                          // continue with delete
                          FeedReaderDbHelperItems.deleteItem(v.getContext(), Items.get(position));
-                         removeAt(position);
                          Toast.makeText(v.getContext(), Items.get(position).getItemName() + " has been removed from your bag", Toast.LENGTH_SHORT).show();
+                         removeAt(position);
+
 
 
                      });

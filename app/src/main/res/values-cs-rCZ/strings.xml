@@ -6,9 +6,9 @@
     <string name="title_remove_button_navigation">Odebrat</string>
     <string name="title_overview_button_navigation">Přehled</string>
     <string name="title_bag_button_navigation">Batoh</string>
-    <string name="title_add_item">Přidejte pomůcky k předmětu.</string>
-    <string name="title_add_food">Přidejte jídlo do svačiny.</string>
-    <string name="title_add_pens">Přidejte tužky do penálu.</string>
+    <string name="title_add_item">Přidejte pomůcky</string>
+    <string name="title_add_food">Přidejte jídlo</string>
+    <string name="title_add_pens">Přidejte tužky</string>
     <string name="none">N</string>
     <string name="days_of_the_week_text">Jaké dny v týdnu chcete tuto pomůcku v batohu?</string>
     <string name="add_to_bag_subject">Chcete přidat tento předmět do batohu?</string>
@@ -207,4 +207,5 @@
     <string name="title_create_pencilCase">Vytvořit penál</string>
     <string name="grantCameraPremission">Musíte souhlasit s požitím kamery abyste mohli používat tuto funkci!</string>
     <string name="nothingFound">Nic nebylo nalezeno…</string>
+    <string name="thisTimeTabledoesntExist">Tento rozrvh neexistuje</string>
 </resources>

@@ -51,7 +51,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/parent"
@@ -61,15 +61,22 @@
             tools:layout_editor_absoluteY="0dp">
 
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineRadioButtons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.77" />
+
             <Button
                 android:id="@+id/addItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
-                android:textColor="?attr/bgColor"
                 android:background="@drawable/button_borders_add"
                 android:text="@string/add_button"
+                android:textColor="?attr/bgColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/editItem"
                 app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -95,7 +102,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.16" />
+                app:layout_constraintGuide_percent="0.28" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineForSwitches2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.14" />
 
             <TextView
                 android:id="@+id/textView"
@@ -123,25 +137,25 @@
                 android:inputType="textPersonName"
                 android:textAlignment="center"
                 android:textSize="24sp"
-                app:layout_constraintBottom_toTopOf="@+id/guidelineForSwitches"
+                app:layout_constraintBottom_toTopOf="@+id/guidelineForSwitches2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.5" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Switch
                 android:id="@+id/mondaySwitchEdit"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="64dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/monday"
                 android:textColor="?attr/textColor"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/guidelineForSwitches" />
+                app:layout_constraintTop_toTopOf="@+id/guidelineForSwitches"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <Switch
                 android:id="@+id/tuesdaySwitchEdit"
@@ -155,7 +169,8 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mondaySwitchEdit" />
+                app:layout_constraintTop_toBottomOf="@+id/mondaySwitchEdit"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <Switch
                 android:id="@+id/wednesdaySwitchEdit"
@@ -169,7 +184,8 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tuesdaySwitchEdit" />
+                app:layout_constraintTop_toBottomOf="@+id/tuesdaySwitchEdit"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <Switch
                 android:id="@+id/thursdaySwitchEdit"
@@ -183,7 +199,8 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/wednesdaySwitchEdit" />
+                app:layout_constraintTop_toBottomOf="@+id/wednesdaySwitchEdit"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <Switch
                 android:id="@+id/fridaySwitchEdit"
@@ -197,7 +214,8 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/thursdaySwitchEdit" />
+                app:layout_constraintTop_toBottomOf="@+id/thursdaySwitchEdit"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <Switch
                 android:id="@+id/saturdaySwitchEdit"
@@ -211,7 +229,8 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fridaySwitchEdit" />
+                app:layout_constraintTop_toBottomOf="@+id/fridaySwitchEdit"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <Switch
                 android:id="@+id/sundaySwitchEdit"
@@ -225,7 +244,8 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/saturdaySwitchEdit" />
+                app:layout_constraintTop_toBottomOf="@+id/saturdaySwitchEdit"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/editItemsRecycleView"
@@ -236,6 +256,69 @@
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editItem" />
+
+            <RadioButton
+                android:id="@+id/radioButtonSubject"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guidelineRadioButtons"
+                app:layout_constraintTop_toTopOf="@+id/guidelineForSwitches2" />
+
+            <RadioButton
+                android:id="@+id/radioButtonSnacks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/radioButtonPecnilCase"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guidelineRadioButtons"
+                app:layout_constraintTop_toBottomOf="@+id/radioButtonSubject" />
+
+            <RadioButton
+                android:id="@+id/radioButtonPecnilCase"
+                android:layout_width="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/guidelineRadioButtons"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/guidelineForSwitches"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/subjectText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/subject"
+                android:textColor="?attr/textColor"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guidelineForSwitches2" />
+
+            <TextView
+                android:id="@+id/snacksText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@string/snack"
+                android:textColor="?attr/textColor"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/pencilCasetext"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/subjectText" />
+
+            <TextView
+                android:id="@+id/pencilCasetext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/pencilCase"
+                android:textColor="?attr/textColor"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/guidelineForSwitches"
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

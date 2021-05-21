@@ -10,7 +10,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.appcompat.widget.Toolbar;
+
+import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.BakalariAPI.Login;
+import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperItems;
+import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
 import com.olivermorgan.ontime.main.Logic.LoadBag;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
@@ -22,6 +26,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.olivermorgan.ontime.main.Fragments.Settings.SettingsFragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import java.util.List;
 import java.util.Objects;
 
 
@@ -69,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         super.onCreate(savedInstanceState);
+
+        // získat pole co mám v batohu z databáze
+        final List<String[]> myBagItems = FeedReaderDbHelperItems.getItemsInBag(this);
+
 
         boolean darkModeOn = SharedPrefs.getDarkMode(this);
         if (darkModeOn) {

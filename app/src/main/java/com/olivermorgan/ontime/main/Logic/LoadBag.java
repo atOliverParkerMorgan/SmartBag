@@ -121,7 +121,7 @@ public class LoadBag {
                 intent.putExtra("putInToBag", false);
 
                 try {
-                    FeedReaderDbHelperSubjects.write(context, intent, mainTitles.get(i).getName());
+                    FeedReaderDbHelperSubjects.write(context, intent, mainTitles.get(i).getName(), "subject");
                 }catch (Exception e){
                     ((Activity) getContext()).runOnUiThread(() -> {
                         if (SharedPrefs.getBoolean(getContext(), "Languages")) {
@@ -204,7 +204,7 @@ public class LoadBag {
                 intent.putExtra("putInToBag", false);
 
                 try {
-                    FeedReaderDbHelperSubjects.write(context, intent, mainTitles.get(i).getName());
+                    FeedReaderDbHelperSubjects.write(context, intent, mainTitles.get(i).getName(), "subject");
                 }catch (Exception e){
                     ((Activity) getContext()).runOnUiThread(() -> {
                         if (SharedPrefs.getBoolean(getContext(), "Languages")) {
