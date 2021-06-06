@@ -1,35 +1,29 @@
 package com.olivermorgan.ontime.main.Activities;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.Adapter.MyListAdapter;
-import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.RozvrhDen;
-import com.olivermorgan.ontime.main.BakalariAPI.rozvrh.items.RozvrhHodina;
+
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperItems;
 import com.olivermorgan.ontime.main.DataBaseHelpers.FeedReaderDbHelperSubjects;
-import com.olivermorgan.ontime.main.Logic.LoadBag;
 import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class EditSubjectLoggedin extends AppCompatActivity {
 
@@ -60,7 +54,8 @@ public class EditSubjectLoggedin extends AppCompatActivity {
         final List<Item> itemsDataItemsToEdit = new ArrayList<>();
         final List<String> itemNames = FeedReaderDbHelperItems.getContent(this, subject);
         for (String item : itemNames) {
-            itemsDataItemsToEdit.add(new Item(item, subject, FeedReaderDbHelperItems.isInBag(getApplicationContext(), item), FeedReaderDbHelperSubjects.getType(this, subject), this));
+            String type = FeedReaderDbHelperSubjects.getType(this, subject);
+            itemsDataItemsToEdit.add(new Item(item, subject, FeedReaderDbHelperItems.isInBag(getApplicationContext(), item, subject, type), type, this));
         }
 
 
@@ -71,9 +66,9 @@ public class EditSubjectLoggedin extends AppCompatActivity {
         // 5. set itemAdd animator to DefaultAnimator
 
         TextView info = findViewById(R.id.info);
-        String teacher = getIntent().getStringExtra("teacher").equals("")?"":getResources().getString(R.string.Teacher)+" "+getIntent().getStringExtra("teacher")+"\n";
-        String topic = getIntent().getStringExtra("topic").equals("")?"":getResources().getString(R.string.Topic)+" "+getIntent().getStringExtra("topic")+"\n";
-        String time = getIntent().getStringExtra("time1").equals("")?"":getResources().getString(R.string.Time)+" "+getIntent().getStringExtra("time1")+" - "+getIntent().getStringExtra("time2")+"\n";
+        String teacher = Objects.equals(getIntent().getStringExtra("teacher"), "") ?"":getResources().getString(R.string.Teacher)+" "+getIntent().getStringExtra("teacher")+"\n";
+        String topic = Objects.equals(getIntent().getStringExtra("topic"), "") ?"":getResources().getString(R.string.Topic)+" "+getIntent().getStringExtra("topic")+"\n";
+        String time = Objects.equals(getIntent().getStringExtra("time1"), "") ?"":getResources().getString(R.string.Time)+" "+getIntent().getStringExtra("time1")+" - "+getIntent().getStringExtra("time2")+"\n";
         info.setText(teacher+topic+time);
 
 
@@ -89,7 +84,7 @@ public class EditSubjectLoggedin extends AppCompatActivity {
                 i.putExtra("Fragment", "overview");
 
                 i.putExtra("putInToBag", "null");
-                if (!FeedReaderDbHelperItems.write(v.getContext(), i, itemsDataItemsToEdit, viewHolder.subjectName.getText().toString())) {
+                if (FeedReaderDbHelperItems.write(v.getContext(), i, itemsDataItemsToEdit, viewHolder.subjectName.getText().toString())) {
                     Toast.makeText(v.getContext(), getResources().getString(R.string.databaseError),
                             Toast.LENGTH_LONG).show();
                 }

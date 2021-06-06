@@ -8,11 +8,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
-import android.util.Log;
+
 
 import com.olivermorgan.ontime.main.Activities.MainActivity;
 import com.olivermorgan.ontime.main.Adapter.Item;
 import com.olivermorgan.ontime.main.R;
+import com.olivermorgan.ontime.main.SharedPrefs;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -38,9 +39,6 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
                     FeedEntry.COLUMN_SUBJECT_TITLE + " TEXT,"+
                     FeedEntry.IS_IN_BAG + " TEXT,"+
                     FeedEntry.DATE + " TEXT)";
-
-    private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + FeedReaderDbHelperSubjects.FeedEntry.TABLE_NAME;
 
     public FeedReaderDbHelperItems(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -110,6 +108,8 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
 
             return subjectNames;
         }catch (Exception e){
+            System.err.println("1");
+            System.err.println(e.toString());
             MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
             return new ArrayList<>();
         }finally {
@@ -125,13 +125,12 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
         FeedReaderDbHelperItems dbHelperForItems = new FeedReaderDbHelperItems(context);
         // Gets the data repository in write mode
         SQLiteDatabase dbForItems = dbHelperForItems.getWritableDatabase();
+        // date for snacks
         @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date date = new Date();
-
         // Create a new map of values, where column names are the keys
         try {
             // adding data to table
-
             for (Item item : defaultItemsDataItemsToAdd) {
                 ContentValues valuesForItems = new ContentValues();
                 valuesForItems.put(FeedEntry.COLUMN_NAME_TITLE, item.getItemName());
@@ -141,17 +140,23 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
                 } else {
                     valuesForItems.put(FeedEntry.IS_IN_BAG, String.valueOf(intent.getSerializableExtra("putInToBag")));
                 }
-                valuesForItems.put(FeedEntry.DATE, dateFormat.format(date));
+                if(item.getSubjectName().equals("snack")) {
+                    valuesForItems.put(FeedEntry.DATE, dateFormat.format(date));
+                }else {
+                    valuesForItems.put(FeedEntry.DATE, "-");
+                }
                 // Insert the new row, returning the primary key value of the new row
                 if (dbForItems.insert(TABLE_NAME, null, valuesForItems) < 0) {
                     dbHelperForItems.close();
                     dbForItems.close();
-                    return false;
+                    return true;
                 }
             }
-            return true;
+            return false;
         }catch (Exception e){
-                return false;
+
+            System.err.println(e.toString());
+                return true;
         }finally {
             dbHelperForItems.close();
             dbForItems.close();
@@ -168,7 +173,6 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
         SQLiteDatabase dbForItems = dbHelperForItems.getWritableDatabase();
         @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date date = new Date();
-
         try{
         // Create a new map of values, where column names are the keys
 
@@ -184,16 +188,21 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
             }else{
                 valuesForItems.put(FeedEntry.IS_IN_BAG, String.valueOf(intent.getSerializableExtra("putInToBag")));
             }
-            valuesForItems.put(FeedEntry.DATE, dateFormat.format(date));
+            if(item.getSubjectName().equals("snack")) {
+                valuesForItems.put(FeedEntry.DATE, dateFormat.format(date));
+            }else {
+                valuesForItems.put(FeedEntry.DATE, "-");
+            }
             // Insert the new row, returning the primary key value of the new row
             if (dbForItems.insert(TABLE_NAME, null, valuesForItems)<0){
-                return false;
+                return true;
             }
         }
         // the method was successful
-        return true;
+        return false;
         }catch (Exception e){
-            return false;
+            System.err.println(e.toString());
+            return true;
         }finally {
             dbHelperForItems.close();
             dbForItems.close();
@@ -201,52 +210,41 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
 
     }
 
-    public static boolean isInBag(Context context, String itemName){
+    public static boolean isInBag(Context context, String itemName, String subject, String type){
         FeedReaderDbHelperItems dbHelperForItem = new FeedReaderDbHelperItems(context);
         SQLiteDatabase dbForItem = dbHelperForItem.getReadableDatabase();
+        String Query = "Select * from " + TABLE_NAME + " where " + IS_IN_BAG + " = " + "'true'"+ " AND "+ COLUMN_NAME_TITLE + " = " + "'"+itemName+"'";
         @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date date = new Date();
+        if(type.equals("snack")){
+            SQLiteDatabase dbForItems = dbHelperForItem.getWritableDatabase();
+            String queryItems =
+                    "UPDATE "+ TABLE_NAME+" SET "+
+                            DATE+" = "+"'"+ dateFormat.format(date) + SharedPrefs.getInt(context, SharedPrefs.SPINNER) +"'"+
+                            " WHERE "+ FeedEntry.COLUMN_NAME_TITLE+" = "+"'"+itemName+"' AND "+
+                            FeedEntry.COLUMN_SUBJECT_TITLE+" = "+"'"+subject+"'";
 
-        try {
-
-        String Query = "SELECT * FROM " + TABLE_NAME + " WHERE " + IS_IN_BAG + " = " + "'true'"+ " AND "+ COLUMN_NAME_TITLE + " = " + "'"+itemName+"'";
+            dbForItems.execSQL(queryItems);
+        }
         Cursor cursor = dbForItem.rawQuery(Query, null);
         if(cursor.getCount() <= 0){
             cursor.close();
-            dbHelperForItem.close();
-            dbForItem.close();
             return false;
         }
         cursor.close();
-
-        Query = "SELECT * FROM " + TABLE_NAME + " WHERE " + FeedEntry.DATE + " = '" + dateFormat.format(date) + "' AND "+ COLUMN_NAME_TITLE + " = " + "'"+itemName+"'";
-        cursor = dbForItem.rawQuery(Query, null);
-        if(cursor.getCount() <= 0){
-            cursor.close();
-            dbHelperForItem.close();
-            dbForItem.close();
-            return true;
-        }
-
-        return false;
-        }catch (Exception e){
-            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
-            return false;
-        }finally {
-            dbHelperForItem.close();
-            dbForItem.close();
-        }
+        return true;
 
     }
 
     public static List<String[]> getItemsInBag(Context context){
         FeedReaderDbHelperItems dbHelperForItem = new FeedReaderDbHelperItems(context);
         SQLiteDatabase dbForItem = dbHelperForItem.getReadableDatabase();
-
         try {
-
+            @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            Date date = new Date();
             // subset is initialized in switch statement
-            String selectionItem = "SELECT * FROM " + FeedEntry.TABLE_NAME + " WHERE " + FeedReaderDbHelperItems.FeedEntry.IS_IN_BAG + " = " + "'true'";
+            String selectionItem = "SELECT * FROM " + FeedEntry.TABLE_NAME + " WHERE "
+                    + FeedReaderDbHelperItems.FeedEntry.IS_IN_BAG + " = " + "'true'";
 
             Cursor cursorItem = dbForItem.rawQuery(selectionItem, null);
 
@@ -257,7 +255,14 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
                         cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_TITLE));
                 String subject = cursorItem.getString(
                         cursorItem.getColumnIndexOrThrow(FeedEntry.COLUMN_SUBJECT_TITLE));
+
+                if(FeedReaderDbHelperSubjects.getType(context,subject).equals("snack")&&!getDate(context, subject, item).equals(dateFormat.format(date) + SharedPrefs.getInt(context, SharedPrefs.SPINNER))){
+                    editBag(context,new Item(item,subject,true,"snack", context),false);
+                }
+
                 subjectNames.add(new String[]{item, subject});
+
+
             }
             cursorItem.close();
             return subjectNames;
@@ -274,38 +279,26 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
     public static void editBag(Context context, Item item, boolean add){
         FeedReaderDbHelperItems dbHelperItems = new FeedReaderDbHelperItems(context);
         SQLiteDatabase dbForItems = dbHelperItems.getWritableDatabase();
-
-        String queryItems;
         try {
-            if(item.getType().equals("snack")){
-                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-                Date date = new Date();
-                if(add){
-                    queryItems =
-                            "UPDATE " + TABLE_NAME + " SET " +
-                                    FeedReaderDbHelperItems.FeedEntry.IS_IN_BAG + " = " + "'" + add + "'" + " AND "+
-                                    DATE + " = " +"'"+ dateFormat.format(date) +"'"+
-                                    " WHERE " + FeedEntry.COLUMN_NAME_TITLE + " = " + "'" + item.getItemName() + "' AND " +
-                                    FeedEntry.COLUMN_SUBJECT_TITLE + " = " + "'" + item.getSubjectName() + "'";
-                }else {
-                    queryItems =
-                            "UPDATE " + TABLE_NAME + " SET " +
-                                    FeedReaderDbHelperItems.FeedEntry.IS_IN_BAG + " = " + "'" + add + "'" + " AND "+
-                                    DATE + " = " +"''"+
-                                    " WHERE " + FeedEntry.COLUMN_NAME_TITLE + " = " + "'" + item.getItemName() + "' AND " +
-                                    FeedEntry.COLUMN_SUBJECT_TITLE + " = " + "'" + item.getSubjectName() + "'";
-                }
-            }else {
 
+            String queryItems =
+                    "UPDATE "+ TABLE_NAME+" SET "+
+                            FeedReaderDbHelperItems.FeedEntry.IS_IN_BAG+" = "+"'"+add+"'"+
+                            " WHERE "+ FeedEntry.COLUMN_NAME_TITLE+" = "+"'"+item.getItemName()+"' AND "+
+                            FeedEntry.COLUMN_SUBJECT_TITLE+" = "+"'"+item.getSubjectName()+"'";
+
+            dbForItems.execSQL(queryItems);
+
+            @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            Date date = new Date();
             queryItems =
-                    "UPDATE " + TABLE_NAME + " SET " +
-                            FeedReaderDbHelperItems.FeedEntry.IS_IN_BAG + " = " + "'" + add + "'" +
-                            " WHERE " + FeedEntry.COLUMN_NAME_TITLE + " = " + "'" + item.getItemName() + "' AND " +
-                            FeedEntry.COLUMN_SUBJECT_TITLE + " = " + "'" + item.getSubjectName() + "'";
-            }
+                    "UPDATE "+ TABLE_NAME+" SET "+
+                            DATE +" = "+"'"+dateFormat.format(date)+SharedPrefs.getInt(context, SharedPrefs.SPINNER)+"'"+
+                            " WHERE "+ FeedEntry.COLUMN_NAME_TITLE+" = "+"'"+item.getItemName()+"' AND "+
+                            FeedEntry.COLUMN_SUBJECT_TITLE+" = "+"'"+item.getSubjectName()+"'";
+
             dbForItems.execSQL(queryItems);
         }catch (Exception e){
-            System.err.println(e);
             MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
         }finally {
             dbHelperItems.close();
@@ -313,6 +306,8 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
         }
 
     }
+
+
 
 
 
@@ -350,6 +345,7 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
         dbForItems.execSQL(queryItems);
 
         }catch (Exception e){
+            System.err.println(e.toString());
             MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
         }finally {
             dbHelperItems.close();
@@ -370,6 +366,7 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
 
             dbForItems.execSQL(queryItems);
         }catch (Exception e){
+            System.err.println(e.toString());
             MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
         }finally {
             dbHelperItems.close();
@@ -380,7 +377,7 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
     public static boolean subjectExists(Context context, String subjectName){
         FeedReaderDbHelperItems dbHelperForItem = new FeedReaderDbHelperItems(context);
         SQLiteDatabase dbForItem = dbHelperForItem.getReadableDatabase();
-        String Query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_SUBJECT_TITLE + " = " + "'"+subjectName+"';";
+        String Query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_SUBJECT_TITLE + " = " + "'"+subjectName+"'";
         try(Cursor cursor = dbForItem.rawQuery(Query, null)) {
             if (cursor.getCount() <= 0) {
                 cursor.close();
@@ -389,12 +386,32 @@ public class FeedReaderDbHelperItems extends SQLiteOpenHelper {
             cursor.close();
 
             return true;
-        }catch (android.database.sqlite.SQLiteException e){
-            Log.d("Error", String.valueOf(e));
-            return false;
+        }catch (Exception e){
+            System.err.println(e.toString());
+            MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
         }finally {
             dbHelperForItem.close();
-            dbForItem.close();
+            dbHelperForItem.close();
+        }
+        return false;
+    }
+
+    public static String getDate(Context context, String subject, String item) {
+        FeedReaderDbHelperItems dbHelperForItem = new FeedReaderDbHelperItems(context);
+        SQLiteDatabase dbForItem = dbHelperForItem.getReadableDatabase();
+        String Query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_TITLE + " = " + "'"+item+"'" + " AND " + COLUMN_SUBJECT_TITLE + " = "+ "'"+subject+"'" ;
+        try (Cursor cursor = dbForItem.rawQuery(Query, null)) {
+            cursor.moveToNext();
+
+            return cursor.getString(cursor.getColumnIndexOrThrow(DATE));
+
+
+        } catch (Exception e) {
+            System.err.println(e.toString());
+            return "-";
+        }finally {
+            dbHelperForItem.close();
+            dbHelperForItem.close();
         }
     }
 

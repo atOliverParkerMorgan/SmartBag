@@ -72,6 +72,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
             dbHelperForSubject.close();
             dbForSubject.close();
         }catch (Exception e){
+            System.err.println(e.toString());
             MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
         }
 
@@ -93,6 +94,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
             dbHelperForSubject.close();
             dbForSubject.close();
         }catch (Exception e){
+            System.err.println(e.toString());
             MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
         }
 
@@ -165,6 +167,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
 
         return daysValue;
         }catch (Exception e){
+            System.err.println(e.toString());
             MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
             return new String[]{};
         }finally {
@@ -280,6 +283,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
 
         return subjectNames;
         }catch (Exception e){
+            System.err.println(e.toString());
             MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
             return new ArrayList<>();
         }finally {
@@ -398,6 +402,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
             cursorSubject.close();
             return subjectNames;
         }catch (Exception e){
+            System.err.println(e.toString());
             MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
             return new ArrayList<>();
         }finally {
@@ -432,6 +437,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
         }
 
         catch (Exception e){
+            System.err.println(e.toString());
             MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
             return false;
 
@@ -476,6 +482,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
         dbForSubject.execSQL(query);
 
         }catch (Exception e){
+            System.err.println(e.toString());
             MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
         }finally {
             dbHelperForSubject.close();
@@ -504,6 +511,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
         dbForSubject.execSQL(query);
 
         }catch (Exception e){
+            System.err.println(e.toString());
             MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
         }finally {
             dbHelperForSubject.close();
@@ -527,6 +535,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
             return type;
 
         }catch (Exception e){
+            System.err.println(e.toString());
             MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
             return "subject";
         }finally {
@@ -547,6 +556,7 @@ public class FeedReaderDbHelperSubjects extends SQLiteOpenHelper {
 
 
         }catch (Exception e){
+            System.err.println(e.toString());
             MainActivity.showAlert(context,context.getResources().getString(R.string.ERROR),context.getResources().getString(R.string.databaseError));
         }finally {
             dbHelperForSubject.close();

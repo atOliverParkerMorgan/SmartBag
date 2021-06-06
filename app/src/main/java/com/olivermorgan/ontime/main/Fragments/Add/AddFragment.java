@@ -44,7 +44,7 @@ public class AddFragment extends Fragment {
         if (spinnerIndex == 0) {
             subjectsAccordingToSpinner = FeedReaderDbHelperSubjects.getContent(context, false);
         } else if (spinnerIndex == 1 && !tomorrowOff) {
-            subjectsAccordingToSpinner = FeedReaderDbHelperSubjects.getContent(context, -1);
+            subjectsAccordingToSpinner = FeedReaderDbHelperSubjects.getContent(context, -1); // Tomorrow
         } else {
             if (tomorrowOff)
                 subjectsAccordingToSpinner = FeedReaderDbHelperSubjects.getContent(context, spinnerIndex + 1);
@@ -73,7 +73,8 @@ public class AddFragment extends Fragment {
         // projít všechny položky v batohu
         for (String[] item : myBagItems) {
             // přidat novou položku do pole
-            inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(context, item[0]), FeedReaderDbHelperSubjects.getType(context, item[1]), context));
+            String type = FeedReaderDbHelperSubjects.getType(context, item[1]);
+            inMyBag.add(new Item(item[0], item[1], FeedReaderDbHelperItems.isInBag(context, item[0], item[1], type),type, context));
         }
         // logika pro zpracování daného dne
         if (doNotShow || spinnerIndex != 0) {
@@ -94,7 +95,8 @@ public class AddFragment extends Fragment {
                     }
                     // přidat položky do databáze
                     if (!found) {
-                        itemsDataItemsToAdd.add(new Item(item, subject, FeedReaderDbHelperItems.isInBag(context, item), FeedReaderDbHelperSubjects.getType(context, subject), context));
+                        String type = FeedReaderDbHelperSubjects.getType(context, subject);
+                        itemsDataItemsToAdd.add(new Item(item, subject, FeedReaderDbHelperItems.isInBag(context, item, subject, type), type, context));
                     }
                 }
 
@@ -102,11 +104,11 @@ public class AddFragment extends Fragment {
         }
 
 
-        // 3. create an adapter
+        // create an adapter
         MyListAdapter mAdapterItemsToAdd = new MyListAdapter(itemsDataItemsToAdd, (byte) 1, view, true, false, true, activity);
-        // 4. set adapter
+        // set adapter
         ItemsToAddRecycleView.setAdapter(mAdapterItemsToAdd);
-        // 5. set itemAdd animator to DefaultAnimator
+        // set itemAdd animator to DefaultAnimator
         ItemsToAddRecycleView.setItemAnimator(new DefaultItemAnimator());
 
         if (itemsDataItemsToAdd.size() > 0) {

@@ -43,6 +43,7 @@ import com.olivermorgan.ontime.main.R;
 import com.olivermorgan.ontime.main.SharedPrefs;
 
 import java.util.List;
+import java.util.Objects;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
@@ -60,6 +61,7 @@ public class OverviewFragment extends Fragment {
     Login login;
     int week;
     private View view;
+    boolean firstTimeVisitedFragment = true;
     // private DisplayInfo displayInfo;
 
     private static boolean isStringUpperCase(String str) {
@@ -83,7 +85,7 @@ public class OverviewFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_overview, parent, false);
 
         // set title
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_overview);
+        Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setTitle(R.string.title_overview);
 
 
         //get login
@@ -218,17 +220,9 @@ public class OverviewFragment extends Fragment {
                     });
                 }
             });
-        } else {
+        } else if(!firstTimeVisitedFragment){
             // tutorial
-            ShowcaseConfig config = new ShowcaseConfig();
-            config.setDelay(200); // half second between each showcase view
-            MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "recyclerViewerTutorialOverviewLoad");
-            sequence.setConfig(config);
-            sequence.addSequenceItem(view.findViewById(R.id.editTextCode),
-                    getActivity().getResources().getString(R.string.bagCode), getActivity().getResources().getString(R.string.Next));
-            sequence.addSequenceItem(view.findViewById(R.id.buttonLoad),
-                    getActivity().getResources().getString(R.string.bagCodeButton), getActivity().getResources().getString(R.string.gotIt));
-            sequence.start();
+           showTutorial1();
         }
         // hide weekend
         weekendOnBoolean = SharedPrefs.getBoolean(getContext(), SharedPrefs.WEEKEND_ON);
@@ -269,15 +263,15 @@ public class OverviewFragment extends Fragment {
 
         load.setOnClickListener(v -> {
             if (code.getText().toString().length() != 6 || !isStringUpperCase(code.getText().toString())) {
-                Toast.makeText(getContext(), getActivity().getResources().getString(R.string.invalidCode), Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), requireActivity().getResources().getString(R.string.invalidCode), Toast.LENGTH_LONG).show();
             } else {
                 AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
-                alert.setTitle(getActivity().getResources().getString(R.string.downloadBag) + " " + code.getText().toString());
+                alert.setTitle(requireActivity().getResources().getString(R.string.downloadBag) + " " + code.getText().toString());
                 Login login = new Login(getContext());
                 if (login.isLoggedIn()) {
-                    alert.setMessage(getActivity().getResources().getString(R.string.sureAboutDownloadingBagAndLogoutBaka));
+                    alert.setMessage(requireActivity().getResources().getString(R.string.sureAboutDownloadingBagAndLogoutBaka));
                 } else {
-                    alert.setMessage(getActivity().getResources().getString(R.string.sureAboutDownloadingBag));
+                    alert.setMessage(requireActivity().getResources().getString(R.string.sureAboutDownloadingBag));
                 }
                 alert.setPositiveButton(android.R.string.yes, (dialog, which) -> {
                     // if is logged in => log out
@@ -287,7 +281,7 @@ public class OverviewFragment extends Fragment {
                     subjectRef.getFile(databaseSubjects).addOnSuccessListener(taskSnapshot -> {
                     }).addOnFailureListener(exception -> {
                         // Handle any errors
-                        Toast.makeText(getContext(), getActivity().getResources().getString(R.string.incorrectCodeOrNoConnection), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), requireActivity().getResources().getString(R.string.incorrectCodeOrNoConnection), Toast.LENGTH_LONG).show();
                     }).addOnProgressListener(snapshot -> {
                         double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
                         progressBar.setProgress((int) progress);
@@ -296,7 +290,7 @@ public class OverviewFragment extends Fragment {
                     // for items
                     StorageReference itemRef = storageReference.child("items/" + code.getText().toString() + ".db");
                     itemRef.getFile(databaseItems).addOnSuccessListener(taskSnapshot -> {
-                        Toast.makeText(getContext(), getContext().getResources().getString(R.string.successfulUpdateWithCode) + " " + code.getText().toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), requireContext().getResources().getString(R.string.successfulUpdateWithCode) + " " + code.getText().toString(), Toast.LENGTH_LONG).show();
                         updateTable(weekendOnBoolean, table, view);
 
                         progressBarLoadTable.setVisibility(View.INVISIBLE);
@@ -314,7 +308,7 @@ public class OverviewFragment extends Fragment {
                         Handler handler = new Handler();
                         handler.postDelayed(() -> progressBar.setProgress(0), 1500);
 
-                    }).addOnFailureListener(exception ->  MainActivity.showAlert(getContext(),getContext().getResources().getString(R.string.ERROR),getContext().getResources().getString(R.string.thisTimeTabledoesntExist))).addOnProgressListener(snapshot -> {
+                    }).addOnFailureListener(exception ->  MainActivity.showAlert(requireContext(),requireContext().getResources().getString(R.string.ERROR),requireContext().getResources().getString(R.string.thisTimeTabledoesntExist))).addOnProgressListener(snapshot -> {
                         double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
                         progressBar.setProgress((int) progress);
                     });
@@ -415,7 +409,6 @@ public class OverviewFragment extends Fragment {
 
         table.removeAllViews();
 
-        boolean first = true;
         final boolean donNotShare;
         if (login.isLoggedIn()&&LoadBag.getCurrentRozvrh()!=null) {
             int max = Integer.MIN_VALUE;
@@ -469,16 +462,9 @@ public class OverviewFragment extends Fragment {
                     addedRows++;
                     Button button = new Button(getContext());
 
-                    if (first) {
+                    if (firstTimeVisitedFragment) {
                         // tutorial
-                        ShowcaseConfig config = new ShowcaseConfig();
-                        config.setDelay(200); // half second between each showcase view
-                        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "recyclerViewerTutorialOverviewTableItem");
-                        sequence.setConfig(config);
-                        sequence.addSequenceItem(button,
-                                getActivity().getResources().getString(R.string.clickIconToEdit), getActivity().getResources().getString(R.string.gotIt));
-                        sequence.start();
-                        first = false;
+                        showTutorial2(button);
                     }
 
                     button.setMinimumWidth(0);
@@ -567,16 +553,9 @@ public class OverviewFragment extends Fragment {
                         addedRows++;
                         Button button = new Button(getContext());
 
-                        if (first) {
+                        if (firstTimeVisitedFragment) {
                             // tutorial
-                            ShowcaseConfig config = new ShowcaseConfig();
-                            config.setDelay(200); // half second between each showcase view
-                            MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "recyclerViewerTutorialOverviewTableItem");
-                            sequence.setConfig(config);
-                            sequence.addSequenceItem(button,
-                                    getActivity().getResources().getString(R.string.clickIconToEdit), getActivity().getResources().getString(R.string.gotIt));
-                            sequence.start();
-                            first = false;
+                            showTutorial2(button);
                         }
 
                         button.setMinimumWidth(0);
@@ -688,19 +667,54 @@ public class OverviewFragment extends Fragment {
     @SuppressLint("SetTextI18n")
     private void setWeekText(int week, TextView weekDisplay) {
         if (week == 0)
-            weekDisplay.setText(getActivity().getResources().getString(R.string.currentWeek));
+            weekDisplay.setText(requireActivity().getResources().getString(R.string.currentWeek));
         else if (week == 1)
-            weekDisplay.setText(getActivity().getResources().getString(R.string.nextWeek));
+            weekDisplay.setText(requireActivity().getResources().getString(R.string.nextWeek));
         else if (week == -1)
-            weekDisplay.setText(getActivity().getResources().getString(R.string.previousWeek));
+            weekDisplay.setText(requireActivity().getResources().getString(R.string.previousWeek));
         else if (week < -1 && week > -5)
-            weekDisplay.setText(-week + " " + getActivity().getResources().getString(R.string.backWeekCZSpecialCase));
+            weekDisplay.setText(-week + " " + requireActivity().getResources().getString(R.string.backWeekCZSpecialCase));
         else if (week <= -5)
-            weekDisplay.setText(-week + " " + getActivity().getResources().getString(R.string.backWeek));
-        else if (week > 1 && week < 5)
-            weekDisplay.setText(week + " " + getActivity().getResources().getString(R.string.forwardWeekbackWeekCZSpecialCase));
+            weekDisplay.setText(-week + " " + requireActivity().getResources().getString(R.string.backWeek));
+        else if (week < 5)
+            weekDisplay.setText(week + " " + requireActivity().getResources().getString(R.string.forwardWeekbackWeekCZSpecialCase));
         else
-            weekDisplay.setText(week + " " + getActivity().getResources().getString(R.string.forwardWeek));
+            weekDisplay.setText(week + " " + requireActivity().getResources().getString(R.string.forwardWeek));
+    }
+
+    private void showTutorial1(){
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(200); // half second between each showcase view
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "recyclerViewerTutorialOverviewLoad");
+        sequence.setConfig(config);
+        sequence.addSequenceItem(view.findViewById(R.id.editTextCode),
+                requireActivity().getResources().getString(R.string.bagCode), requireActivity().getResources().getString(R.string.Next));
+        sequence.addSequenceItem(view.findViewById(R.id.buttonLoad),
+                requireActivity().getResources().getString(R.string.bagCodeButton), requireActivity().getResources().getString(R.string.gotIt));
+        sequence.start();
+    }
+
+    private void showTutorial1(ShowcaseConfig config){
+        config.setDelay(200); // half second between each showcase view
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "recyclerViewerTutorialOverviewLoad");
+        sequence.setConfig(config);
+        sequence.addSequenceItem(view.findViewById(R.id.editTextCode),
+                requireActivity().getResources().getString(R.string.bagCode), requireActivity().getResources().getString(R.string.Next));
+        sequence.addSequenceItem(view.findViewById(R.id.buttonLoad),
+                requireActivity().getResources().getString(R.string.bagCodeButton), requireActivity().getResources().getString(R.string.gotIt));
+        sequence.start();
+    }
+
+    private void showTutorial2(Button button){
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(200); // half second between each showcase view
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), "recyclerViewerTutorialOverviewTableItem");
+        sequence.setConfig(config);
+        sequence.addSequenceItem(button,
+                requireActivity().getResources().getString(R.string.clickIconToEdit), requireActivity().getResources().getString(R.string.gotIt));
+
+        firstTimeVisitedFragment = false;
+        showTutorial1(config);
     }
 
 

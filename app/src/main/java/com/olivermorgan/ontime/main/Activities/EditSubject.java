@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -136,7 +135,8 @@ public class EditSubject extends AppCompatActivity {
         final List<Item> itemsDataItemsToEdit = new ArrayList<>();
         final List<String> itemNames = FeedReaderDbHelperItems.getContent(this, subject);
         for (String item : itemNames) {
-            itemsDataItemsToEdit.add(new Item(item, subject, FeedReaderDbHelperItems.isInBag(getApplicationContext(), item),FeedReaderDbHelperSubjects.getType(this, subject), this));
+            String type = FeedReaderDbHelperSubjects.getType(this, subject);
+            itemsDataItemsToEdit.add(new Item(item, subject, FeedReaderDbHelperItems.isInBag(getApplicationContext(), item, subject, type),type, this));
         }
 
 
@@ -185,7 +185,7 @@ public class EditSubject extends AppCompatActivity {
                     i.putExtra("Fragment", "overview");
 
                     i.putExtra("putInToBag", "null");
-                    if (!FeedReaderDbHelperItems.write(v.getContext(), i, itemsDataItemsToEdit, viewHolder.subjectName.getText().toString())) {
+                    if (FeedReaderDbHelperItems.write(v.getContext(), i, itemsDataItemsToEdit, viewHolder.subjectName.getText().toString())) {
                         Toast.makeText(v.getContext(), getResources().getString(R.string.databaseError),
                                 Toast.LENGTH_LONG).show();
                     }

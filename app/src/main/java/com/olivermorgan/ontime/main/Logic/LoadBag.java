@@ -141,7 +141,7 @@ public class LoadBag {
                     Item i = new Item("items for "+ mainTitle.getShortName(), mainTitle.getName(),false,"subject", context);
                     i.setMainTitle(mainTitle);
                     items.add(i);
-                    if (!FeedReaderDbHelperItems.write(context, intent, items)) {
+                    if (FeedReaderDbHelperItems.write(context, intent, items)) {
                         Toast.makeText(context, context.getResources().getString(R.string.databaseError),
                                 Toast.LENGTH_LONG).show();
                     }
@@ -224,7 +224,7 @@ public class LoadBag {
                     Item i = new Item("items for "+subject.getShortName(), subject.getName(),false,"subject", context);
                     i.setMainTitle(subject);
                     items.add(i);
-                    if (!FeedReaderDbHelperItems.write(context, intent, items)) {
+                    if (FeedReaderDbHelperItems.write(context, intent, items)) {
                         Toast.makeText(context, context.getResources().getString(R.string.databaseError),
                                 Toast.LENGTH_LONG).show();
                     }
