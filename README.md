@@ -29,8 +29,8 @@ The following is also included:
 
 ## Screenshots
 <img src="https://play-lh.googleusercontent.com/ZEO0rpVI5dSflT6hLYkQn7hIzYIFgsTEPJM5MjEnHeOzRa_b93RGecQIzae3dF2B_qxT=w1920-h937-rw" alt="Image 1"/>
-<img src="https://play-lh.googleusercontent.com/vSx2EV4w7cvz6G7JM8BEojtrE4ZjhxMSjueaf4dGahXUZYHB1b90pRsFoGMlUB0UUoI=w1920-h937-rw" alt="Image 2"/>
-<img src="https://play-lh.googleusercontent.com/7yYXzT_6jokoJq1iWRHTts3qNfqe3eXssiKRF5B1zrR5tPNIEavZrdljtTD16Yj84fGx=w1920-h937-rw" alt="Image 3"/>
+<img src="https://play-lh.googleusercontent.com/7yYXzT_6jokoJq1iWRHTts3qNfqe3eXssiKRF5B1zrR5tPNIEavZrdljtTD16Yj84fGx=w1920-h937-rw" alt="Image 2"/>
+<img src="https://play-lh.googleusercontent.com/vSx2EV4w7cvz6G7JM8BEojtrE4ZjhxMSjueaf4dGahXUZYHB1b90pRsFoGMlUB0UUoI=w1920-h937-rw" alt="Image 3"/>
 <img src="https://play-lh.googleusercontent.com/3sRqX1nbpZW7Ma6t_Lxmhs4MyEcOXcNGqyLqXyKJjZW_XT5TDy-vLLiv1aF3JkrGAQ=w1920-h937-rw" alt="Image 4"/>
 <img src="https://play-lh.googleusercontent.com/xu2otji7El0okbXYa3b2fQnoKKfPyneFOIz2uARQbDbvW0DfECJ8iM_ZQH5eNummD1G7=w1920-h937-rw" alt="Image 5"/>
 <img src="https://play-lh.googleusercontent.com/xu2otji7El0okbXYa3b2fQnoKKfPyneFOIz2uARQbDbvW0DfECJ8iM_ZQH5eNummD1G7=w720-h310-rw" alt="Image 6"/>
