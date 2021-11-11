@@ -36,4 +36,4 @@ The following is also included:
 <img src="https://play-lh.googleusercontent.com/xu2otji7El0okbXYa3b2fQnoKKfPyneFOIz2uARQbDbvW0DfECJ8iM_ZQH5eNummD1G7=w720-h310-rw" alt="Image 6"/>
 
 ## Current state
-Aplication is in production: https://play.google.com/store/apps/details?id=com.olivermorgan.ontime.main&hl=cs
+Aplication is in production: https://play.google.com/store/apps/details?id=com.olivermorgan.ontime.main&hl=cs (make sure you are logged into google store so the link can work)
