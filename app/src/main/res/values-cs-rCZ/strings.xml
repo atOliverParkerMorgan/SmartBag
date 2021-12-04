@@ -45,7 +45,7 @@
     <string name="noItemsInBag">Váš batoh je prázdný</string>
     <string name="instructionsEditBag">Upravte pomůcky</string>
     <string name="search">Hledejte…</string>
-    <string name="connection_failed">Nelze připojit k severu</string>
+    <string name="connection_failed">Nelze připojit k serveru</string>
     <string name="loading_schools_info">Načítají se info o školách</string>
     <string name="discard_button">smazat</string>
     <string name="create_button">vytvořit</string>
@@ -83,7 +83,7 @@
     <string name="subTextSuccess">úspěšně jste se přihlásili do vášeho účtu</string>
     <string name="unexpected_response">Jejda něco se pokazilo</string>
     <string name="invalid_login">Jejda špatně jste zadali uživatelské jméno nebo heslo</string>
-    <string name="sever_unreachable">Nelze se spojit se srveru. Zkontrolujte školní adresu.</string>
+    <string name="server_unreachable">Nelze se spojit se serveru. Zkontrolujte školní adresu.</string>
     <string name="disabled_servises">Služby, které tato aplikace potřebuje nejsou k dispozici</string>
     <string name="LATER">POZDĚJI</string>
     <string name="PREFS_SWITCH_TO_NEXT_WEEK">příští týden</string>

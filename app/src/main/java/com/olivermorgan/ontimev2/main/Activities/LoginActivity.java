@@ -2,7 +2,6 @@ package com.olivermorgan.ontimev2.main.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -103,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 if (code == Login.SERVER_UNREACHABLE) {
                     resetButton(progressBar,login, back);
-                    serverAddress.setError(getText(R.string.sever_unreachable));
+                    serverAddress.setError(getText(R.string.server_unreachable));
                 }
                 if (code == Login.UNEXPECTER_RESPONSE) {
                     resetButton(progressBar,login, back);
