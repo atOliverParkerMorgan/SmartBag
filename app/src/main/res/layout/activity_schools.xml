@@ -9,7 +9,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentSchools"
-        android:name="com.olivermorgan.ontime.main.ui.SchoolList.SchoolsListFragment"
+        android:name="com.olivermorgan.ontimev2.main.ui.SchoolList.SchoolsListFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
